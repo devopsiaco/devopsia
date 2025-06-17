@@ -1,67 +1,153 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devopsia - Ops Made Easy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #0ea5e9;
+      --bg: #f9fafb;
+      --text: #111827;
+      --accent: #fbbf24;
+    }
 
-		<style>
-				  body {
-				    margin: 0;
-				    font-family: system-ui, sans-serif;
-				    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-				    color: #f8fafc;
-				    display: flex;
-				    flex-direction: column;
-				    align-items: center;
-				    justify-content: center;
-				    min-height: 100vh;
-				    padding: 2rem;
-				    text-align: center;
-				  }
-				  h1 {
-				    font-size: 3rem;
-				    margin-bottom: 1rem;
-				  }
-				  p {
-				    font-size: 1.25rem;
-				    max-width: 600px;
-				    margin-bottom: 2rem;
-				  }
-				  .cta-button {
-				    background-color: #38bdf8;
-				    color: #0f172a;
-				    font-weight: bold;
-				    padding: 0.75rem 1.5rem;
-				    border: none;
-				    border-radius: 8px;
-				    font-size: 1rem;
-				    cursor: pointer;
-				    transition: background-color 0.3s ease;
-				    text-decoration: none;
-				  }
-				  .cta-button:hover {
-				    background-color: #0ea5e9;
-				  }
-				  .hero {
-				    max-width: 250px;
-				    width: 100%;
-				    margin-bottom: 2rem;
-				    border-radius: 12px;
-				    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-				  }
-				</style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-				<img
-				  src="https://devopsia.co/undraw_clohosting_tfehud.svg"
-				  alt="Cloud Illustration"
-				  class="hero"
-				
-				/>
-				<h1>Devopsia</h1>
-				<p>
-				  Infrastructure automation kits and tools - made for modern DevOps,
-				  SREs, and IT engineers who want to save time, reduce noise, and stay in
-				  control.
-				</p>
-				<a href="mailto:hello@devopsia.co" class="cta-button">Join the Waitlist</a>
-				<p style="margin-top: 2rem">
-				   Contact us at
-				  <a href="mailto:hello@devopsia.co" style="color:#38bdf8; font-weight:bold">hello@devopsia.co</a>
-				</p>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+
+    .cta {
+      margin-top: 1.5rem;
+    }
+
+    .cta a {
+      text-decoration: none;
+      background-color: var(--accent);
+      color: black;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 999px;
+      transition: background-color 0.3s;
+    }
+
+    .cta a:hover {
+      background-color: #facc15;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .feature {
+      background-color: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .feature h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+    }
+
+    .feature p {
+      font-size: 1rem;
+    }
+
+    .graphic {
+      width: 100%;
+      max-width: 400px;
+      margin: 2rem auto 0 auto;
+      display: block;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    @media (min-width: 640px) {
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .features {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      header h1 {
+        font-size: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Devopsia</h1>
+    <p>Ops made easy</p>
+    <div class="cta">
+      <a href="#features">Explore Our Kits</a>
+    </div>
+  </header>
+
+  <img class="graphic" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/devicon/devicon-original-wordmark.svg" alt="DevOps Illustration" />
+
+  <section id="features" class="features">
+    <div class="feature">
+      <h2>Automation Kits</h2>
+      <p>Plug-and-play toolkits to automate your cloud, CI/CD, and infrastructure tasks.</p>
+    </div>
+    <div class="feature">
+      <h2>Time-Saving Tools</h2>
+      <p>Reduce toil with smart, configurable scripts and dashboards built for speed.</p>
+    </div>
+    <div class="feature">
+      <h2>Built for Engineers</h2>
+      <p>Designed with SREs and IT pros in mind—simple to use, powerful in results.</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Devopsia. All rights reserved.
+  </footer>
+</body>
+</html>
