@@ -1,0 +1,83 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+
+		<style>
+				  body {
+				    margin: 0;
+				    font-family: system-ui, sans-serif;
+				    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+				    color: #f8fafc;
+				    display: flex;
+				    flex-direction: column;
+				    align-items: center;
+				    justify-content: center;
+				    min-height: 100vh;
+				    padding: 2rem;
+				    text-align: center;
+				  }
+				  h1 {
+				    font-size: 3rem;
+				    margin-bottom: 1rem;
+				  }
+				  p {
+				    font-size: 1.25rem;
+				    max-width: 600px;
+				    margin-bottom: 2rem;
+				  }
+				  .cta-button {
+				    background-color: #38bdf8;
+				    color: #0f172a;
+				    font-weight: bold;
+				    padding: 0.75rem 1.5rem;
+				    border: none;
+				    border-radius: 8px;
+				    font-size: 1rem;
+				    cursor: pointer;
+				    transition: background-color 0.3s ease;
+				    text-decoration: none;
+				  }
+				  .cta-button:hover {
+				    background-color: #0ea5e9;
+				  }
+				  .hero {
+				    max-width: 400px;
+				    width: 100%;
+				    margin-bottom: 2rem;
+				    border-radius: 12px;
+				    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+				  }
+				</style>
+
+				<img
+				  src="/images/undraw_cloud-hosting_tfeh.svg"
+				  alt="Cloud Illustration"
+				  class="hero"
+				/>
+				<h1>Devopsia</h1>
+				<p>
+				  Infrastructure automation kits and tools - made for modern DevOps,
+				  SREs, and IT engineers who want to save time, reduce noise, and stay in
+				  control.
+				</p>
+				<a href="mailto:hello@devopsia.co" class="cta-button">Join the Waitlist</a>
+				<p style="margin-top: 2rem">
+				   Contact us at
+				  <a href="mailto:hello@devopsia.co" style="color:#38bdf8; font-weight:bold">hello@devopsia.co</a>
+				</p>
+
+
+
+
+
+
+
+
+
+

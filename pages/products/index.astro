@@ -1,0 +1,101 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<style>
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: #f8fafc;
+    padding: 2rem;
+  }
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+  }
+  .card {
+    background: #1e293b;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  .card img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+  }
+  .card:hover img {
+    transform: scale(1.1);
+  }
+  .card h2 {
+    margin-bottom: 0.5rem;
+  }
+  .card p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  .tag {
+    background-color: #38bdf8;
+    color: #0f172a;
+    font-weight: bold;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+  .button {
+    background-color: #38bdf8;
+    color: #0f172a;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+  }
+  .button:hover {
+    background-color: #0ea5e9;
+  }
+</style>
+
+<h1>Automation Kits & Tools</h1>
+<div class="grid">
+  <div class="card">
+    <img src="https://www.svgrepo.com/show/509101/shield-check.svg" alt="Uptime Icon" />
+    <h2>Uptime Watchdog</h2>
+    <p>Lightweight incident detection with smart alert throttling.</p>
+    <div class="tag">Coming Soon</div>
+    <a href="mailto:preorder@devopsia.co?subject=Preorder%20Uptime%20Watchdog" class="button">Preorder</a>
+  </div>
+  <div class="card">
+    <img src="https://www.svgrepo.com/show/354193/deployment.svg" alt="Deploy Icon" />
+    <h2>Deploy Snap</h2>
+    <p>Opinionated CI/CD starter for teams deploying on cloud.</p>
+    <div class="tag">Coming Soon</div>
+    <a href="mailto:preorder@devopsia.co?subject=Preorder%20Deploy%20Snap" class="button">Preorder</a>
+  </div>
+  <div class="card">
+    <img src="https://www.svgrepo.com/show/372652/log.svg" alt="Logs Icon" />
+    <h2>Log Bender</h2>
+    <p>Scriptable log router and noise reducer for busy systems.</p>
+    <div class="tag">Coming Soon</div>
+    <a href="mailto:preorder@devopsia.co?subject=Preorder%20Log%20Bender" class="button">Preorder</a>
+  </div>
+</div>
