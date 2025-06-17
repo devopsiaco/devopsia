@@ -12,37 +12,31 @@
       --text: #111827;
       --accent: #fbbf24;
     }
-
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Inter', sans-serif;
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
     }
-
     header {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       color: white;
       padding: 2rem 1rem;
       text-align: center;
     }
-
     header h1 {
       font-size: 2.5rem;
       font-weight: 800;
     }
-
     header p {
       font-size: 1.2rem;
       margin-top: 0.5rem;
     }
-
     .cta {
       margin-top: 1.5rem;
       display: flex;
@@ -50,7 +44,6 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
-
     .cta a {
       text-decoration: none;
       background-color: var(--accent);
@@ -60,11 +53,9 @@
       border-radius: 999px;
       transition: background-color 0.3s;
     }
-
     .cta a:hover {
       background-color: #facc15;
     }
-
     .features {
       display: grid;
       grid-template-columns: 1fr;
@@ -73,16 +64,14 @@
       max-width: 900px;
       margin: 0 auto;
     }
-
-    .feature {
+    .feature, .feature2 {
       background-color: white;
       border-radius: 1rem;
       padding: 1.5rem;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
       text-align: center;
     }
-
-    .feature h2 {
+    .feature h2, .feature2 h2 {
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
       color: var(--secondary);
@@ -90,33 +79,18 @@
       text-align: center;
       justify-content: center;
     }
-
-    .feature p {
+    .feature2 h2 {
+      font-size: 1.2rem;
+      color: #6b7280;
+    }
+    .feature p, .feature2 p {
       font-size: 1rem;
     }
-
     .graphic {
       width: 100%;
       max-width: 600px;
       margin: 2rem auto 0 auto;
       display: block;
-    }
-
-    .feature2 {
-      background-color: white;
-      border-radius: 1rem;
-      padding: 1.0rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      text-align: center;
-    }
-
-    .feature2 h2 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      color: #6b7280 ;
-      max-width: 800px;
-      text-align: center;
-      justify-content: center;
     }
     footer {
       text-align: center;
@@ -124,27 +98,22 @@
       font-size: 0.9rem;
       color: #6b7280;
     }
-
     footer a {
       color: #4f46e5;
       text-decoration: none;
     }
-
     footer a:hover {
       text-decoration: underline;
     }
-
     @media (min-width: 640px) {
       .features {
         grid-template-columns: repeat(2, 1fr);
       }
     }
-
     @media (min-width: 1024px) {
       .features {
         grid-template-columns: repeat(3, 1fr);
       }
-
       header h1 {
         font-size: 3rem;
       }
@@ -155,65 +124,58 @@
   <header>
     <div class="cta">
       <a href="#features">Explore Our Kits</a>
-      <a href="#waitlist">Join the Waitlist</a>
+      <a href="#cta-banner">Get Started</a>
       <a href="about.html">About</a>
     </div>
   </header>
 
   <img class="graphic" src="https://devopsia.co/DevopsiaLogo.png" alt="Logo" />
-    <section id="features" class="features">
-  <div class="feature2">
-    <h2>Automation Kits</h2>
-    <p>Plug-and-play toolkits to automate your cloud, CI/CD, and infrastructure tasks.</p>
-  </div>
-  <div class="feature2">
-    <h2>Time-Saving Tools</h2>
-    <p>Reduce toil with smart, configurable scripts and dashboards built for speed.</p>
-  </div>
-  <div class="feature2">
-    <h2>Built for Engineers</h2>
-    <p>Infrastructure automation kits and tools</p>
-  </div>
-</section>
-  
-<p style="
-  font-weight: 400;
-  font-size: 1.5rem;
-  color: #f7d725; /* Tailwind blue-500, harmonious with --secondary */
-  text-align: center;
-  margin: 2rem auto;
-  max-width: 800px;
-">
-  Devopsia kits are designed to eliminate repetitive cloud setup and security tasks — so you can focus on building.
-</p>
+
+  <section id="features" class="features">
+    <div class="feature2">
+      <h2>Automation Kits</h2>
+      <p>Plug-and-play toolkits to automate your cloud, CI/CD, and infrastructure tasks.</p>
+    </div>
+    <div class="feature2">
+      <h2>Time-Saving Tools</h2>
+      <p>Reduce toil with smart, configurable scripts and dashboards built for speed.</p>
+    </div>
+    <div class="feature2">
+      <h2>Built for Engineers</h2>
+      <p>Infrastructure automation kits and tools</p>
+    </div>
+  </section>
+
+  <p style="font-weight: 400; font-size: 1.5rem; color: #f7d725; text-align: center; margin: 2rem auto; max-width: 800px;">
+    Devopsia kits are designed to eliminate repetitive cloud setup and security tasks — so you can focus on building.
+  </p>
 
   <section style="text-align: center; padding: 3rem 1rem;">
-  <img src="https://devopsia.co/images/devopsia-user.png" alt="DevOps team collaboration illustration" style="max-width: 50%; height: auto; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
-  <p style="font-size: 1rem; margin-top: 1rem; color: #374151;">
-    We build for teams — fast-moving, detail-driven, automation-first teams.
-  </p>
-</section>
+    <img src="https://devopsia.co/images/devopsia-user.png" alt="DevOps team collaboration illustration" style="max-width: 800px; height: auto; border-radius: 1rem; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+    <p style="font-size: 1rem; margin-top: 1rem; color: #374151;">
+      We build for teams — fast-moving, detail-driven, automation-first teams.
+    </p>
+  </section>
 
-  
   <section id="features" class="features">
-  <div class="feature">
-    <h2><a href="kits/vpc-kit.html" style="color: var(--secondary); text-decoration: none;">VPC Kit →</a></h2>
-    <p>Launch secure, production-ready AWS VPCs in seconds with our Terraform-powered automation.</p>
-  </div>
-  <div class="feature">
-  <h2><a href="kits/ec2-automonitor-kit.html" style="color: var(--secondary); text-decoration: none;">EC2 AutoMonitor Kit →</a></h2>
-  <p>Spin up EC2 instances with built-in CloudWatch monitoring and alerts — zero setup needed.</p>
-</div>
-  <div class="feature">
-    <h2><a href="kits/s3-iam-kit.html" style="color: var(--secondary); text-decoration: none;">S3 + IAM Kit →</a></h2>
-    <p>Provision S3 buckets and tightly scoped IAM access in one go — fully automated with Terraform.</p>
-</div>
-</section>
+    <div class="feature">
+      <h2><a href="kits/vpc-kit.html" style="color: var(--secondary); text-decoration: none;">VPC Kit →</a></h2>
+      <p>Launch secure, production-ready AWS VPCs in seconds with our Terraform-powered automation.</p>
+    </div>
+    <div class="feature">
+      <h2><a href="kits/ec2-automonitor-kit.html" style="color: var(--secondary); text-decoration: none;">EC2 AutoMonitor Kit →</a></h2>
+      <p>Spin up EC2 instances with built-in CloudWatch monitoring and alerts — zero setup needed.</p>
+    </div>
+    <div class="feature">
+      <h2><a href="kits/s3-iam-kit.html" style="color: var(--secondary); text-decoration: none;">S3 + IAM Kit →</a></h2>
+      <p>Provision S3 buckets and tightly scoped IAM access in one go — fully automated with Terraform.</p>
+    </div>
+  </section>
 
-  <section id="waitlist" style="text-align: center; padding: 2rem 1rem;">
-    <h2 style="font-size: 1.5rem; color: var(--accent); margin-bottom: 1rem;">Be the First to Know</h2>
-    <p style="margin-bottom: 1rem;">Sign up to get early access to our kits and tools.</p>
-    <a href="mailto:hello@devopsia.co" style="background-color: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 999px; text-decoration: none; font-weight: 600;">Join via Email</a>
+  <section id="cta-banner" style="background-color: #0891b2; padding: 3rem 1rem; text-align: center; color: white;">
+    <img src="https://devopsia.co/images/cta-banner.png" alt="DevOps team banner CTA" style="max-width: 100%; height: auto; border-radius: 1rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 2rem; margin-bottom: 1rem;">Built for team-focused infrastructure automation</h2>
+    <a href="mailto:hello@devopsia.co" style="display: inline-block; background-color: #fbbf24; color: black; padding: 0.75rem 1.5rem; border-radius: 999px; font-weight: 600; text-decoration: none;">Get Started</a>
   </section>
 
   <footer>
