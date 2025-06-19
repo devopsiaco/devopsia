@@ -11,3 +11,4 @@ This repository uses a simple Google Apps Script to collect emails submitted via
 6. In `docs/index.html`, replace `YOUR_SCRIPT_ID` in the form `action` attribute with the deployed web app URL ID.
 
 Submissions will append the email address and a timestamp to the `Emails` sheet.
+

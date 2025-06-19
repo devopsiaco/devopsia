@@ -1,0 +1,8 @@
+{
+  "name": "devopsia",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"No tests defined\" && exit 0"
+  }
+}
