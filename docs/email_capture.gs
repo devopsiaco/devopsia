@@ -1,3 +1,16 @@
+function addCorsHeaders(output) {
+  output.setHeader('Access-Control-Allow-Origin', '*');
+  output.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  output.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  return output;
+}
+
+function emptyResponse() {
+  var output = ContentService.createTextOutput('');
+  output.setMimeType(ContentService.MimeType.JSON);
+  addCorsHeaders(output);
+  return output;
+}
 function doPost(e) {
   var data = {};
   try {
@@ -9,8 +22,8 @@ function doPost(e) {
   var email = (data.email || '').trim();
 
   var output = ContentService.createTextOutput();
-  output.setMimeType(ContentService.MimeType.JSON)
-        .setHeader('Access-Control-Allow-Origin', '*');
+  output.setMimeType(ContentService.MimeType.JSON);
+  addCorsHeaders(output);
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     output.setContent(JSON.stringify({ result: 'error', message: 'Invalid email' }));
@@ -27,4 +40,8 @@ function doPost(e) {
   sheet.appendRow([new Date(), email]);
   output.setContent(JSON.stringify({ result: 'success' }));
   return output;
+}
+
+function doGet(e) {
+  return emptyResponse();
 }
