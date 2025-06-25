@@ -1,4 +1,10 @@
 function addCorsHeaders(output) {
+
+  output.setHeader('Access-Control-Allow-Origin', '*');
+  output.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  output.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  return output;
+  
   return output.setHeader('Access-Control-Allow-Origin', '*')
                .setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
                .setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -53,5 +59,4 @@ function doOptions(e) {
   output.setMimeType(ContentService.MimeType.JSON);
   addCorsHeaders(output);
   return output;
-
 }
