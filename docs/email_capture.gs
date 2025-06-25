@@ -10,7 +10,6 @@ function emptyResponse() {
   addCorsHeaders(output);
   return output;
 }
-
 function doPost(e) {
   var data = {};
   try {
