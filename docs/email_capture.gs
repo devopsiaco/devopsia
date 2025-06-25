@@ -10,6 +10,7 @@ function emptyResponse() {
   addCorsHeaders(output);
   return output;
 }
+
 function doPost(e) {
   var data = {};
   try {
@@ -42,9 +43,15 @@ function doPost(e) {
 }
 
 function doGet(e) {
+
   return emptyResponse();
 }
 
 function doOptions(e) {
   return emptyResponse();
+  var output = ContentService.createTextOutput('');
+  output.setMimeType(ContentService.MimeType.JSON);
+  addCorsHeaders(output);
+  return output;
+
 }
