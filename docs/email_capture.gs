@@ -45,3 +45,7 @@ function doPost(e) {
 function doGet(e) {
   return emptyResponse();
 }
+
+function doOptions(e) {
+  return emptyResponse();
+}
