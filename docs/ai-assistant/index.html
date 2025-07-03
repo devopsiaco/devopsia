@@ -22,7 +22,7 @@
       const prompt = promptEl.value;
       outputEl.textContent = 'Generating...';
       try {
-        const res = await fetch('https://your-api-id.execute-api.region.amazonaws.com/generate', {
+        const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt })
