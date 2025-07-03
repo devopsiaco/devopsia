@@ -4,6 +4,9 @@
   <meta charset="UTF-8">
   <title>Devopsia — Ai-assistant</title>
   <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-hcl.min.js"></script>
 </head>
 <body>
   <header><a href="/">← Home</a></header>
@@ -14,7 +17,7 @@
       <button onclick="generate()">Generate</button>
       <div id="spinner" class="spinner" style="display:none;"></div>
     </div>
-    <pre id="output"></pre>
+    <pre><code class="language-hcl" id="output"></code></pre>
     <div>
       <button id="copy-btn" onclick="copyOutput()">📋 Copy</button>
       <span id="copy-msg" style="display:none;">Copied!</span>
@@ -37,6 +40,7 @@
         if (!res.ok) throw new Error('Request failed');
         const data = await res.json();
         outputEl.textContent = data.output;
+        Prism.highlightElement(outputEl);
       } catch (err) {
         outputEl.textContent = 'Error generating code';
       } finally {
