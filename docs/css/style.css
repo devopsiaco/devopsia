@@ -1,8 +1,8 @@
 body {
   margin: 0;
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
-  background: #f8fafc;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: #f9fafb;
   color: #111827;
 }
 
@@ -11,6 +11,23 @@ body {
   margin: 0 auto;
   padding: 1rem;
   box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
 }
 
 textarea,
@@ -30,12 +47,49 @@ button {
   width: 100%;
   max-width: 300px;
   margin: 1rem auto;
+  background: #0891b2;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
 }
 
 img {
   max-width: 100%;
   height: auto;
   display: block;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.grid-2,
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #e0f2fe, #f0f9ff);
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
 }
 header, footer {
   text-align: center;
