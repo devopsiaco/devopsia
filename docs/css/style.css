@@ -35,3 +35,11 @@ header, footer {
   margin-left: 0.5rem;
   color: #059669;
 }
+
+/* Styled output container for AI assistant */
+#output {
+  display: block;
+  padding: 1rem;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  white-space: pre-wrap;
+}
