@@ -13,16 +13,18 @@
   <div class="container">
   <header><a href="/">← Home</a></header>
   <main>
-    <h1>Ai-assistant</h1>
-    <textarea id="prompt" rows="6" placeholder="Enter your prompt..."></textarea>
-    <div>
-      <button onclick="generate()">Generate</button>
-      <div id="spinner" class="spinner" style="display:none;"></div>
-    </div>
-    <pre><code class="language-hcl" id="output"></code></pre>
-    <div>
-      <button id="copy-btn" onclick="copyOutput()">📋 Copy</button>
-      <span id="copy-msg" style="display:none;">Copied!</span>
+    <div class="card">
+      <h1>Ai-assistant</h1>
+      <textarea id="prompt" rows="6" placeholder="Enter your prompt..."></textarea>
+      <div>
+        <button onclick="generate()">Generate</button>
+        <div id="spinner" class="spinner" style="display:none;"></div>
+      </div>
+      <pre><code class="language-hcl" id="output"></code></pre>
+      <div>
+        <button id="copy-btn" onclick="copyOutput()">📋 Copy</button>
+        <span id="copy-msg" style="display:none;">Copied!</span>
+      </div>
     </div>
   </main>
   <script>
