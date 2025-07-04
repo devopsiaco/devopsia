@@ -57,6 +57,18 @@ button {
   cursor: pointer;
 }
 
+.signup-btn {
+  background: #d97706;
+  color: #fff;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
 img {
   max-width: 100%;
   height: auto;
