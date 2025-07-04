@@ -8,24 +8,43 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex flex-col font-sans bg-gradient-to-br from-emerald-900 via-emerald-700 to-green-400 text-white">
-  <header class="container mx-auto flex justify-between items-center py-6">
-    <div class="text-2xl font-extrabold">Devopsia</div>
-    <nav class="space-x-8 flex items-center">
-      <a href="#features" class="hover:underline text-white">Features</a>
-      <a href="/pricing/" class="hover:underline text-white">Pricing</a>
-      <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Start Building</a>
-    </nav>
+  <header class="sticky top-0 z-10 backdrop-blur-sm bg-emerald-950/80 text-white shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
+      <div class="text-2xl font-extrabold">Devopsia</div>
+      <nav class="flex-1 flex justify-center space-x-8 font-semibold">
+        <a href="#features" class="hover:underline">Features</a>
+        <a href="/pricing/" class="hover:underline">Pricing</a>
+      </nav>
+      <div class="flex justify-end">
+        <a href="#" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow">Start Building</a>
+      </div>
+    </div>
   </header>
   <section class="container mx-auto text-center py-20 md:py-32">
     <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Your AI DevOps Engineer</h1>
     <p class="text-lg md:text-2xl mb-10">Type your infra task. Get instant, ready-to-run code.</p>
   </section>
   <div class="container mx-auto pb-16">
-    <div class="w-full max-w-2xl mx-auto flex bg-gray-900/90 rounded-lg shadow-lg p-4">
-      <input type="text" class="flex-grow bg-transparent placeholder-gray-400 outline-none text-white" placeholder="Deploy a Kubernetes cluster with monitoring in AWS" />
-      <button class="ml-4 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded">Try a prompt</button>
+    <div class="w-full max-w-3xl mx-auto flex rounded-lg shadow-lg overflow-hidden">
+      <input type="text" class="flex-grow bg-gray-900/80 placeholder-gray-400 text-white font-mono text-lg md:text-xl py-4 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-shadow" placeholder="Deploy a Kubernetes cluster with monitoring in AWS" />
+      <button class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-4 font-semibold">Try a prompt</button>
     </div>
   </div>
+
+  <section class="container mx-auto pb-24 grid gap-6 md:grid-cols-3">
+    <a href="/pricing/" class="block p-6 rounded-lg bg-white/10 text-center shadow transition transform hover:scale-105 hover:border hover:border-emerald-300">
+      <div class="text-3xl">💸</div>
+      <div class="mt-2 font-semibold">Pricing</div>
+    </a>
+    <a href="/login.html" class="block p-6 rounded-lg bg-white/10 text-center shadow transition transform hover:scale-105 hover:border hover:border-emerald-300">
+      <div class="text-3xl">🔑</div>
+      <div class="mt-2 font-semibold">Login</div>
+    </a>
+    <a href="/ai-assistant/" class="block p-6 rounded-lg bg-white/10 text-center shadow transition transform hover:scale-105 hover:border hover:border-emerald-300">
+      <div class="text-3xl">📚</div>
+      <div class="mt-2 font-semibold">Docs</div>
+    </a>
+  </section>
   <footer class="mt-auto text-center py-4">© 2025 Devopsia</footer>
 </body>
 </html>
