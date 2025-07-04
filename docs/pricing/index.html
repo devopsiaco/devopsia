@@ -5,47 +5,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Devopsia — Pricing</title>
   <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-  <header><a href="/">← Home</a></header>
-  <main>
-    <div class="card">
-      <h1>Pricing</h1>
-      <section class="pricing-tiers">
-        <div class="tier-panel">
-          <h2>Free</h2>
-          <p class="price">$0</p>
-          <ul>
-            <li>10 prompts/month</li>
-            <li>Claude Haiku</li>
-            <li>Basic kits, limited AI usage</li>
-          </ul>
-        </div>
-        <div class="tier-panel">
-          <h2>Pro</h2>
-          <p class="price">$15/mo</p>
-          <p>All in Free plus:</p>
-          <ul>
-            <li>100 prompts/mo</li>
-            <li>Claude Haiku + Sonnet (small)</li>
-            <li>Premium kits, AI assistant, download history</li>
-          </ul>
-        </div>
-        <div class="tier-panel">
-          <h2>Team</h2>
-          <p class="price">$49/mo (5 users)</p>
-          <p>All in Pro plus:</p>
-          <ul>
-            <li>500 prompts/mo (shared)</li>
-            <li>Haiku + Sonnet</li>
-            <li>Shared workspace, saved templates, multi-user</li>
-          </ul>
-        </div>
-      </section>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+  <header class="bg-gradient-to-br from-emerald-900 via-emerald-700 to-green-400 text-white">
+    <div class="container mx-auto flex justify-between items-center py-6">
+      <div class="text-2xl font-extrabold">Devopsia</div>
+      <nav class="space-x-8 flex items-center">
+        <a href="/" class="hover:underline text-white">Home</a>
+        <a href="#features" class="hover:underline text-white">Features</a>
+        <a href="/pricing/" class="hover:underline text-white">Pricing</a>
+        <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Start Building</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container mx-auto py-20 flex-grow">
+    <h1 class="text-4xl font-extrabold text-center mb-8">Pricing</h1>
+    <div class="flex justify-center mb-8">
+      <button id="btnMonthly" class="px-4 py-2 rounded-l-lg bg-red-600 text-white font-semibold">Monthly</button>
+      <button id="btnAnnual" class="px-4 py-2 rounded-r-lg bg-gray-200 text-gray-600 font-semibold">Annual</button>
+    </div>
+    <div class="grid gap-8 md:grid-cols-3">
+      <div class="bg-white/70 backdrop-blur-md p-8 rounded-lg shadow">
+        <h2 class="text-2xl font-bold mb-4">Free</h2>
+        <p class="text-4xl font-extrabold mb-6">$0<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 mb-6">
+          <li>Limited prompt access</li>
+          <li>3 runs/day</li>
+          <li>No saved history</li>
+        </ul>
+        <a href="#" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Start Building</a>
+      </div>
+      <div class="bg-white/70 backdrop-blur-md p-8 rounded-lg shadow">
+        <h2 class="text-2xl font-bold mb-4">Pro</h2>
+        <p id="pricePro" class="text-4xl font-extrabold mb-6">$14<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 mb-6">
+          <li>Unlimited prompt runs</li>
+          <li>History tracking</li>
+          <li>Priority AI queue</li>
+        </ul>
+        <a href="#" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Start Building</a>
+      </div>
+      <div class="bg-white/70 backdrop-blur-md p-8 rounded-lg shadow">
+        <h2 class="text-2xl font-bold mb-4">Team</h2>
+        <p id="priceTeam" class="text-4xl font-extrabold mb-6">$49<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 mb-6">
+          <li>Shared team workspace</li>
+          <li>Audit trails</li>
+          <li>API access</li>
+        </ul>
+        <a href="#" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Start Building</a>
+      </div>
     </div>
   </main>
-  <footer>© 2025 Devopsia</footer>
-  </div>
+  <footer class="text-center py-4">© 2025 Devopsia</footer>
+<script>
+const btnMonthly = document.getElementById('btnMonthly');
+const btnAnnual = document.getElementById('btnAnnual');
+btnMonthly.addEventListener('click', () => {
+  btnMonthly.classList.add('bg-red-600','text-white');
+  btnAnnual.classList.remove('bg-red-600','text-white');
+  btnAnnual.classList.add('bg-gray-200','text-gray-600');
+  btnMonthly.classList.remove('bg-gray-200','text-gray-600');
+  document.getElementById('pricePro').innerHTML = '$14<span class="text-base font-medium">/mo</span>';
+  document.getElementById('priceTeam').innerHTML = '$49<span class="text-base font-medium">/mo</span>';
+});
+btnAnnual.addEventListener('click', () => {
+  btnAnnual.classList.add('bg-red-600','text-white');
+  btnMonthly.classList.remove('bg-red-600','text-white');
+  btnMonthly.classList.add('bg-gray-200','text-gray-600');
+  btnAnnual.classList.remove('bg-gray-200','text-gray-600');
+  document.getElementById('pricePro').innerHTML = '$140<span class="text-base font-medium">/yr</span>';
+  document.getElementById('priceTeam').innerHTML = '$490<span class="text-base font-medium">/yr</span>';
+});
+</script>
 </body>
 </html>
