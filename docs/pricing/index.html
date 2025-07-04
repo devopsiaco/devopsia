@@ -5,32 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Devopsia — Pricing</title>
   <link rel="stylesheet" href="/css/style.css">
-  <style>
-    .pricing-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 0 auto;
-    }
-    .pricing-table th,
-    .pricing-table td {
-      border: 1px solid #e5e7eb;
-      padding: 0.75rem;
-      text-align: left;
-      word-wrap: break-word;
-    }
-    .pricing-table th {
-      background-color: #f3f4f6;
-      font-weight: 600;
-    }
-    .table-wrapper {
-      overflow-x: auto;
-    }
-    @media (max-width: 600px) {
-      .pricing-table {
-        font-size: 0.875rem;
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -38,53 +12,36 @@
   <main>
     <div class="card">
       <h1>Pricing</h1>
-      <section class="table-wrapper">
-        <table class="pricing-table">
-          <thead>
-            <tr>
-              <th>Tier</th>
-              <th>Target Users</th>
-              <th>Price</th>
-              <th>Included Prompts</th>
-              <th>Model Access</th>
-              <th>Key Features</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>Free</strong></td>
-              <td>Explorers, learners</td>
-              <td><strong>$0</strong></td>
-              <td>10 prompts/month</td>
-              <td>Claude Haiku</td>
-              <td>Basic kits, limited AI usage</td>
-            </tr>
-            <tr>
-              <td><strong>Pro</strong></td>
-              <td>DevOps engineers, solo devs</td>
-              <td><strong>$15/mo</strong></td>
-              <td>100 prompts/mo</td>
-              <td>Claude Haiku + Sonnet (small)</td>
-              <td>Premium kits, AI assistant, download history</td>
-            </tr>
-            <tr>
-              <td><strong>Team</strong></td>
-              <td>Small teams or consultants</td>
-              <td><strong>$49/mo</strong> (5 users)</td>
-              <td>500 prompts/mo (shared)</td>
-              <td>Haiku + Sonnet</td>
-              <td>Shared workspace, saved templates, multi-user</td>
-            </tr>
-            <tr>
-              <td><strong>Enterprise</strong></td>
-              <td>Large teams, orgs</td>
-              <td><strong>Custom</strong></td>
-              <td>Custom</td>
-              <td>Claude Sonnet + Opus + long context</td>
-              <td>SSO, rate caps, audit logs, premium SLA</td>
-            </tr>
-          </tbody>
-        </table>
+      <section class="pricing-tiers">
+        <div class="tier-panel">
+          <h2>Free</h2>
+          <p class="price">$0</p>
+          <ul>
+            <li>10 prompts/month</li>
+            <li>Claude Haiku</li>
+            <li>Basic kits, limited AI usage</li>
+          </ul>
+        </div>
+        <div class="tier-panel">
+          <h2>Pro</h2>
+          <p class="price">$15/mo</p>
+          <p>All in Free plus:</p>
+          <ul>
+            <li>100 prompts/mo</li>
+            <li>Claude Haiku + Sonnet (small)</li>
+            <li>Premium kits, AI assistant, download history</li>
+          </ul>
+        </div>
+        <div class="tier-panel">
+          <h2>Team</h2>
+          <p class="price">$49/mo (5 users)</p>
+          <p>All in Pro plus:</p>
+          <ul>
+            <li>500 prompts/mo (shared)</li>
+            <li>Haiku + Sonnet</li>
+            <li>Shared workspace, saved templates, multi-user</li>
+          </ul>
+        </div>
       </section>
     </div>
   </main>
