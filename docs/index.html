@@ -41,79 +41,11 @@
     <p>Ops Made Simple with AI</p>
   </header>
   <main>
-    <section class="grid-2">
-      <a href="/ai-assistant/" class="card">AI Assistant</a>
-      <a href="/kits/" class="card">Browse Kits</a>
-    </section>
-    <section id="auth" class="card">
-      <h2>Account</h2>
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <button id="login">Login</button>
-      <button id="signup">Sign Up</button>
-      <button id="logout" style="display:none">Logout</button>
-      <div id="user-status">Not logged in</div>
-    </section>
+      <section class="grid-2">
+        <a href="/ai-assistant/" class="card">AI Assistant</a>
+        <a href="/kits/" class="card">Browse Kits</a>
+        <a href="/login.html" class="card">Login</a>
+      </section>
   </main>
-  <footer>© 2025 Devopsia</footer>
-  </div>
-
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
-      authDomain: "devopsia.firebaseapp.com",
-      projectId: "devopsia-39ea5",
-      appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const emailEl = document.getElementById('email');
-    const passwordEl = document.getElementById('password');
-    const loginBtn = document.getElementById('login');
-    const signupBtn = document.getElementById('signup');
-    const logoutBtn = document.getElementById('logout');
-    const statusEl = document.getElementById('user-status');
-
-    signupBtn.addEventListener('click', async () => {
-      const email = emailEl.value;
-      const password = passwordEl.value;
-      if (!email || !password) return;
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } catch (err) {
-        alert(err.message);
-      }
-    });
-
-    loginBtn.addEventListener('click', async () => {
-      const email = emailEl.value;
-      const password = passwordEl.value;
-      if (!email || !password) return;
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-      } catch (err) {
-        alert(err.message);
-      }
-    });
-
-    logoutBtn.addEventListener('click', () => {
-      signOut(auth);
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        statusEl.textContent = `Logged in as ${user.email}`;
-        logoutBtn.style.display = 'block';
-      } else {
-        statusEl.textContent = 'Not logged in';
-        logoutBtn.style.display = 'none';
-      }
-    });
-  </script>
-</body>
-</html>
+    <footer>© 2025 Devopsia</footer>
+    </div>
