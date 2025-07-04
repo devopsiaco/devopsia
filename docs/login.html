@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Devopsia — Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    #auth-card input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      box-sizing: border-box;
+    }
+    #auth-card button {
+      margin-bottom: 0.5rem;
+    }
+    #signup-card {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <header><a href="/">← Home</a></header>
+  <main>
+    <div class="card" id="auth-card">
+      <h1>Account</h1>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <button id="google-login">Sign in with Google</button>
+      <div style="text-align:center"><a href="#" id="show-signup">Sign Up</a></div>
+    </div>
+    <div class="card" id="signup-card" style="display:none">
+      <h2>Create Account</h2>
+      <form id="signup-form">
+        <input type="email" id="signup-email" placeholder="Email" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <button type="submit">Register</button>
+      </form>
+    </div>
+    <div class="card">
+      <button id="logout" style="display:none">Logout</button>
+      <div id="user-status">Not logged in</div>
+    </div>
+  </main>
+  <footer>© 2025 Devopsia</footer>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const googleBtn = document.getElementById('google-login');
+    const logoutBtn = document.getElementById('logout');
+    const statusEl = document.getElementById('user-status');
+    const showSignup = document.getElementById('show-signup');
+    const signupCard = document.getElementById('signup-card');
+
+    showSignup.addEventListener('click', (e) => {
+      e.preventDefault();
+      signupCard.style.display = signupCard.style.display === 'none' ? 'block' : 'none';
+    });
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('signup-email').value;
+      const password = document.getElementById('signup-password').value;
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        signupCard.style.display = 'none';
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    googleBtn.addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth);
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        statusEl.textContent = `Logged in as ${user.email}`;
+        logoutBtn.style.display = 'block';
+      } else {
+        statusEl.textContent = 'Not logged in';
+        logoutBtn.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
