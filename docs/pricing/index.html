@@ -95,7 +95,7 @@ btnAnnual.addEventListener('click', () => {
 
     function handleStartBuilding() {
       const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login.html';
+      window.location.href = user ? '/pricing/' : '/login/';
     }
 
     document.addEventListener('DOMContentLoaded', () => {

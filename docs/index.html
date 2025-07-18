@@ -15,7 +15,8 @@
         <a href="#features" class="hover:underline">Features</a>
         <a href="/pricing/" class="hover:underline">Pricing</a>
       </nav>
-      <div class="flex justify-end">
+      <div class="flex justify-end space-x-4">
+        <a href="/login/" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 border border-red-600 rounded shadow">Login</a>
         <a href="#" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded shadow">Start Building</a>
       </div>
     </div>
@@ -36,7 +37,7 @@
       <div class="text-3xl">💸</div>
       <div class="mt-2 font-semibold">Pricing</div>
     </a>
-    <a href="/login.html" class="block p-6 rounded-lg bg-white/10 text-center shadow transition transform hover:scale-105 hover:border hover:border-emerald-300">
+    <a href="/login/" class="block p-6 rounded-lg bg-white/10 text-center shadow transition transform hover:scale-105 hover:border hover:border-emerald-300">
       <div class="text-3xl">🔑</div>
       <div class="mt-2 font-semibold">Login</div>
     </a>
@@ -62,7 +63,7 @@
 
     function handleStartBuilding() {
       const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login.html';
+      window.location.href = user ? '/pricing/' : '/login/';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
