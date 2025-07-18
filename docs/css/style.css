@@ -43,3 +43,47 @@ header, footer {
   font-family: Menlo, Monaco, "Courier New", monospace;
   white-space: pre-wrap;
 }
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+textarea,
+input {
+  width: 100%;
+  max-width: 100%;
+}
+
+pre,
+code {
+  overflow-x: auto;
+  font-size: 0.9rem;
+}
+
+button {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  body {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+  .container {
+    padding: 1rem;
+  }
+}
