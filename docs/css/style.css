@@ -1,53 +1,33 @@
 body {
   margin: 0;
   padding: 2rem;
-  font-family: 'Inter', sans-serif;
-  background: #f8fafc;
-  color: #111827;
-}
-header, footer {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-  a {
-    color: #0891b2;
-    text-decoration: none;
-  }
-
-.spinner {
-  width: 24px;
-  height: 24px;
-  border: 4px solid #ddd;
-  border-top-color: #0891b2;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-  vertical-align: middle;
-  margin-left: 0.5rem;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: #f9fafb;
+  color: #374151;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-#copy-msg {
-  margin-left: 0.5rem;
-  color: #059669;
-}
-
-/* Styled output container for AI assistant */
-#output {
-  display: block;
-  padding: 1rem;
-  font-family: Menlo, Monaco, "Courier New", monospace;
-  white-space: pre-wrap;
-}
 .container {
   max-width: 960px;
   margin: 0 auto;
   padding: 1rem;
   box-sizing: border-box;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.25rem;
 }
 
 textarea,
@@ -67,6 +47,31 @@ button {
   width: 100%;
   max-width: 300px;
   margin: 1rem auto;
+  background: #F97316;
+  color: #ffffff;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+button:hover {
+  background: #ea580c;
+}
+
+.signup-btn {
+  background: #F97316;
+  color: #fff;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 img {
@@ -75,6 +80,86 @@ img {
   display: block;
 }
 
+.card {
+  background: #E5E7EB;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.grid-2,
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #fde2b3, #fff7ed);
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+header, footer {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header a {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+a {
+  color: #F97316;
+  text-decoration: none;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 4px solid #ddd;
+  border-top-color: #F97316;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+#copy-msg {
+  margin-left: 0.5rem;
+  color: #F97316;
+}
+
+.highlight {
+  outline: 2px solid #F97316;
+  transition: outline 0.3s ease-in-out;
+}
+
+/* Styled output container for AI assistant */
+#output {
+  display: block;
+  padding: 1rem;
+  font-family: Menlo, Monaco, "Courier New", monospace;
+  white-space: pre-wrap;
+}
+
+/* Responsive tweaks for mobile */
 @media (max-width: 600px) {
   body {
     font-size: 1rem;
@@ -86,4 +171,33 @@ img {
   .container {
     padding: 1rem;
   }
+}
+
+/* Pricing page styles */
+.pricing-tiers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.tier-panel {
+  background: #E5E7EB;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.tier-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  background: #000000;
+  color: #ffffff;
+}
+
+.tier-panel .price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0 1rem 0;
 }
