@@ -138,6 +138,11 @@ header a {
   color: #059669;
 }
 
+.highlight {
+  outline: 2px solid #22c55e;
+  transition: outline 0.3s ease-in-out;
+}
+
 /* Styled output container for AI assistant */
 #output {
   display: block;

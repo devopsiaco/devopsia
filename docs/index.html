@@ -24,7 +24,7 @@
     <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Your AI DevOps Engineer</h1>
     <p class="text-lg md:text-2xl mb-10">Type your infra task. Get instant, ready-to-run code.</p>
   </section>
-  <div class="container mx-auto pb-16">
+  <div id="ai-builder" class="container mx-auto pb-16">
     <div class="w-full max-w-3xl mx-auto flex rounded-lg shadow-lg overflow-hidden">
       <input type="text" class="flex-grow bg-gray-900/80 placeholder-gray-400 text-white font-mono text-lg md:text-xl py-4 px-6 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-shadow" placeholder="Deploy a Kubernetes cluster with monitoring in AWS" />
       <button class="bg-gray-800 hover:bg-gray-700 text-white px-6 py-4 font-semibold">Try a prompt</button>
@@ -46,5 +46,43 @@
     </a>
   </section>
   <footer class="mt-auto text-center py-4">© 2025 Devopsia</footer>
+  <script type="module">
+    import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
+      authDomain: "devopsia.firebaseapp.com",
+      projectId: "devopsia-39ea5",
+      appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
+    };
+
+    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    function handleStartBuilding() {
+      const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
+      window.location.href = user ? '/pricing/' : '/login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = Array.from(document.querySelectorAll('button, a')).filter(el =>
+        el.classList.contains('start-button') || el.textContent.trim() === 'Start Building'
+      );
+      buttons.forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.preventDefault();
+          handleStartBuilding();
+        });
+      });
+
+      const aiBuilder = document.getElementById('ai-builder');
+      if (aiBuilder && window.location.hash === '#start-builder') {
+        aiBuilder.scrollIntoView({ behavior: 'smooth' });
+        aiBuilder.classList.add('highlight');
+        setTimeout(() => aiBuilder.classList.remove('highlight'), 1500);
+      }
+    });
+  </script>
 </body>
 </html>
