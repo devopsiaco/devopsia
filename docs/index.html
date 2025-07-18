@@ -18,18 +18,20 @@
       </nav>
       <div class="flex justify-end space-x-4">
         <a href="/login/" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Login</a>
-        <a href="#" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Start Building</a>
+        <a href="#" class="start-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Start Building</a>
       </div>
     </div>
   </header>
+
   <section class="container mx-auto text-center py-20 md:py-32">
     <h1 class="text-4xl md:text-6xl font-extrabold mb-4">Your AI DevOps Engineer</h1>
     <p class="text-lg md:text-2xl mb-10">Type your infra task. Get instant, ready-to-run code.</p>
   </section>
+
   <div id="ai-builder" class="container mx-auto pb-16">
     <div class="w-full max-w-3xl mx-auto flex rounded-lg shadow-lg overflow-hidden">
       <input type="text" class="flex-grow bg-gray-900/80 placeholder-gray-400 text-white font-mono text-lg md:text-xl py-4 px-6 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-shadow" placeholder="Deploy a Kubernetes cluster with monitoring in AWS" />
-      <button class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-4 font-semibold rounded">Try a prompt</button>
+      <button class="start-button bg-orange-500 hover:bg-orange-600 text-white px-6 py-4 font-semibold rounded">Try a prompt</button>
     </div>
   </div>
 
@@ -47,7 +49,9 @@
       <div class="mt-2 font-semibold">Docs</div>
     </a>
   </section>
+
   <footer class="mt-auto text-center py-4">© 2025 Devopsia</footer>
+
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';

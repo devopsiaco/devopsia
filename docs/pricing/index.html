@@ -16,16 +16,18 @@
         <a href="/" class="hover:underline text-white">Home</a>
         <a href="#features" class="hover:underline text-white">Features</a>
         <a href="/pricing/" class="hover:underline text-white">Pricing</a>
-        <a href="#" class="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Start Building</a>
+        <a href="#" class="start-button inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Start Building</a>
       </nav>
     </div>
   </header>
+
   <main class="container mx-auto py-20 flex-grow">
     <h1 class="text-4xl font-extrabold text-center mb-8">Pricing</h1>
     <div class="flex justify-center mb-8">
       <button id="btnMonthly" class="px-4 py-2 rounded-l-lg bg-orange-500 text-white font-semibold">Monthly</button>
       <button id="btnAnnual" class="px-4 py-2 rounded-r-lg bg-gray-200 text-gray-600 font-semibold">Annual</button>
     </div>
+
     <div class="grid gap-8 md:grid-cols-3">
       <div class="bg-gray-200 p-8 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-4">Free</h2>
@@ -35,8 +37,9 @@
           <li>3 runs/day</li>
           <li>No saved history</li>
         </ul>
-        <a href="#" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
       </div>
+
       <div class="bg-gray-200 p-8 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-4">Pro</h2>
         <p id="pricePro" class="text-4xl font-extrabold mb-6">$14<span class="text-base font-medium">/mo</span></p>
@@ -45,8 +48,9 @@
           <li>History tracking</li>
           <li>Priority AI queue</li>
         </ul>
-        <a href="#" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
       </div>
+
       <div class="bg-gray-200 p-8 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-4">Team</h2>
         <p id="priceTeam" class="text-4xl font-extrabold mb-6">$49<span class="text-base font-medium">/mo</span></p>
@@ -55,31 +59,36 @@
           <li>Audit trails</li>
           <li>API access</li>
         </ul>
-        <a href="#" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
       </div>
     </div>
   </main>
+
   <footer class="text-center py-4">© 2025 Devopsia</footer>
+
   <script>
-const btnMonthly = document.getElementById('btnMonthly');
-const btnAnnual = document.getElementById('btnAnnual');
-btnMonthly.addEventListener('click', () => {
-  btnMonthly.classList.add('bg-orange-500','text-white');
-  btnAnnual.classList.remove('bg-orange-500','text-white');
-  btnAnnual.classList.add('bg-gray-200','text-gray-600');
-  btnMonthly.classList.remove('bg-gray-200','text-gray-600');
-  document.getElementById('pricePro').innerHTML = '$14<span class="text-base font-medium">/mo</span>';
-  document.getElementById('priceTeam').innerHTML = '$49<span class="text-base font-medium">/mo</span>';
-});
-btnAnnual.addEventListener('click', () => {
-  btnAnnual.classList.add('bg-orange-500','text-white');
-  btnMonthly.classList.remove('bg-orange-500','text-white');
-  btnMonthly.classList.add('bg-gray-200','text-gray-600');
-  btnAnnual.classList.remove('bg-gray-200','text-gray-600');
-  document.getElementById('pricePro').innerHTML = '$140<span class="text-base font-medium">/yr</span>';
-  document.getElementById('priceTeam').innerHTML = '$490<span class="text-base font-medium">/yr</span>';
-});
-</script>
+    const btnMonthly = document.getElementById('btnMonthly');
+    const btnAnnual = document.getElementById('btnAnnual');
+
+    btnMonthly.addEventListener('click', () => {
+      btnMonthly.classList.add('bg-orange-500','text-white');
+      btnAnnual.classList.remove('bg-orange-500','text-white');
+      btnAnnual.classList.add('bg-gray-200','text-gray-600');
+      btnMonthly.classList.remove('bg-gray-200','text-gray-600');
+      document.getElementById('pricePro').innerHTML = '$14<span class="text-base font-medium">/mo</span>';
+      document.getElementById('priceTeam').innerHTML = '$49<span class="text-base font-medium">/mo</span>';
+    });
+
+    btnAnnual.addEventListener('click', () => {
+      btnAnnual.classList.add('bg-orange-500','text-white');
+      btnMonthly.classList.remove('bg-orange-500','text-white');
+      btnMonthly.classList.add('bg-gray-200','text-gray-600');
+      btnAnnual.classList.remove('bg-gray-200','text-gray-600');
+      document.getElementById('pricePro').innerHTML = '$140<span class="text-base font-medium">/yr</span>';
+      document.getElementById('priceTeam').innerHTML = '$490<span class="text-base font-medium">/yr</span>';
+    });
+  </script>
+
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
     import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';

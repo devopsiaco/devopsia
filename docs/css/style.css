@@ -108,18 +108,21 @@ img {
   border-radius: 0.75rem;
   margin-bottom: 2rem;
 }
+
 header, footer {
   text-align: center;
   margin-bottom: 2rem;
 }
+
 header a {
   display: block;
   margin: 0.5rem 0;
 }
-  a {
-    color: #F97316;
-    text-decoration: none;
-  }
+
+a {
+  color: #F97316;
+  text-decoration: none;
+}
 
 .spinner {
   width: 24px;
@@ -156,6 +159,7 @@ header a {
   white-space: pre-wrap;
 }
 
+/* Responsive tweaks for mobile */
 @media (max-width: 600px) {
   body {
     font-size: 1rem;
