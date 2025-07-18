@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Devopsia — Login</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-800">
+  <header class="bg-gradient-to-br from-emerald-900 via-emerald-700 to-green-400 text-white">
+    <div class="container mx-auto flex justify-between items-center py-6">
+      <div class="text-2xl font-extrabold">Devopsia</div>
+      <nav class="space-x-8 flex items-center">
+        <a href="/" class="hover:underline text-white">Home</a>
+        <a href="#features" class="hover:underline text-white">Features</a>
+        <a href="/pricing/" class="hover:underline text-white">Pricing</a>
+        <a href="#" class="inline-block bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Start Building</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container mx-auto py-20 flex-grow flex justify-center items-start">
+    <div class="bg-white/70 backdrop-blur-md p-8 rounded-lg shadow w-full max-w-md">
+      <h1 class="text-3xl font-extrabold mb-6 text-center">Sign In to Devopsia</h1>
+      <form id="login-form" class="space-y-4">
+        <input type="email" id="login-email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="password" id="login-password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded">Login</button>
+      </form>
+      <button id="google-login" class="mt-4 w-full flex items-center justify-center gap-2 border border-gray-300 rounded py-2 bg-white hover:bg-gray-50">
+        <img src="/assets/google-icon.svg" alt="Google logo" width="20" height="20">
+        <span>Sign in with Google</span>
+      </button>
+    </div>
+  </main>
+  <footer class="text-center py-4">© 2025 Devopsia</footer>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
+      authDomain: "devopsia.firebaseapp.com",
+      projectId: "devopsia-39ea5",
+      appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById('google-login').addEventListener('click', async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
+</body>
+</html>
