@@ -24,43 +24,60 @@
 
   <main class="container mx-auto py-20 flex-grow">
     <h1 class="text-4xl font-extrabold text-center mb-8">Pricing</h1>
-    <div class="flex justify-center mb-8">
-      <button id="btnMonthly" class="px-4 py-2 rounded-l-lg bg-orange-500 text-white font-semibold">Monthly</button>
-      <button id="btnAnnual" class="px-4 py-2 rounded-r-lg bg-gray-200 text-gray-600 font-semibold">Annual</button>
+    <div class="flex justify-center mb-8" role="group" aria-label="Pricing toggle">
+      <button id="btnMonthly" aria-pressed="true" class="px-4 py-2 rounded-l-lg bg-orange-500 text-white font-semibold">Monthly</button>
+      <button id="btnAnnual" aria-pressed="false" class="px-4 py-2 rounded-r-lg bg-gray-200 text-gray-600 font-semibold">Annual</button>
     </div>
 
-    <div class="grid gap-8 md:grid-cols-3">
-      <div class="bg-gray-200 p-8 rounded-lg shadow">
-        <h2 class="text-2xl font-bold mb-4">Free</h2>
-        <p class="text-4xl font-extrabold mb-6">$0<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 mb-6">
-          <li>Limited prompt access</li>
-          <li>3 runs/day</li>
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
+        <h2 class="text-xl font-bold mb-2">Free <span class="sr-only">Plan</span></h2>
+        <p class="text-4xl font-extrabold mb-4">$0<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 flex-grow mb-6">
+          <li>3 prompts/day (Haiku only)</li>
           <li>No saved history</li>
+          <li>Watermarked outputs</li>
+          <li>Community access (limited)</li>
         </ul>
-        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Free</a>
       </div>
 
-      <div class="bg-gray-200 p-8 rounded-lg shadow">
-        <h2 class="text-2xl font-bold mb-4">Pro</h2>
-        <p id="pricePro" class="text-4xl font-extrabold mb-6">$14<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 mb-6">
-          <li>Unlimited prompt runs</li>
-          <li>History tracking</li>
-          <li>Priority AI queue</li>
+      <div class="relative bg-white p-6 rounded-lg shadow flex flex-col ring-2 ring-orange-500">
+        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-1 text-xs font-semibold rounded bg-orange-500 text-white">Recommended</span>
+        <h2 class="text-xl font-bold mb-2">Pro</h2>
+        <p id="pricePro" class="text-4xl font-extrabold mb-4">$9<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 flex-grow mb-6">
+          <li>100 prompts/mo (Haiku + Sonnet)</li>
+          <li>Prompt history</li>
+          <li>Priority Claude queue</li>
+          <li>Usage dashboard</li>
+          <li>Auto-upgrade option</li>
         </ul>
-        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Upgrade to Pro</a>
       </div>
 
-      <div class="bg-gray-200 p-8 rounded-lg shadow">
-        <h2 class="text-2xl font-bold mb-4">Team</h2>
-        <p id="priceTeam" class="text-4xl font-extrabold mb-6">$49<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 mb-6">
-          <li>Shared team workspace</li>
-          <li>Audit trails</li>
-          <li>API access</li>
+      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
+        <h2 class="text-xl font-bold mb-2">Team</h2>
+        <p id="priceTeam" class="text-4xl font-extrabold mb-4">$29<span class="text-base font-medium">/mo</span></p>
+        <ul class="space-y-2 flex-grow mb-6">
+          <li>500 shared prompts/month</li>
+          <li>Shared prompt history</li>
+          <li>Collaboration on prompt kits</li>
+          <li>Role-based access control</li>
         </ul>
-        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Building</a>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Team Plan</a>
+      </div>
+
+      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
+        <h2 class="text-xl font-bold mb-2">Enterprise</h2>
+        <p class="text-4xl font-extrabold mb-4">Custom</p>
+        <ul class="space-y-2 flex-grow mb-6">
+          <li>Custom prompt limits</li>
+          <li>Claude Opus + Sonnet support</li>
+          <li>SSO and audit logs</li>
+          <li>SLA and premium support</li>
+        </ul>
+        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Contact Sales</a>
       </div>
     </div>
   </main>
@@ -70,14 +87,18 @@
   <script>
     const btnMonthly = document.getElementById('btnMonthly');
     const btnAnnual = document.getElementById('btnAnnual');
+    const monthlyPro = 9;
+    const monthlyTeam = 29;
 
     btnMonthly.addEventListener('click', () => {
       btnMonthly.classList.add('bg-orange-500','text-white');
       btnAnnual.classList.remove('bg-orange-500','text-white');
       btnAnnual.classList.add('bg-gray-200','text-gray-600');
       btnMonthly.classList.remove('bg-gray-200','text-gray-600');
-      document.getElementById('pricePro').innerHTML = '$14<span class="text-base font-medium">/mo</span>';
-      document.getElementById('priceTeam').innerHTML = '$49<span class="text-base font-medium">/mo</span>';
+      btnMonthly.setAttribute('aria-pressed', 'true');
+      btnAnnual.setAttribute('aria-pressed', 'false');
+      document.getElementById('pricePro').innerHTML = `$${monthlyPro}<span class="text-base font-medium">/mo</span>`;
+      document.getElementById('priceTeam').innerHTML = `$${monthlyTeam}<span class="text-base font-medium">/mo</span>`;
     });
 
     btnAnnual.addEventListener('click', () => {
@@ -85,8 +106,12 @@
       btnMonthly.classList.remove('bg-orange-500','text-white');
       btnMonthly.classList.add('bg-gray-200','text-gray-600');
       btnAnnual.classList.remove('bg-gray-200','text-gray-600');
-      document.getElementById('pricePro').innerHTML = '$140<span class="text-base font-medium">/yr</span>';
-      document.getElementById('priceTeam').innerHTML = '$490<span class="text-base font-medium">/yr</span>';
+      btnMonthly.setAttribute('aria-pressed', 'false');
+      btnAnnual.setAttribute('aria-pressed', 'true');
+      const yearlyPro = monthlyPro * 12;
+      const yearlyTeam = monthlyTeam * 12;
+      document.getElementById('pricePro').innerHTML = `$${yearlyPro}<span class="text-base font-medium">/yr</span>`;
+      document.getElementById('priceTeam').innerHTML = `$${yearlyTeam}<span class="text-base font-medium">/yr</span>`;
     });
   </script>
 
