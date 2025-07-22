@@ -4,5 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"No tests defined\" && exit 0"
+  },
+  "dependencies": {
+    "stripe": "^12.18.0"
   }
 }
