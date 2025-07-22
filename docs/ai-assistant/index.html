@@ -3,76 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Devopsia — AI Assistant</title>
+  <title>AI Assistant - Devopsia</title>
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-hcl.min.js"></script>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/ai-assistant.js"></script>
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
-  <header class="bg-orange-500 text-white">
-    <div class="container mx-auto flex justify-between items-center py-6">
-      <div class="text-2xl font-extrabold">Devopsia</div>
-      <nav class="space-x-8 flex items-center">
-        <a href="/" class="hover:underline text-white">Home</a>
-        <a href="/pricing/" class="hover:underline text-white">Pricing</a>
-      </nav>
+<body class="bg-gray-50 min-h-screen font-sans">
+  <header class="bg-green-700 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <a href="/" class="text-xl font-semibold">Devopsia</a>
+      <button id="logoutBtn" class="bg-white text-green-700 px-4 py-2 rounded">Logout</button>
     </div>
   </header>
-  <main class="container mx-auto flex-grow py-12">
-    <div class="bg-gray-200 p-8 rounded-lg shadow">
-      <h1 class="text-3xl font-extrabold mb-6 text-center">AI Assistant</h1>
-      <textarea id="prompt" rows="6" placeholder="Enter your prompt..." class="w-full border border-gray-300 rounded px-4 py-2 mb-4"></textarea>
-      <div class="flex items-center mb-4">
-        <button onclick="generate()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Generate</button>
-        <div id="spinner" class="spinner ml-2" style="display:none;"></div>
-      </div>
-      <pre><code class="language-hcl" id="output"></code></pre>
-      <div class="text-right mt-4">
-        <button id="copy-btn" onclick="copyOutput()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded inline-block">📋 Copy</button>
-        <span id="copy-msg" class="ml-2 text-sm" style="display:none;">Copied!</span>
-      </div>
-    </div>
-  </main>
-  <footer class="text-center py-4">© 2025 Devopsia</footer>
-  <script>
-    async function generate() {
-      const promptEl = document.getElementById('prompt');
-      const outputEl = document.getElementById('output');
-      const spinner = document.getElementById('spinner');
-      const prompt = promptEl.value;
-      outputEl.textContent = 'Generating...';
-      spinner.style.display = 'inline-block';
-      try {
-        const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt })
-        });
-        if (!res.ok) throw new Error('Request failed');
-        const data = await res.json();
-        outputEl.textContent = data.output;
-        Prism.highlightElement(outputEl);
-      } catch (err) {
-        outputEl.textContent = 'Error generating code';
-      } finally {
-        spinner.style.display = 'none';
-      }
-    }
 
-    function copyOutput() {
-      const outputEl = document.getElementById('output');
-      const msgEl = document.getElementById('copy-msg');
-      navigator.clipboard.writeText(outputEl.textContent).then(() => {
-        msgEl.style.display = 'inline';
-        setTimeout(() => {
-          msgEl.style.display = 'none';
-        }, 2000);
-      });
-    }
-  </script>
+  <main class="p-6 max-w-3xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Your AI DevOps Engineer</h1>
+    <textarea id="promptInput" class="w-full p-4 border rounded mb-4" rows="5" placeholder="Type your DevOps question..."></textarea>
+    <button id="runPrompt" class="bg-red-500 text-white px-6 py-2 rounded">Run Prompt</button>
+    <pre id="result" class="mt-6 bg-white p-4 rounded shadow whitespace-pre-wrap"></pre>
+  </main>
+
+  <footer class="text-center py-4">© 2025 Devopsia</footer>
 </body>
 </html>
