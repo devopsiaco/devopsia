@@ -35,6 +35,60 @@
         <input type="email" id="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
         <input type="password" id="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
         <input type="password" id="confirmPassword" placeholder="Confirm Password" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <select id="plan" class="w-full border border-gray-300 rounded px-4 py-2">
+          <option value="free">Free</option>
+          <option value="pro">Pro</option>
+          <option value="team">Team</option>
+          <option value="enterprise">Enterprise</option>
+        </select>
+
+        <details class="w-full border border-gray-300 rounded px-4 py-2">
+          <summary class="cursor-pointer font-semibold">Additional Info (optional)</summary>
+          <div class="mt-4 space-y-4">
+            <input type="text" id="companyName" placeholder="Company Name" class="w-full border border-gray-300 rounded px-4 py-2">
+            <input type="number" id="teamSize" placeholder="Team Size" class="w-full border border-gray-300 rounded px-4 py-2">
+            <select id="country" class="w-full border border-gray-300 rounded px-4 py-2">
+              <option value="">Country</option>
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="GB">United Kingdom</option>
+              <option value="FR">France</option>
+              <option value="DE">Germany</option>
+              <option value="IN">India</option>
+              <option value="JP">Japan</option>
+              <option value="AU">Australia</option>
+              <option value="BR">Brazil</option>
+            </select>
+            <select id="role" class="w-full border border-gray-300 rounded px-4 py-2">
+              <option value="">Role</option>
+              <option value="devops">DevOps Engineer</option>
+              <option value="sre">SRE</option>
+              <option value="manager">Manager</option>
+            </select>
+            <select id="useCase" multiple class="w-full border border-gray-300 rounded px-4 py-2">
+              <option value="infrastructure">Infrastructure generation</option>
+              <option value="automation">Automation kits</option>
+              <option value="chatops">ChatOps</option>
+            </select>
+            <select id="preferredModel" class="w-full border border-gray-300 rounded px-4 py-2">
+              <option value="">Preferred Model</option>
+              <option value="haiku">Haiku</option>
+              <option value="sonnet">Sonnet</option>
+              <option value="opus">Opus</option>
+            </select>
+          </div>
+        </details>
+
+        <label class="flex items-center">
+          <input type="checkbox" id="agreeTerms" class="mr-2" required>
+          <span>I agree to the <a href="/terms" class="text-orange-600 hover:underline">Terms</a> and <a href="/privacy" class="text-orange-600 hover:underline">Privacy Policy</a></span>
+        </label>
+
+        <label class="flex items-center">
+          <input type="checkbox" id="newsletter" class="mr-2">
+          <span>Sign me up for the newsletter</span>
+        </label>
+
         <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Create Account</button>
         <p id="signupError" class="text-red-500 text-sm hidden"></p>
       </form>
