@@ -33,6 +33,9 @@
         <img src="/assets/google-icon.svg" alt="Google logo" width="20" height="20">
         <span>Sign in with Google</span>
       </button>
+      <p class="mt-4 text-center text-sm">Don't have an account?
+        <a href="/signup.html" class="text-orange-600 hover:underline">Sign up</a>
+      </p>
     </div>
   </main>
   <footer class="text-center py-4">© 2025 Devopsia</footer>
@@ -60,6 +63,7 @@
       const password = document.getElementById('login-password').value;
       try {
         await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = '/ai-assistant/';
       } catch (err) {
         alert(err.message);
       }
@@ -68,6 +72,7 @@
     document.getElementById('google-login').addEventListener('click', async () => {
       try {
         await signInWithPopup(auth, provider);
+        window.location.href = '/ai-assistant/';
       } catch (err) {
         alert(err.message);
       }

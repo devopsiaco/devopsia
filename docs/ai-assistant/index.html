@@ -3,32 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Devopsia — Ai-assistant</title>
+  <title>Devopsia — AI Assistant</title>
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism.css">
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-hcl.min.js"></script>
 </head>
-<body>
-  <div class="container">
-  <header><a href="/">← Home</a></header>
-  <main>
-    <div class="card">
-      <h1>Ai-assistant</h1>
-      <textarea id="prompt" rows="6" placeholder="Enter your prompt..."></textarea>
-      <div>
-        <button onclick="generate()">Generate</button>
-        <div id="spinner" class="spinner" style="display:none;"></div>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
+  <header class="bg-orange-500 text-white">
+    <div class="container mx-auto flex justify-between items-center py-6">
+      <div class="text-2xl font-extrabold">Devopsia</div>
+      <nav class="space-x-8 flex items-center">
+        <a href="/" class="hover:underline text-white">Home</a>
+        <a href="/pricing/" class="hover:underline text-white">Pricing</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container mx-auto flex-grow py-12">
+    <div class="bg-gray-200 p-8 rounded-lg shadow">
+      <h1 class="text-3xl font-extrabold mb-6 text-center">AI Assistant</h1>
+      <textarea id="prompt" rows="6" placeholder="Enter your prompt..." class="w-full border border-gray-300 rounded px-4 py-2 mb-4"></textarea>
+      <div class="flex items-center mb-4">
+        <button onclick="generate()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Generate</button>
+        <div id="spinner" class="spinner ml-2" style="display:none;"></div>
       </div>
       <pre><code class="language-hcl" id="output"></code></pre>
-      <div>
-        <button id="copy-btn" onclick="copyOutput()">📋 Copy</button>
-        <span id="copy-msg" style="display:none;">Copied!</span>
+      <div class="text-right mt-4">
+        <button id="copy-btn" onclick="copyOutput()" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded inline-block">📋 Copy</button>
+        <span id="copy-msg" class="ml-2 text-sm" style="display:none;">Copied!</span>
       </div>
     </div>
   </main>
+  <footer class="text-center py-4">© 2025 Devopsia</footer>
   <script>
     async function generate() {
       const promptEl = document.getElementById('prompt');
@@ -65,7 +74,5 @@
       });
     }
   </script>
-  <footer>© 2025 Devopsia</footer>
-  </div>
 </body>
 </html>
