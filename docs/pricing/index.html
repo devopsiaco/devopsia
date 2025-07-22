@@ -53,7 +53,7 @@
           <li>Usage dashboard</li>
           <li>Auto-upgrade option</li>
         </ul>
-        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Upgrade to Pro</a>
+        <a href="#" onclick="startCheckout('pro')" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Upgrade to Pro</a>
       </div>
 
       <div class="bg-white p-6 rounded-lg shadow flex flex-col">
@@ -65,7 +65,7 @@
           <li>Collaboration on prompt kits</li>
           <li>Role-based access control</li>
         </ul>
-        <a href="#" class="start-button block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Team Plan</a>
+        <a href="#" onclick="startCheckout('team')" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Team Plan</a>
       </div>
 
       <div class="bg-white p-6 rounded-lg shadow flex flex-col">
@@ -128,6 +128,29 @@
 
     const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
     const auth = getAuth(app);
+
+    window.startCheckout = async function(plan) {
+      try {
+        const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
+        const userId = user ? user.uid : undefined;
+
+        const response = await fetch('https://api.devopsia.co/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ plan, userId })
+        });
+
+        const data = await response.json();
+        if (data.checkoutUrl) {
+          window.location.href = data.checkoutUrl;
+        } else {
+          alert('Unable to start checkout session. Please try again.');
+        }
+      } catch (err) {
+        console.error('Checkout error:', err);
+        alert('Something went wrong. Try again later.');
+      }
+    };
 
     function handleStartBuilding() {
       const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
