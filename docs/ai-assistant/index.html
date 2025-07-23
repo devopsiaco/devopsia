@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Assistant - Devopsia</title>
   <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&family=Bitcount+Grid+Double&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-700 font-sans">
   <header class="sticky top-0 z-10 backdrop-blur-sm bg-orange-500 text-white shadow-md">
     <div class="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-      <div class="text-2xl font-extrabold">Devopsia</div>
+      <div class="text-2xl font-normal font-brand">Devopsia</div>
       <nav class="flex-1 flex justify-center space-x-8 font-semibold">
         <a href="#features" class="hover:underline">Features</a>
         <a href="/pricing/" class="hover:underline">Pricing</a>
@@ -24,7 +24,7 @@
   </header>
 
   <main class="container mx-auto flex-grow py-12 max-w-4xl">
-    <h1 class="text-3xl font-extrabold mb-6 text-center">Your AI DevOps Engineer</h1>
+    <h1 class="text-3xl font-medium font-tagline mb-6 text-center">Your AI DevOps Engineer</h1>
     <div class="bg-white p-6 rounded-lg shadow space-y-4">
       <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Type your DevOps question..."></textarea>
       <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>

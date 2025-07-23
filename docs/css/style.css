@@ -6,6 +6,17 @@ body {
   color: #374151;
 }
 
+/* Font utilities */
+.font-brand {
+  font-family: 'Bitcount Grid Double', sans-serif;
+  font-weight: 400;
+}
+
+.font-tagline {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  font-weight: 400;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
