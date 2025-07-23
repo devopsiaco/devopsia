@@ -31,7 +31,8 @@ h3 {
 }
 
 textarea,
-input {
+select,
+input:not([type="checkbox"]):not([type="radio"]) {
   width: 100%;
   max-width: 100%;
 }
