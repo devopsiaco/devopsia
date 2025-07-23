@@ -17,6 +17,7 @@
         <a href="/" class="hover:underline text-white">Home</a>
         <a href="#features" class="hover:underline text-white">Features</a>
         <a href="/pricing/" class="hover:underline text-white">Pricing</a>
+        <a id="authButton" href="/login/" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Login</a>
         <a href="#" class="start-button inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded">Start Building</a>
       </nav>
     </div>
@@ -114,6 +115,9 @@
       document.getElementById('priceTeam').innerHTML = `$${yearlyTeam}<span class="text-base font-medium">/yr</span>`;
     });
   </script>
+
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
 
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';

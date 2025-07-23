@@ -10,7 +10,10 @@
 </head>
 <body>
   <div class="container">
-  <header><a href="/">← Home</a></header>
+  <header>
+    <a href="/">← Home</a>
+    <a id="authButton" href="/login/" class="ml-4">Login</a>
+  </header>
   <main>
     <div class="card">
       <h1>Kits</h1>
@@ -19,5 +22,7 @@
   </main>
   <footer>© 2025 Devopsia</footer>
   </div>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
 </body>
 </html>

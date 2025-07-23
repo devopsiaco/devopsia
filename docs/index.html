@@ -18,7 +18,7 @@
         <a href="/pricing/" class="hover:underline">Pricing</a>
       </nav>
       <div class="flex justify-end space-x-4">
-        <a href="/login/" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Login</a>
+        <a id="authButton" href="/login/" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Login</a>
         <a href="#" class="start-button bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded shadow">Start Building</a>
       </div>
     </div>
@@ -91,5 +91,7 @@
       }
     });
   </script>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
 </body>
 </html>
