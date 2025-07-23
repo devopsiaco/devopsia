@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 import { auth, db } from './firebase.js';
 
@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('signupForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  const submitBtn = document.querySelector('#signupForm button[type="submit"]');
+  submitBtn.disabled = true;
+  const spinner = document.createElement('span');
+  spinner.className = 'spinner';
+  submitBtn.appendChild(spinner);
   const fullName = document.getElementById('fullName').value;
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -41,18 +46,23 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
   if (password !== confirmPassword) {
     errorEl.textContent = 'Passwords do not match.';
     errorEl.classList.remove('hidden');
+    submitBtn.disabled = false;
+    spinner.remove();
     return;
   }
 
   if (!agreeTerms) {
     errorEl.textContent = 'You must agree to the terms.';
     errorEl.classList.remove('hidden');
+    submitBtn.disabled = false;
+    spinner.remove();
     return;
   }
 
   try {
     const userCred = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCred.user, { displayName: fullName });
+    await sendEmailVerification(userCred.user);
     await setDoc(doc(db, 'users', userCred.user.uid), {
       name: fullName,
       email: email,
@@ -69,9 +79,15 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       promptQuota: 10,
       usedPrompts: 0
     });
-    window.location.href = '/ai-assistant/';
+    await signOut(auth);
+    alert("🎉 You've signed up! Please check your inbox and verify your email before logging in.");
+    window.location.href = '/login/';
   } catch (err) {
-    errorEl.textContent = err.message;
-    errorEl.classList.remove('hidden');
+    alert(err.message);
+    submitBtn.disabled = false;
+    spinner.remove();
+    return;
   }
+  submitBtn.disabled = false;
+  spinner.remove();
 });
