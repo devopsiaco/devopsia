@@ -41,6 +41,7 @@
         <img src="/assets/google-icon.svg" alt="Google logo" width="20" height="20">
         <span>Sign in with Google</span>
       </button>
+      <button id="resend-verification" class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Resend Verification Email</button>
       <p class="mt-4 text-center text-sm">Don't have an account?
         <a href="/signup.html" class="text-orange-600 hover:underline">Sign up</a>
       </p>
@@ -49,7 +50,7 @@
   <footer class="text-center py-4">© 2025 Devopsia</footer>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
@@ -67,23 +68,64 @@
 
     document.getElementById('login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const submitBtn = document.querySelector('#login-form button[type="submit"]');
+      submitBtn.disabled = true;
+      const spinner = document.createElement('span');
+      spinner.className = 'spinner';
+      submitBtn.appendChild(spinner);
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = '/ai-assistant/';
+        const { user } = await signInWithEmailAndPassword(auth, email, password);
+        if (user.emailVerified) {
+          window.location.href = '/ai-assistant/';
+        } else {
+          alert('⚠️ Your email is not verified. Please check your inbox or click the resend link below.');
+          await signOut(auth);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+      submitBtn.disabled = false;
+      spinner.remove();
+    });
+
+    document.getElementById('google-login').addEventListener('click', async () => {
+      try {
+        const { user } = await signInWithPopup(auth, provider);
+        if (user.emailVerified) {
+          window.location.href = '/ai-assistant/';
+        } else {
+          alert('⚠️ Your email is not verified. Please check your inbox or click the resend link below.');
+          await signOut(auth);
+        }
       } catch (err) {
         alert(err.message);
       }
     });
 
-    document.getElementById('google-login').addEventListener('click', async () => {
+    document.getElementById('resend-verification').addEventListener('click', async () => {
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      if (!email || !password) {
+        alert('Please enter your email and password first.');
+        return;
+      }
+      const btn = document.getElementById('resend-verification');
+      btn.disabled = true;
+      const spin = document.createElement('span');
+      spin.className = 'spinner';
+      btn.appendChild(spin);
       try {
-        await signInWithPopup(auth, provider);
-        window.location.href = '/ai-assistant/';
+        const { user } = await signInWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(user);
+        alert('A new verification email has been sent. Please check your inbox.');
+        await signOut(auth);
       } catch (err) {
         alert(err.message);
       }
+      btn.disabled = false;
+      spin.remove();
     });
   </script>
   <script type="module" src="/js/firebase.js"></script>
