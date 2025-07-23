@@ -36,6 +36,12 @@ input {
   max-width: 100%;
 }
 
+/* Make checkboxes display at their natural size */
+input[type="checkbox"] {
+  width: auto;
+  max-width: none;
+}
+
 pre,
 code {
   overflow-x: auto;
