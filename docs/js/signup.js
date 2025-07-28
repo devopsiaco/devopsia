@@ -47,7 +47,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     errorEl.textContent = 'Passwords do not match.';
     errorEl.classList.remove('hidden');
     submitBtn.disabled = false;
-    spinner.remove();
+    spinner.classList.add('hidden');
     return;
   }
 
@@ -55,7 +55,7 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     errorEl.textContent = 'You must agree to the terms.';
     errorEl.classList.remove('hidden');
     submitBtn.disabled = false;
-    spinner.remove();
+    spinner.classList.add('hidden');
     return;
   }
 
@@ -80,15 +80,17 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       usedPrompts: 0
     });
     await signOut(auth);
-    submitBtn.disabled = false;
-    spinner.remove();
+    console.log('Signup successful - before alert');
     alert("🎉 You've signed up! Please check your inbox and verify your email before logging in.");
-    setTimeout(() => { window.location.href = '/login/'; }, 100);
+    console.log('Signup successful - after alert');
+    submitBtn.disabled = false;
+    spinner.classList.add('hidden');
+    setTimeout(() => { window.location.href = '/login/'; }, 500);
     return;
   } catch (err) {
     alert(err.message);
     submitBtn.disabled = false;
-    spinner.remove();
+    spinner.classList.add('hidden');
     return;
   }
 });
