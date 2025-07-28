@@ -80,14 +80,15 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
       usedPrompts: 0
     });
     await signOut(auth);
+    submitBtn.disabled = false;
+    spinner.remove();
     alert("🎉 You've signed up! Please check your inbox and verify your email before logging in.");
-    window.location.href = '/login/';
+    setTimeout(() => { window.location.href = '/login/'; }, 100);
+    return;
   } catch (err) {
     alert(err.message);
     submitBtn.disabled = false;
     spinner.remove();
     return;
   }
-  submitBtn.disabled = false;
-  spinner.remove();
 });
