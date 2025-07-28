@@ -133,8 +133,13 @@ header, footer {
 
 /* Navigation bar with rounded corners and gradient */
 .site-header {
-  background: linear-gradient(90deg, rgba(249,115,22,0.9), rgba(249,115,22,0));
-  border-radius: 0.75rem;
+  /* shorter navigation bar with soft rounded corners */
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  /* subtle transparent gradient */
+  background: linear-gradient(90deg,
+      rgba(249, 115, 22, 0.7),
+      rgba(249, 115, 22, 0));
   color: #ffffff;
 }
 
