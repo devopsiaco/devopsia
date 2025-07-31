@@ -49,9 +49,10 @@
     <div class="bg-gray-200 p-8 rounded-lg shadow w-full max-w-md">
       <h1 class="text-3xl font-extrabold mb-6 text-center">Sign In to Devopsia</h1>
       <form id="login-form" class="space-y-4">
-        <input type="email" id="login-email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <input type="password" id="login-password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Login</button>
+        <input type="email" id="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="password" id="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <p id="loginError" class="text-red-600 hidden"></p>
+        <button id="loginBtn" type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Login</button>
       </form>
       <button id="google-login" class="mt-4 w-full flex items-center justify-center gap-2 border border-gray-300 rounded py-2 bg-white hover:bg-gray-50">
         <img src="/assets/google-icon.svg" alt="Google logo" width="20" height="20">
@@ -64,86 +65,7 @@
     </div>
   </main>
   <footer class="text-center py-4">© 2025 Devopsia</footer>
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
-      authDomain: "devopsia-39ea5.firebaseapp.com",
-      projectId: "devopsia-39ea5",
-      storageBucket: "devopsia-39ea5.firebasestorage.app",
-      messagingSenderId: "789816052410",
-      appId: "1:789816052410:web:241ea4bd6a5b60ba855083",
-      measurementId: "G-V190R34CQD"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    document.getElementById('login-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = document.querySelector('#login-form button[type="submit"]');
-      submitBtn.disabled = true;
-      const spinner = document.createElement('span');
-      spinner.className = 'spinner';
-      submitBtn.appendChild(spinner);
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      try {
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
-        if (user.emailVerified) {
-          window.location.href = '/ai-assistant/';
-        } else {
-          alert('⚠️ Your email is not verified. Please check your inbox or click the resend link below.');
-          await signOut(auth);
-        }
-      } catch (err) {
-        alert(err.message);
-      }
-      submitBtn.disabled = false;
-      spinner.remove();
-    });
-
-    document.getElementById('google-login').addEventListener('click', async () => {
-      try {
-        const { user } = await signInWithPopup(auth, provider);
-        if (user.emailVerified) {
-          window.location.href = '/ai-assistant/';
-        } else {
-          alert('⚠️ Your email is not verified. Please check your inbox or click the resend link below.');
-          await signOut(auth);
-        }
-      } catch (err) {
-        alert(err.message);
-      }
-    });
-
-    document.getElementById('resend-verification').addEventListener('click', async () => {
-      const email = document.getElementById('login-email').value;
-      const password = document.getElementById('login-password').value;
-      if (!email || !password) {
-        alert('Please enter your email and password first.');
-        return;
-      }
-      const btn = document.getElementById('resend-verification');
-      btn.disabled = true;
-      const spin = document.createElement('span');
-      spin.className = 'spinner';
-      btn.appendChild(spin);
-      try {
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(user);
-        alert('A new verification email has been sent. Please check your inbox.');
-        await signOut(auth);
-      } catch (err) {
-        alert(err.message);
-      }
-      btn.disabled = false;
-      spin.remove();
-    });
-  </script>
+  <script type="module" src="/js/login.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
 </body>
