@@ -6,6 +6,7 @@
     "test": "echo \"No tests defined\" && exit 0"
   },
   "dependencies": {
-    "stripe": "^12.18.0"
+    "stripe": "^12.18.0",
+    "node-fetch": "^3.3.2"
   }
 }
