@@ -41,7 +41,7 @@
 
     <main class="container mx-auto flex-grow py-12 max-w-4xl">
       <h1 class="text-3xl font-medium font-tagline mb-6 text-center">Your AI DevOps Engineer</h1>
-      <div x-data="{ promptMode: 'standard' }" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
+      <div x-data="promptSettings()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
         <div>
           <label for="promptMode" class="block text-sm font-medium mb-1">Prompt Mode</label>
           <select id="promptMode" x-model="promptMode" class="w-full border rounded p-2">
