@@ -19,18 +19,29 @@ export async function buildPrompt(userPrompt: string, promptMode: PromptMode): P
   return userPrompt;
 }
 
+export async function buildClaudePrompt(userPrompt: string, promptMode: PromptMode): Promise<string> {
+  const promptWithPrefix = await buildPrompt(userPrompt, promptMode);
+  const MAX_LENGTH = 16000; // rough safeguard against token limits
+  return promptWithPrefix.slice(0, MAX_LENGTH);
+}
+
 export const handler = async (event: any) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
   };
 
   try {
-    if (!event.body) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Missing request body' }), headers };
+    const bodyData = event.body ? JSON.parse(event.body) : {};
+    const queryMode = event.queryStringParameters?.promptMode;
+    const prompt = bodyData.prompt;
+    const promptMode: PromptMode = (bodyData.promptMode || queryMode || 'standard') as PromptMode;
+
+    if (!prompt) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Missing prompt' }), headers };
     }
 
-    const { prompt, promptMode = 'standard' } = JSON.parse(event.body);
-    const fullPrompt = await buildPrompt(prompt, promptMode as PromptMode);
+    const fullPrompt = await buildClaudePrompt(prompt, promptMode);
+    console.log(`Mode: ${promptMode}, prompt preview: ${fullPrompt.slice(0, 100)}`);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
