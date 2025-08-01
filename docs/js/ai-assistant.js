@@ -2,10 +2,8 @@ import { auth } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
 onAuthStateChanged(auth, user => {
-  if (user && user.emailVerified) {
-    document.body.style.display = '';
-  } else {
-    window.location.replace('/login/');
+  if (!user) {
+    window.location.href = '/login/';
   }
 });
 
