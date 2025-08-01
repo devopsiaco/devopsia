@@ -1,5 +1,6 @@
-import { auth } from './firebase.js';
+import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 const loadingEl = document.getElementById('auth-loading');
 const contentEl = document.getElementById('protected-content');
@@ -12,6 +13,34 @@ onAuthStateChanged(auth, (user) => {
     window.location.replace('/login/');
   }
 });
+
+export function promptComponent() {
+  return {
+    promptMode: 'standard',
+    async init() {
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) return;
+        const prefRef = doc(db, 'users', user.uid, 'preferences');
+        try {
+          const snap = await getDoc(prefRef);
+          if (snap.exists() && snap.data().promptMode) {
+            this.promptMode = snap.data().promptMode;
+          }
+        } catch (err) {
+          console.error('Failed to load prompt mode', err);
+        }
+
+        this.$watch('promptMode', async (value) => {
+          try {
+            await setDoc(prefRef, { promptMode: value }, { merge: true });
+          } catch (err) {
+            console.error('Failed to save prompt mode', err);
+          }
+        });
+      });
+    }
+  };
+}
 
 document.getElementById('runPrompt').addEventListener('click', async () => {
   const prompt = document.getElementById('promptInput').value;
