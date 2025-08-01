@@ -1,9 +1,15 @@
 import { auth } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
-onAuthStateChanged(auth, user => {
-  if (!user) {
-    window.location.href = '/login/';
+const loadingEl = document.getElementById('auth-loading');
+const contentEl = document.getElementById('protected-content');
+
+onAuthStateChanged(auth, (user) => {
+  if (user && user.emailVerified) {
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (contentEl) contentEl.classList.remove('hidden');
+  } else {
+    window.location.replace('/login/');
   }
 });
 
