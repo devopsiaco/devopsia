@@ -17,7 +17,14 @@ onAuthStateChanged(auth, (user) => {
 export function promptComponent() {
   return {
     promptMode: 'standard',
+    promptDescription: '',
+    descriptions: {
+      standard: 'General guidance without additional optimizations.',
+      secure: 'Applies security best practices to every response.',
+      optimized: 'Focuses on performance and efficiency improvements.'
+    },
     async init() {
+      this.promptDescription = this.descriptions[this.promptMode];
       onAuthStateChanged(auth, async (user) => {
         if (!user) return;
         const prefRef = doc(db, 'users', user.uid, 'preferences');
@@ -25,12 +32,14 @@ export function promptComponent() {
           const snap = await getDoc(prefRef);
           if (snap.exists() && snap.data().promptMode) {
             this.promptMode = snap.data().promptMode;
+            this.promptDescription = this.descriptions[this.promptMode];
           }
         } catch (err) {
           console.error('Failed to load prompt mode', err);
         }
 
         this.$watch('promptMode', async (value) => {
+          this.promptDescription = this.descriptions[value] || '';
           try {
             await setDoc(prefRef, { promptMode: value }, { merge: true });
           } catch (err) {
