@@ -95,10 +95,14 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   }
   resultEl.textContent = 'Generating...';
   try {
+    const body = { prompt, promptMode };
+    if (typeof window !== 'undefined' && typeof window.tool === 'string') {
+      body.tool = window.tool;
+    }
     const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, promptMode })
+      body: JSON.stringify(body)
     });
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
