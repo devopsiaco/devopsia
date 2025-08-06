@@ -95,10 +95,12 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   }
   resultEl.textContent = 'Generating...';
   try {
+    const tool = window.assistantTool || document.getElementById('tool')?.value;
+    const body = tool ? JSON.stringify({ prompt, promptMode, tool }) : JSON.stringify({ prompt, promptMode });
     const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, promptMode })
+      body
     });
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
