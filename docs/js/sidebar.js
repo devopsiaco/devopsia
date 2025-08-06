@@ -38,7 +38,7 @@ function setupAuth() {
 
 function highlightLink() {
   const path = window.location.pathname;
-  document.querySelectorAll('#sidebar-menu a').forEach((link) => {
+  document.querySelectorAll('#sidebar-container a').forEach((link) => {
     if (link.getAttribute('href') === path) {
       link.classList.add('bg-gray-200', 'font-semibold');
     }
@@ -46,7 +46,7 @@ function highlightLink() {
 }
 
 function setupLogout() {
-  const btn = document.getElementById('sidebar-logout');
+  const btn = document.getElementById('logout-btn');
   if (!btn) return;
   btn.addEventListener('click', async (e) => {
     e.preventDefault();

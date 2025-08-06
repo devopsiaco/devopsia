@@ -12,62 +12,65 @@
 </head>
 <body class="bg-gray-50 text-gray-700 font-sans">
   <div id="auth-loading" class="flex items-center justify-center min-h-screen">Checking authentication...</div>
-  <div id="protected-content" class="hidden min-h-screen flex flex-col">
-  <header x-data="{ open: false }" class="site-header text-white px-4 py-3 fixed top-0 inset-x-0 z-50">
-    <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <div class="text-2xl font-normal font-brand pr-2">Devopsia</div>
-      <nav class="hidden md:flex space-x-4 items-center">
-        <a href="/#features" class="hover:underline">Features</a>
-        <a href="/pricing/" class="hover:underline">Pricing</a>
-        <a href="#" class="start-button bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Start Building</a>
-        <a id="authButton" href="/login/" class="hover:underline">Logout</a>
-      </nav>
-      <button @click="open = !open" class="ml-auto order-last md:hidden focus:outline-none mr-4">
-        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-    <div x-show="open" x-transition:enter="transition-all duration-300 ease-in-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-all duration-300 ease-in-out" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="absolute top-full left-0 w-full bg-white text-gray-800 shadow-md z-50 rounded-b md:hidden" @click.away="open = false" x-cloak>
-      <nav class="flex flex-col p-4 space-y-2">
-        <a href="/#features" class="block" @click="open = false">Features</a>
-        <a href="/pricing/" class="block" @click="open = false">Pricing</a>
-        <a href="#" class="start-button bg-red-600 text-white px-4 py-2 rounded block" @click="open = false">Start Building</a>
-        <a id="authButton" href="/login/" class="block" @click="open = false">Logout</a>
-      </nav>
-    </div>
-  </header>
+  <div id="protected-content" class="hidden">
+    <div class="flex min-h-screen">
+      <div id="sidebar-container" class="w-64 shrink-0 hidden md:block"></div>
+      <main class="flex-1 p-6 bg-white">
+        <header x-data="{ open: false }" class="site-header text-white px-4 py-3 fixed top-0 inset-x-0 z-50">
+          <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-normal font-brand pr-2">Devopsia</div>
+            <nav class="hidden md:flex space-x-4 items-center">
+              <a href="/#features" class="hover:underline">Features</a>
+              <a href="/pricing/" class="hover:underline">Pricing</a>
+              <a href="#" class="start-button bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Start Building</a>
+              <a id="authButton" href="/login/" class="hover:underline">Logout</a>
+            </nav>
+            <button @click="open = !open" class="ml-auto order-last md:hidden focus:outline-none mr-4">
+              <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+              <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div x-show="open" x-transition:enter="transition-all duration-300 ease-in-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-all duration-300 ease-in-out" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="absolute top-full left-0 w-full bg-white text-gray-800 shadow-md z-50 rounded-b md:hidden" @click.away="open = false" x-cloak>
+            <nav class="flex flex-col p-4 space-y-2">
+              <a href="/#features" class="block" @click="open = false">Features</a>
+              <a href="/pricing/" class="block" @click="open = false">Pricing</a>
+              <a href="#" class="start-button bg-red-600 text-white px-4 py-2 rounded block" @click="open = false">Start Building</a>
+              <a id="authButton" href="/login/" class="block" @click="open = false">Logout</a>
+            </nav>
+          </div>
+        </header>
 
-  <div id="sidebar-container"></div>
-    <main class="container mx-auto flex-grow py-12 max-w-4xl">
-      <h1 class="text-3xl font-medium font-tagline mb-6 text-center">AI Assistant for Ansible</h1>
-      <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
-        <div>
-          <label for="promptMode" class="block text-sm font-medium mb-1 flex items-center">Prompt Mode
-            <span x-data="{ open: false }" class="ml-1 relative cursor-pointer" @mouseenter="open = true" @mouseleave="open = false">
-              ⓘ
-              <span x-show="open" x-text="promptDescription" x-transition
-                class="absolute left-1/2 -translate-x-1/2 mt-1 w-56 p-2 text-xs rounded bg-gray-700 text-white shadow-lg"
-                style="display: none;"></span>
-            </span>
-          </label>
-          <select id="promptMode" x-model="promptMode" class="w-full border border-gray-300 rounded p-2 mt-1 bg-white text-gray-700">
-            <option value="standard">Standard</option>
-            <option value="secure" disabled>🔒 Secure (best practices)</option>
-            <option value="optimized">Optimized</option>
-          </select>
+        <div class="container mx-auto py-12 max-w-4xl">
+          <h1 class="text-3xl font-medium font-tagline mb-6 text-center">AI Assistant for Ansible</h1>
+          <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
+            <div>
+              <label for="promptMode" class="block text-sm font-medium mb-1 flex items-center">Prompt Mode
+                <span x-data="{ open: false }" class="ml-1 relative cursor-pointer" @mouseenter="open = true" @mouseleave="open = false">
+                  ⓘ
+                  <span x-show="open" x-text="promptDescription" x-transition
+                    class="absolute left-1/2 -translate-x-1/2 mt-1 w-56 p-2 text-xs rounded bg-gray-700 text-white shadow-lg"
+                    style="display: none;"></span>
+                </span>
+              </label>
+              <select id="promptMode" x-model="promptMode" class="w-full border border-gray-300 rounded p-2 mt-1 bg-white text-gray-700">
+                <option value="standard">Standard</option>
+                <option value="secure" disabled>🔒 Secure (best practices)</option>
+                <option value="optimized">Optimized</option>
+              </select>
+            </div>
+            <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Describe your Ansible playbook question..."></textarea>
+            <input type="hidden" id="tool" value="ansible">
+            <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
+            <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
+          </div>
         </div>
-        <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Describe your Ansible playbook question..."></textarea>
-        <input type="hidden" id="tool" value="ansible">
-        <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
-        <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
-      </div>
-    </main>
-
-  <footer class="text-center py-4">© 2025 Devopsia</footer>
+        <footer class="text-center py-4">© 2025 Devopsia</footer>
+      </main>
+    </div>
   </div>
 
   <script type="module" src="/js/firebase.js"></script>

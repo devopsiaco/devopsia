@@ -1,12 +1,17 @@
-<aside class="w-64 bg-white border-r min-h-screen flex flex-col">
-  <nav id="sidebar-menu" class="flex-1 p-4 space-y-2">
-    <a href="/ai-assistant/" class="block px-2 py-1 rounded hover:bg-gray-100">Terraform</a>
-    <a href="/ai-assistant-helm/" class="block px-2 py-1 rounded hover:bg-gray-100">Helm</a>
-    <a href="/ai-assistant-k8s/" class="block px-2 py-1 rounded hover:bg-gray-100">K8s</a>
-    <a href="/ai-assistant-yaml/" class="block px-2 py-1 rounded hover:bg-gray-100">YAML</a>
-    <a href="/ai-assistant-ansible/" class="block px-2 py-1 rounded hover:bg-gray-100">Ansible</a>
-    <a href="/ai-assistant-docker/" class="block px-2 py-1 rounded hover:bg-gray-100">Docker</a>
-  </nav>
-  <div id="sidebar-user" class="p-4 border-t flex items-center space-x-2"></div>
-  <button id="sidebar-logout" class="m-4 px-4 py-2 bg-red-600 text-white rounded">Logout</button>
+<aside class="w-64 min-h-screen bg-gray-100 p-4 flex flex-col justify-between">
+  <div>
+    <div id="sidebar-user" class="mb-4 text-sm text-gray-600"></div>
+    <h2 class="font-bold mb-3 text-lg">AI Assistants</h2>
+    <ul class="space-y-2">
+      <li><a href="/ai-assistant/" class="block px-2 py-1 rounded hover:bg-gray-200">Terraform</a></li>
+      <li><a href="/ai-assistant-helm/" class="block px-2 py-1 rounded hover:bg-gray-200">Helm</a></li>
+      <li><a href="/ai-assistant-k8s/" class="block px-2 py-1 rounded hover:bg-gray-200">K8s</a></li>
+      <li><a href="/ai-assistant-yaml/" class="block px-2 py-1 rounded hover:bg-gray-200">YAML</a></li>
+      <li><a href="/ai-assistant-ansible/" class="block px-2 py-1 rounded hover:bg-gray-200">Ansible</a></li>
+      <li><a href="/ai-assistant-docker/" class="block px-2 py-1 rounded hover:bg-gray-200">Docker</a></li>
+    </ul>
+  </div>
+  <button id="logout-btn" class="mt-6 bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded w-full">
+    Logout
+  </button>
 </aside>
