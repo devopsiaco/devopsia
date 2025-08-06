@@ -88,6 +88,7 @@ export function promptComponent() {
 document.getElementById('runPrompt').addEventListener('click', async () => {
   const prompt = document.getElementById('promptInput').value;
   const promptMode = document.getElementById('promptMode').value;
+  const tool = document.getElementById('tool')?.value || 'general';
   const resultEl = document.getElementById('result');
   if (promptMode === 'secure' && userPlan !== 'pro') {
     showToast('Secure mode is available on Pro only');
@@ -98,7 +99,7 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, promptMode })
+      body: JSON.stringify({ prompt, promptMode, tool })
     });
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
