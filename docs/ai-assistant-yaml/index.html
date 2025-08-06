@@ -13,7 +13,7 @@
 <body class="bg-gray-50 text-gray-700 font-sans">
   <div id="auth-loading" class="flex items-center justify-center min-h-screen">Checking authentication...</div>
   <div id="protected-content" class="hidden">
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen pt-16">
       <div id="sidebar-container" class="w-64 shrink-0 hidden md:block"></div>
       <main class="flex-1 p-6 bg-white">
         <header x-data="{ open: false }" class="site-header text-white px-4 py-3 fixed top-0 inset-x-0 z-50">
@@ -49,12 +49,12 @@
           <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
             <div>
               <label for="promptMode" class="block text-sm font-medium mb-1 flex items-center">Prompt Mode
-                <span x-data="{ open: false }" class="ml-1 relative cursor-pointer" @mouseenter="open = true" @mouseleave="open = false">
-                  ⓘ
-                  <span x-show="open" x-text="promptDescription" x-transition
-                    class="absolute left-1/2 -translate-x-1/2 mt-1 w-56 p-2 text-xs rounded bg-gray-700 text-white shadow-lg"
-                    style="display: none;"></span>
-                </span>
+                <div class="relative group ml-1">
+                  <button class="text-sm text-gray-500 hover:text-blue-600">ⓘ</button>
+                  <div class="absolute top-full mt-2 w-64 p-2 bg-white border border-gray-200 rounded shadow-lg text-sm hidden group-hover:block z-50">
+                    Secure mode restricts Claude to safe, validated infrastructure generation.
+                  </div>
+                </div>
               </label>
               <select id="promptMode" x-model="promptMode" class="w-full border border-gray-300 rounded p-2 mt-1 bg-white text-gray-700">
                 <option value="standard">Standard</option>
