@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prompt History - Devopsia</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&family=Bitcount+Grid+Double&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="auth-loading" class="flex items-center justify-center h-screen">Loading...</div>
+  <div id="protected-content" class="hidden">
+    <div class="flex">
+      <div id="sidebar-container" class="w-64 shrink-0 hidden md:block"></div>
+      <main class="flex-1 p-6 bg-white">
+        <h1 class="text-2xl font-semibold mb-4">Prompt History</h1>
+        <div id="prompt-list" class="space-y-4"></div>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+  <script type="module" src="/js/sidebar.js"></script>
+  <script type="module" src="/js/prompt-history.js"></script>
+</body>
+</html>

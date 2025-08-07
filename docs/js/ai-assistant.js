@@ -1,6 +1,6 @@
 import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 let userPlan = 'free';
 
@@ -104,6 +104,19 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
     resultEl.textContent = data.output;
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        await addDoc(collection(db, 'users', user.uid, 'prompts'), {
+          prompt,
+          mode: promptMode,
+          response: data.output,
+          createdAt: serverTimestamp()
+        });
+      } catch (err) {
+        console.error('Failed to save prompt history', err);
+      }
+    }
   } catch (err) {
     resultEl.textContent = 'Error generating code';
   }

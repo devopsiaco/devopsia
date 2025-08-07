@@ -18,9 +18,13 @@ async function initSidebar() {
 
 function setupAuth() {
   const userDiv = document.getElementById('sidebar-user');
+  const historyLink = document.getElementById('prompt-history-link');
   if (!userDiv) return;
   onAuthStateChanged(auth, (user) => {
     userDiv.textContent = '';
+    if (historyLink) {
+      historyLink.classList.toggle('hidden', !user);
+    }
     if (!user) return;
     if (user.photoURL) {
       const img = document.createElement('img');
