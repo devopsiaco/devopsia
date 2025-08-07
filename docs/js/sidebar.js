@@ -18,9 +18,11 @@ async function initSidebar() {
 
 function setupAuth() {
   const userDiv = document.getElementById('sidebar-user');
+  const historyItem = document.getElementById('prompt-history-item');
   if (!userDiv) return;
   onAuthStateChanged(auth, (user) => {
     userDiv.textContent = '';
+    if (historyItem) historyItem.classList.add('hidden');
     if (!user) return;
     if (user.photoURL) {
       const img = document.createElement('img');
@@ -33,6 +35,7 @@ function setupAuth() {
     const span = document.createElement('span');
     span.textContent = user.email || '';
     userDiv.appendChild(span);
+    if (historyItem) historyItem.classList.remove('hidden');
   });
 }
 
