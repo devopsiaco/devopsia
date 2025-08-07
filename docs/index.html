@@ -13,11 +13,11 @@
 <body class="min-h-screen flex flex-col font-sans bg-gray-50 text-gray-700">
   <header x-data="{ open: false }" class="site-header text-white px-4 py-3 fixed top-0 inset-x-0 z-50">
     <div class="max-w-6xl mx-auto flex justify-between items-center">
-      <div class="text-2xl font-normal font-brand pr-2">Devopsia</div>
+      <a id="home-logo-btn" href="/" class="text-2xl font-normal font-brand pr-2">Devopsia</a>
       <nav class="hidden md:flex space-x-4 items-center">
         <a href="/#features" class="hover:underline">Features</a>
         <a href="/pricing/" class="hover:underline">Pricing</a>
-        <a href="#" class="start-button bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Start Building</a>
+        <a id="cta-build-btn" href="/pricing/" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Let’s Build</a>
         <a id="authButton" href="/login/" class="hover:underline">Login</a>
       </nav>
       <button @click="open = !open" class="ml-auto md:hidden order-last focus:outline-none mr-4">
@@ -88,7 +88,7 @@
 
   <script type="module">
     import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+    import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
@@ -107,6 +107,17 @@
       const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
       window.location.href = user ? '/pricing/' : '/login/';
     }
+
+    onAuthStateChanged(auth, user => {
+      const ctaBtn = document.getElementById('cta-build-btn');
+      const homeBtn = document.getElementById('home-logo-btn');
+      if (ctaBtn) {
+        ctaBtn.setAttribute('href', user ? '/ai-assistant/' : '/pricing/');
+      }
+      if (homeBtn) {
+        homeBtn.setAttribute('href', user ? '/ai-assistant/' : '/');
+      }
+    });
 
     document.addEventListener('DOMContentLoaded', () => {
       const buttons = Array.from(document.querySelectorAll('button, a')).filter(el =>
