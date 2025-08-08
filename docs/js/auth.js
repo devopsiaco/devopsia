@@ -19,6 +19,10 @@ function updateAuthButton(user) {
   }
 }
 
+document.addEventListener('header-loaded', () => {
+  updateAuthButton(auth.currentUser);
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   updateAuthButton(auth.currentUser);
   onAuthStateChanged(auth, updateAuthButton);
