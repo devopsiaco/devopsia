@@ -3,6 +3,7 @@ import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/f
 import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 let userPlan = 'free';
+let currentMode = 'standard';
 
 function showToast(message) {
   const toast = document.createElement('div');
@@ -21,6 +22,20 @@ onAuthStateChanged(auth, (user) => {
     if (contentEl) contentEl.classList.remove('hidden');
   } else {
     window.location.replace('/login/');
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname;
+  const match = path.match(/ai-assistant-([^/]+)/);
+  if (match) {
+    const name = match[1]
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, c => c.toUpperCase());
+    const breadcrumb = document.createElement('nav');
+    breadcrumb.className = 'text-sm text-gray-500 mb-4';
+    breadcrumb.innerHTML = `<a href="/" class="hover:underline">Home</a> / ${name}`;
+    document.querySelector('main')?.prepend(breadcrumb);
   }
 });
 
@@ -57,37 +72,54 @@ export function promptComponent() {
           console.error('Failed to load user settings', err);
         }
 
-        const secureOption = document.querySelector('#promptMode option[value="secure"]');
-        if (secureOption) {
-          secureOption.disabled = !this.isPro;
+        const secureBtn = document.querySelector('#prompt-mode-buttons button[data-mode="secure"]');
+        if (secureBtn) {
+          if (!this.isPro) {
+            secureBtn.disabled = true;
+            secureBtn.classList.add('opacity-50', 'cursor-not-allowed');
+          }
         }
         if (!this.isPro && this.promptMode === 'secure') {
           this.promptMode = 'standard';
           this.promptDescription = this.descriptions[this.promptMode];
         }
 
-        this.$watch('promptMode', async (value) => {
-          if (value === 'secure' && !this.isPro) {
-            this.promptMode = 'standard';
-            this.promptDescription = this.descriptions[this.promptMode];
-            showToast('Secure mode is available on Pro only');
-            return;
-          }
-          this.promptDescription = this.descriptions[value] || '';
-          try {
-            await setDoc(prefRef, { promptMode: value }, { merge: true });
-          } catch (err) {
-            console.error('Failed to save prompt mode', err);
-          }
+        this.updateButtons();
+
+        document.querySelectorAll('#prompt-mode-buttons button').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const mode = btn.getAttribute('data-mode');
+            if (mode === 'secure' && !this.isPro) {
+              showToast('Secure mode is available on Pro only');
+              return;
+            }
+            this.promptMode = mode;
+            this.promptDescription = this.descriptions[mode] || '';
+            this.updateButtons();
+            try {
+              await setDoc(prefRef, { promptMode: mode }, { merge: true });
+            } catch (err) {
+              console.error('Failed to save prompt mode', err);
+            }
+          });
         });
       });
+    },
+    updateButtons() {
+      document.querySelectorAll('#prompt-mode-buttons button').forEach(b => {
+        b.classList.remove('bg-green-500');
+        if (b.getAttribute('data-mode') === this.promptMode) {
+          b.classList.add('bg-green-500');
+        }
+      });
+      currentMode = this.promptMode;
     }
   };
 }
 
 document.getElementById('runPrompt').addEventListener('click', async () => {
   const prompt = document.getElementById('promptInput').value;
-  const promptMode = document.getElementById('promptMode').value;
+  const promptMode = currentMode;
   const tool = document.getElementById('tool')?.value || 'general';
   const resultEl = document.getElementById('result');
   if (promptMode === 'secure' && userPlan !== 'pro') {
