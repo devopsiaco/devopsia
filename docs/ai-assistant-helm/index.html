@@ -29,10 +29,12 @@
                 </div>
               </div>
             </div>
-            <div id="prompt-mode-buttons" class="flex gap-2 mb-4">
-              <button data-mode="standard" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600">Default</button>
-              <button data-mode="optimized" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Optimized</button>
-              <button data-mode="secure" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Secure</button>
+            <div class="mode-toolbar mb-4">
+              <div id="prompt-mode-buttons">
+                <button class="btn-mode" data-mode="default">Default</button>
+                <button class="btn-mode" data-mode="optimized">Optimized</button>
+                <button class="btn-mode" data-mode="secure">Secure</button>
+              </div>
             </div>
           </div>
           <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Describe your Helm question..."></textarea>
@@ -44,6 +46,7 @@
       </main>
     </div>
   </div>
+  <script src="/js/ui-common.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
   <script type="module" src="/js/ai-assistant.js"></script>

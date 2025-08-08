@@ -5,7 +5,7 @@ import { collection, query, orderBy, limit, getDocs, doc, updateDoc } from 'http
 const loadingEl = document.getElementById('auth-loading');
 const contentEl = document.getElementById('protected-content');
 const listEl = document.getElementById('history-list');
-const exportJsonBtn = document.getElementById('export-json');
+const exportJsonBtn = document.getElementById('export-json-btn');
 const exportCsvBtn = document.getElementById('export-csv');
 
 onAuthStateChanged(auth, async (user) => {

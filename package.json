@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "echo \"No tests defined\" && exit 0"
+    "test": "node --test"
   },
   "dependencies": {
-    "stripe": "^12.18.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "stripe": "^12.18.0"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
   }
 }
