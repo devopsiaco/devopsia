@@ -3,7 +3,11 @@ import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/f
 import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 let userPlan = 'free';
-let currentMode = 'standard';
+let currentMode = 'default';
+
+window.onModeChange = (mode) => {
+  currentMode = mode;
+};
 
 function showToast(message) {
   const toast = document.createElement('div');
@@ -41,29 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 export function promptComponent() {
   return {
-    promptMode: 'standard',
-    promptDescription: '',
     isPro: false,
-    descriptions: {
-      standard: 'General guidance without additional optimizations.',
-      secure: 'Applies security best practices to every response.',
-      optimized: 'Focuses on performance and efficiency improvements.'
-    },
     async init() {
-      this.promptDescription = this.descriptions[this.promptMode];
       onAuthStateChanged(auth, async (user) => {
         if (!user) return;
-        const prefRef = doc(db, 'users', user.uid, 'preferences');
         const userRef = doc(db, 'users', user.uid);
         try {
-          const [prefSnap, planSnap] = await Promise.all([
-            getDoc(prefRef),
-            getDoc(userRef)
-          ]);
-          if (prefSnap.exists() && prefSnap.data().promptMode) {
-            this.promptMode = prefSnap.data().promptMode;
-            this.promptDescription = this.descriptions[this.promptMode];
-          }
+          const planSnap = await getDoc(userRef);
           if (planSnap.exists() && typeof planSnap.data().plan === 'string') {
             userPlan = planSnap.data().plan.toLowerCase();
             this.isPro = userPlan === 'pro';
@@ -71,48 +59,20 @@ export function promptComponent() {
         } catch (err) {
           console.error('Failed to load user settings', err);
         }
-
-        const secureBtn = document.querySelector('#prompt-mode-buttons button[data-mode="secure"]');
-        if (secureBtn) {
-          if (!this.isPro) {
-            secureBtn.disabled = true;
-            secureBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        const secureBtn = document.querySelector('#prompt-mode-buttons .btn-mode[data-mode="secure"]');
+        if (secureBtn && !this.isPro) {
+          secureBtn.disabled = true;
+          secureBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+        const self = this;
+        window.onModeChange = function(mode) {
+          if (mode === 'secure' && !self.isPro) {
+            showToast('Secure mode is available on Pro only');
+            return;
           }
-        }
-        if (!this.isPro && this.promptMode === 'secure') {
-          this.promptMode = 'standard';
-          this.promptDescription = this.descriptions[this.promptMode];
-        }
-
-        this.updateButtons();
-
-        document.querySelectorAll('#prompt-mode-buttons button').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            const mode = btn.getAttribute('data-mode');
-            if (mode === 'secure' && !this.isPro) {
-              showToast('Secure mode is available on Pro only');
-              return;
-            }
-            this.promptMode = mode;
-            this.promptDescription = this.descriptions[mode] || '';
-            this.updateButtons();
-            try {
-              await setDoc(prefRef, { promptMode: mode }, { merge: true });
-            } catch (err) {
-              console.error('Failed to save prompt mode', err);
-            }
-          });
-        });
+          currentMode = mode;
+        };
       });
-    },
-    updateButtons() {
-      document.querySelectorAll('#prompt-mode-buttons button').forEach(b => {
-        b.classList.remove('bg-green-500');
-        if (b.getAttribute('data-mode') === this.promptMode) {
-          b.classList.add('bg-green-500');
-        }
-      });
-      currentMode = this.promptMode;
     }
   };
 }
