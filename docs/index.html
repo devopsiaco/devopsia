@@ -106,22 +106,30 @@
     const auth = getAuth(app);
 
     function handleStartBuilding() {
-      const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login/';
+      const next = encodeURIComponent('/ai-assistant/');
+      const user = auth.currentUser;
+      if (user && user.emailVerified) {
+        window.location.href = '/ai-assistant/';
+      } else {
+        window.location.href = `/login/?next=${next}`;
+      }
     }
 
     onAuthStateChanged(auth, user => {
-      const ctaBtn = document.getElementById('cta-build-btn');
       const homeBtn = document.getElementById('home-logo-btn');
-      if (ctaBtn) {
-        ctaBtn.setAttribute('href', user ? '/ai-assistant-terraform/' : '/pricing/');
-      }
       if (homeBtn) {
-        homeBtn.setAttribute('href', user ? '/ai-assistant-terraform/' : '/');
+        homeBtn.setAttribute('href', user && user.emailVerified ? '/ai-assistant/' : '/');
       }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
+      const ctaBtn = document.getElementById('cta-build-btn');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('click', e => {
+          e.preventDefault();
+          handleStartBuilding();
+        });
+      }
       const buttons = Array.from(document.querySelectorAll('button, a')).filter(el =>
         el.classList.contains('start-button') || el.textContent.trim() === 'Start Building'
       );
