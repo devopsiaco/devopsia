@@ -49,9 +49,9 @@
     <div class="bg-gray-200 p-8 rounded-lg shadow w-full max-w-md">
       <h1 class="text-3xl font-extrabold mb-6 text-center">Sign In to Devopsia</h1>
       <form id="login-form" class="space-y-4">
-        <input type="email" id="email" name="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <p id="login-error" class="text-red-600"></p>
+        <input type="email" id="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="password" id="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <p id="loginError" class="text-red-600 hidden"></p>
         <button id="loginBtn" type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Login</button>
       </form>
       <button id="google-login" class="mt-4 w-full flex items-center justify-center gap-2 border border-gray-300 rounded py-2 bg-white hover:bg-gray-50">
@@ -65,39 +65,8 @@
     </div>
   </main>
   <footer class="text-center py-4">© 2025 Devopsia</footer>
-  <script src="/js/firebase-config.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"></script>
-  <script>
-    if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
-  </script>
-  <script type="module">
-    import { redirectPostLogin } from '/js/auth.js';
-    const form = document.getElementById('login-form');
-    const errorEl = document.getElementById('login-error');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.textContent = '';
-      const email = form.email.value.trim();
-      const password = form.password.value;
-      try {
-        const cred = await firebase.auth().signInWithEmailAndPassword(email, password);
-        const user = cred.user;
-        // Enforce verification
-        if (!user.emailVerified) {
-          await firebase.auth().signOut();
-          const params = new URLSearchParams(window.location.search);
-          const next = params.get('next') || '/ai-assistant/';
-          window.location.href = `/verify-email/?next=${encodeURIComponent(next)}&notice=unverified`;
-          return;
-        }
-        // Verified → proceed
-        redirectPostLogin();
-      } catch (err) {
-        console.error(err);
-        errorEl.textContent = 'Login failed. Please check your credentials.';
-      }
-    });
-  </script>
+  <script type="module" src="/js/login.js"></script>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
 </body>
 </html>

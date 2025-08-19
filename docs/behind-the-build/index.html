@@ -18,7 +18,7 @@
         <a href="/#features" class="hover:underline">Features</a>
         <a href="/pricing/" class="hover:underline">Pricing</a>
         <a href="/behind-the-build/" class="hover:underline">Behind the Build</a>
-        <a id="cta-build-btn" href="/pricing/" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Let’s Build</a>
+        <a href="/pricing/" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded" @click="open = false">Let’s Build</a>
         <a id="authButton" href="/login/" class="hover:underline">Login</a>
       </nav>
       <button @click="open = !open" class="ml-auto order-last md:hidden focus:outline-none mr-4">
@@ -74,19 +74,5 @@
   <footer class="text-center py-4">© 2025 Devopsia</footer>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
-  <script type="module">
-    import { auth } from '/js/firebase.js';
-    const next = encodeURIComponent('/ai-assistant/');
-    function handleStartBuilding(e) {
-      e.preventDefault();
-      const user = auth.currentUser;
-      if (user && user.emailVerified) {
-        window.location.href = '/ai-assistant/';
-      } else {
-        window.location.href = `/login/?next=${next}`;
-      }
-    }
-    document.getElementById('cta-build-btn')?.addEventListener('click', handleStartBuilding);
-  </script>
 </body>
 </html>
