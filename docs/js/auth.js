@@ -1,14 +1,21 @@
 // /docs/js/auth.js
 // Shared Firebase Auth helpers for Devopsia (GitHub Pages)
-// Assumes firebase-app.js and firebase-auth.js are loaded globally on pages that use this.
-// Exports:
-// - requireAuth({ mustBeVerified: true, redirectIfAuthedTo })
+// Uses the modular Firebase SDK and exports:
+// - requireAuth({ mustBeVerified: true })
 // - getCurrentUserOnce()
 // - sendVerificationEmail(user)
+// - redirectPostLogin()
+
+import { auth } from './firebase.js';
+import {
+  onAuthStateChanged,
+  sendEmailVerification,
+  signOut,
+} from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 
 export async function getCurrentUserOnce() {
   return new Promise((resolve) => {
-    const unsub = firebase.auth().onAuthStateChanged((u) => {
+    const unsub = onAuthStateChanged(auth, (u) => {
       unsub();
       resolve(u || null);
     });
@@ -17,16 +24,13 @@ export async function getCurrentUserOnce() {
 
 export async function requireAuth({ mustBeVerified = true } = {}) {
   const user = await getCurrentUserOnce();
-  // If no user, bounce to login with ?next=<current-url>
   if (!user) {
     const next = encodeURIComponent(window.location.pathname + window.location.search);
     window.location.href = `/login/?next=${next}`;
     return Promise.reject(new Error('Unauthenticated'));
   }
-  // If must be verified, enforce emailVerified
   if (mustBeVerified && !user.emailVerified) {
-    // Sign out to avoid partial session usage, then route to verify page
-    await firebase.auth().signOut();
+    await signOut(auth);
     const next = encodeURIComponent(window.location.pathname + window.location.search);
     window.location.href = `/verify-email/?next=${next}`;
     return Promise.reject(new Error('Email not verified'));
@@ -36,11 +40,7 @@ export async function requireAuth({ mustBeVerified = true } = {}) {
 
 export async function sendVerificationEmail(user) {
   try {
-    await user.sendEmailVerification({
-      // Optional: customize with dynamic link domain if configured in Firebase Auth
-      // url: `${location.origin}/verify-email/`,
-      handleCodeInApp: false,
-    });
+    await sendEmailVerification(user, { handleCodeInApp: false });
     return true;
   } catch (err) {
     console.error('sendVerificationEmail failed', err);
@@ -48,7 +48,6 @@ export async function sendVerificationEmail(user) {
   }
 }
 
-// Helper: handle “next” param after successful login
 export function redirectPostLogin() {
   const params = new URLSearchParams(window.location.search);
   const next = params.get('next');
@@ -58,4 +57,20 @@ export function redirectPostLogin() {
     window.location.replace('/ai-assistant/');
   }
 }
+
+// Attach handlers to all "Start Building" buttons
+document.addEventListener('DOMContentLoaded', () => {
+  const next = encodeURIComponent('/ai-assistant/');
+  document.querySelectorAll('.start-button').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const user = await getCurrentUserOnce();
+      if (user && user.emailVerified) {
+        window.location.href = '/ai-assistant/';
+      } else {
+        window.location.href = `/login/?next=${next}`;
+      }
+    });
+  });
+});
 

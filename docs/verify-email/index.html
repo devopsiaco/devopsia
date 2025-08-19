@@ -21,37 +21,41 @@
       <button id="go-login" class="w-full bg-gray-100 py-2 rounded-lg">Back to Login</button>
     </div>
   </div>
-  <script type="module">
-    import { getCurrentUserOnce, sendVerificationEmail } from '/js/auth.js';
-    const params = new URLSearchParams(window.location.search);
-    const next = params.get('next') || '/ai-assistant/';
-    const noticeParam = params.get('notice');
-    const noticeEl = document.getElementById('notice');
-    if (noticeParam === 'sent') {
-      noticeEl.textContent = 'We sent a verification email. Please click the link in your inbox.';
-    } else if (noticeParam === 'unverified') {
-      noticeEl.textContent = 'Your email is not verified. Please verify to continue.';
-    } else {
-      noticeEl.textContent = 'Please verify your email to continue.';
-    }
-    document.getElementById('go-login').addEventListener('click', () => {
-      window.location.href = `/login/?next=${encodeURIComponent(next)}`;
-    });
-    document.getElementById('resend').addEventListener('click', async () => {
+    <script type="module">
+      import { getCurrentUserOnce, sendVerificationEmail } from '/js/auth.js';
+      const params = new URLSearchParams(window.location.search);
+      const next = params.get('next') || '/ai-assistant/';
+      const noticeParam = params.get('notice');
+      const noticeEl = document.getElementById('notice');
       const user = await getCurrentUserOnce();
-      if (user && !user.emailVerified) {
-        const ok = await sendVerificationEmail(user);
-        noticeEl.textContent = ok
-          ? 'Verification email re-sent. Please check your inbox.'
-          : 'Failed to resend. Please try again later.';
-      } else {
-        noticeEl.textContent = 'Please login first to resend the verification email.';
-        setTimeout(() => {
-          window.location.href = `/login/?next=${encodeURIComponent(next)}`;
-        }, 1200);
+      if (!user) {
+        window.location.replace(`/login/?next=${encodeURIComponent(next)}`);
+        throw new Error('Unauthenticated');
       }
-    });
-  </script>
+      if (noticeParam === 'sent') {
+        noticeEl.textContent = 'We sent a verification email. Please click the link in your inbox.';
+      } else if (noticeParam === 'unverified') {
+        noticeEl.textContent = 'Your email is not verified. Please verify to continue.';
+      } else {
+        noticeEl.textContent = 'Please verify your email to continue.';
+      }
+      document.getElementById('go-login').addEventListener('click', () => {
+        window.location.href = `/login/?next=${encodeURIComponent(next)}`;
+      });
+      document.getElementById('resend').addEventListener('click', async () => {
+        if (user && !user.emailVerified) {
+          const ok = await sendVerificationEmail(user);
+          noticeEl.textContent = ok
+            ? 'Verification email re-sent. Please check your inbox.'
+            : 'Failed to resend. Please try again later.';
+        } else {
+          noticeEl.textContent = 'Please login first to resend the verification email.';
+          setTimeout(() => {
+            window.location.href = `/login/?next=${encodeURIComponent(next)}`;
+          }, 1200);
+        }
+      });
+    </script>
 </body>
 </html>
 

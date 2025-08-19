@@ -136,38 +136,6 @@
   <script type="module" src="/js/auth.js"></script>
 
   <script type="module">
-    import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
-      authDomain: "devopsia.firebaseapp.com",
-      projectId: "devopsia-39ea5",
-      appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
-    };
-
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    function handleStartBuilding() {
-      const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login/';
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const buttons = Array.from(document.querySelectorAll('button, a')).filter(el =>
-        el.classList.contains('start-button') || el.textContent.trim() === 'Start Building'
-      );
-      buttons.forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          handleStartBuilding();
-        });
-      });
-    });
-  </script>
-
-  <script type="module">
     import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
     import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
 
