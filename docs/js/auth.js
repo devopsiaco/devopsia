@@ -1,5 +1,31 @@
-import { auth } from './firebase.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+export function getCurrentUserOnce() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(
+      (user) => {
+        unsubscribe();
+        resolve(user);
+      },
+      (err) => {
+        unsubscribe();
+        reject(err);
+      }
+    );
+  });
+}
+
+export async function requireAuth({ mustBeVerified = false } = {}) {
+  const user = await getCurrentUserOnce();
+  const loadingEl = document.getElementById('auth-loading');
+  const contentEl = document.getElementById('protected-content');
+  if (!user || (mustBeVerified && !user.emailVerified)) {
+    if (loadingEl) loadingEl.classList.add('hidden');
+    window.location.replace('/login/');
+    throw new Error('auth/required');
+  }
+  if (loadingEl) loadingEl.classList.add('hidden');
+  if (contentEl) contentEl.classList.remove('hidden');
+  return user;
+}
 
 function updateAuthButton(user) {
   const btn = document.getElementById('authButton');
@@ -8,11 +34,15 @@ function updateAuthButton(user) {
   if (user) {
     btn.textContent = 'Logout';
     btn.href = '#';
-    btn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      await signOut(auth);
-      window.location.href = '/';
-    }, { once: true });
+    btn.addEventListener(
+      'click',
+      async (e) => {
+        e.preventDefault();
+        await firebase.auth().signOut();
+        window.location.href = '/';
+      },
+      { once: true }
+    );
   } else {
     btn.textContent = 'Login';
     btn.href = '/login/';
@@ -20,10 +50,10 @@ function updateAuthButton(user) {
 }
 
 document.addEventListener('header-loaded', () => {
-  updateAuthButton(auth.currentUser);
+  updateAuthButton(firebase.auth().currentUser);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  updateAuthButton(auth.currentUser);
-  onAuthStateChanged(auth, updateAuthButton);
+  updateAuthButton(firebase.auth().currentUser);
+  firebase.auth().onAuthStateChanged(updateAuthButton);
 });
