@@ -15,6 +15,8 @@
       max-width: none;
     }
   </style>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/signup.js"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
   <header x-data="{ open: false }" class="site-header text-white px-4 py-3 fixed top-0 inset-x-0 z-50">
@@ -47,10 +49,10 @@
   <main class="container mx-auto py-20 flex-grow flex justify-center items-start">
     <div class="bg-gray-200 p-8 rounded-lg shadow w-full max-w-md">
       <h1 class="text-3xl font-extrabold mb-6 text-center">Create your account</h1>
-      <form id="signup-form" class="space-y-4">
+      <form id="signupForm" class="space-y-4">
         <input type="text" id="fullName" placeholder="Full Name" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <input type="email" id="email" name="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
-        <input type="password" id="password" name="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="email" id="email" placeholder="Email" required class="w-full border border-gray-300 rounded px-4 py-2">
+        <input type="password" id="password" placeholder="Password" required class="w-full border border-gray-300 rounded px-4 py-2">
         <input type="password" id="confirmPassword" placeholder="Confirm Password" required class="w-full border border-gray-300 rounded px-4 py-2">
         <select id="plan" class="w-full border border-gray-300 rounded px-4 py-2">
           <option value="free">Free</option>
@@ -142,44 +144,14 @@
         </label>
 
         <button type="submit" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Create Account</button>
-        <p id="signup-error" class="text-red-500 text-sm"></p>
-        <p id="signup-success" class="text-green-600 text-sm"></p>
+        <p id="signupError" class="text-red-500 text-sm hidden"></p>
       </form>
       <p class="mt-4 text-center text-sm">Already have an account? <a href="/login/" class="text-orange-600 hover:underline">Log in</a></p>
     </div>
   </main>
   <footer class="text-center py-4">© 2025 Devopsia</footer>
 
-  <script src="/js/firebase-config.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth.js"></script>
-  <script>
-    if (!firebase.apps.length) firebase.initializeApp(window.firebaseConfig);
-  </script>
-  <script type="module">
-    import { sendVerificationEmail } from '/js/auth.js';
-    const form = document.getElementById('signup-form');
-    const errorEl = document.getElementById('signup-error');
-    const successEl = document.getElementById('signup-success');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.textContent = '';
-      successEl.textContent = '';
-      const email = form.email.value.trim();
-      const password = form.password.value;
-      try {
-        const cred = await firebase.auth().createUserWithEmailAndPassword(email, password);
-        const user = cred.user;
-        await sendVerificationEmail(user);
-        await firebase.auth().signOut();
-        const params = new URLSearchParams(window.location.search);
-        const next = params.get('next') || '/ai-assistant/';
-        window.location.href = `/verify-email/?next=${encodeURIComponent(next)}&notice=sent`;
-      } catch (err) {
-        console.error(err);
-        errorEl.textContent = 'Signup failed. Please try again.';
-      }
-    });
-  </script>
+  <script type="module" src="/js/auth.js"></script>
+
 </body>
 </html>
