@@ -11,11 +11,6 @@ const firebaseConfig = {
   appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
 };
 
-// Expose config globally for pages that rely on window.firebaseConfig
-if (typeof window !== 'undefined') {
-  window.firebaseConfig = firebaseConfig;
-}
-
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
