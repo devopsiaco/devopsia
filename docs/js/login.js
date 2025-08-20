@@ -1,5 +1,6 @@
 import { auth } from './firebase.js';
 import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { redirectAfterLogin } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const emailInput = document.getElementById('email');
@@ -27,14 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
       loginBtn.appendChild(spinner);
       try {
         const userCred = await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-        if (!userCred.user.emailVerified) {
-          await signOut(auth);
-          showError('Please verify your email before logging in.');
-        } else {
-          window.location.href = '/ai-assistant';
-        }
+        await redirectAfterLogin(userCred.user);
       } catch (err) {
-        showError(err.message);
+        console.error('Login failed', err);
+        showError('Login failed. Please check your credentials.');
       }
       loginBtn.disabled = false;
       spinner.remove();
@@ -46,14 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     googleBtn.addEventListener('click', async () => {
       try {
         const { user } = await signInWithPopup(auth, provider);
-        if (!user.emailVerified) {
-          await signOut(auth);
-          showError('Please verify your email before logging in.');
-        } else {
-          window.location.href = '/ai-assistant';
-        }
+        await redirectAfterLogin(user);
       } catch (err) {
-        showError(err.message);
+        console.error('Login failed', err);
+        showError('Login failed. Please check your credentials.');
       }
     });
   }
@@ -76,7 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         await signOut(auth);
         showError('A new verification email has been sent. Please check your inbox.');
       } catch (err) {
-        showError(err.message);
+        console.error('Resend verification failed', err);
+        showError('Failed to send verification email. Please try again later.');
       }
       resendBtn.disabled = false;
       spin.remove();
