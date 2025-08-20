@@ -31,7 +31,7 @@ onAuthStateChanged(auth, (user) => {
 
 document.addEventListener('DOMContentLoaded', () => {
   const path = window.location.pathname;
-  const match = path.match(/ai-assistant-([^/]+)/);
+  const match = path.match(/ai-assistant(?:-|\/)([^/]+)/);
   if (match) {
     const name = match[1]
       .replace(/-/g, ' ')

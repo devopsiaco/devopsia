@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AI Assistant - Devopsia</title>
+  <title>AI Assistant for Docker</title>
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&family=Bitcount+Grid+Double&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
@@ -14,10 +14,10 @@
   <div id="auth-loading" class="flex items-center justify-center min-h-screen">Checking authentication...</div>
   <div id="protected-content" class="hidden">
     <div id="header-container"></div>
-    <div class="flex min-h-screen pt-16">
-      <div id="sidebar-container" class="w-64 shrink-0 hidden md:block"></div>
-      <main class="flex-1 p-6 bg-white">
-        <h1 class="text-2xl font-semibold mb-4">AI Assistant for Terraform</h1>
+    <div class="with-sidebar px-4 lg:px-6 pt-16">
+      <div id="sidebar-container" class="lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]"></div>
+      <main id="main-content" class="flex-1 p-6 bg-white">
+        <h1 class="text-2xl font-semibold mb-4">AI Assistant for Docker</h1>
         <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
           <div>
             <div class="flex items-center mb-1">
@@ -37,7 +37,8 @@
               </div>
             </div>
           </div>
-          <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Type your DevOps question..."></textarea>
+          <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Describe your Docker question..."></textarea>
+          <input type="hidden" id="tool" value="docker">
           <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
           <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
         </div>
@@ -45,12 +46,26 @@
       </main>
     </div>
   </div>
+
+
+
   <script src="/js/ui-common.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
   <script type="module" src="/js/ai-assistant.js"></script>
-  <script type="module" src="/js/sidebar.js"></script>
-  <script type="module" src="/js/header.js"></script>
+    <script type="module" src="/js/header.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const container = document.getElementById('sidebar-container');
+    if (!container) return;
+    const res = await fetch('/components/sidebar.html', { cache: 'no-cache' });
+    container.innerHTML = await res.text();
+    // After injecting HTML, load JS
+    const s = document.createElement('script');
+    s.src = '/js/sidebar.js';
+    document.body.appendChild(s);
+  });
+</script>
 </body>
 </html>
 
