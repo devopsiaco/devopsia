@@ -15,8 +15,3 @@ const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
-if (typeof window !== 'undefined') {
-  window.firebase = window.firebase || {};
-  window.firebase.auth = () => auth;
-}
