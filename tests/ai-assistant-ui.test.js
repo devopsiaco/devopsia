@@ -48,7 +48,7 @@ const assistants = ['terraform','helm','k8s','yaml','ansible','docker'];
 
 test('prompt mode persists across reloads for each assistant page', () => {
   for (const key of assistants){
-    const dom1 = createDom(`ai-assistant/${key}`, {withExport:false});
+    const dom1 = createDom(`ai-assistant-${key}`, {withExport:false});
     const {window} = dom1;
     const ui = loadUiCommon(window);
     ui.initPromptModeControls();
@@ -57,7 +57,7 @@ test('prompt mode persists across reloads for each assistant page', () => {
     const storageKey = `devopsia.promptMode.${key}`;
     const saved = window.localStorage.getItem(storageKey);
     // simulate reload
-    const dom2 = createDom(`ai-assistant/${key}`, {withExport:false});
+    const dom2 = createDom(`ai-assistant-${key}`, {withExport:false});
     dom2.window.localStorage.setItem(storageKey, saved);
     const ui2 = loadUiCommon(dom2.window);
     ui2.initPromptModeControls();
@@ -68,7 +68,7 @@ test('prompt mode persists across reloads for each assistant page', () => {
 });
 
 test('secure button disabled for non-pro users', async () => {
-  const dom = createDom('ai-assistant/terraform');
+  const dom = createDom('ai-assistant-terraform');
   const {window} = dom;
   const ui = loadUiCommon(window);
   ui.initPromptModeControls();
@@ -81,7 +81,7 @@ test('secure button disabled for non-pro users', async () => {
 });
 
 test('non-Pro users cannot activate secure mode and receive toast', async () => {
-  const dom = createDom('ai-assistant/terraform');
+  const dom = createDom('ai-assistant-terraform');
   const {window} = dom;
   const ui = loadUiCommon(window);
   ui.initPromptModeControls();
@@ -96,7 +96,7 @@ test('non-Pro users cannot activate secure mode and receive toast', async () => 
 });
 
 test('mode buttons adopt export button styles', () => {
-  const dom = createDom('ai-assistant/terraform');
+  const dom = createDom('ai-assistant-terraform');
   const {window} = dom;
   const ui = loadUiCommon(window);
   ui.initPromptModeControls();

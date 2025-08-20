@@ -44,7 +44,7 @@
   // - On load: restore & call window.onModeChange(mode) if defined
   function initPromptModeControls() {
     const path = window.location.pathname;
-    const match = path.match(/ai-assistant(?:-|\/)([^/]+)/);
+    const match = path.match(/ai-assistant-([^/]+)/);
     const assistantKey = match ? match[1] : 'generic';
     const STORAGE_KEY = `devopsia.promptMode.${assistantKey}`;
 
@@ -95,12 +95,12 @@
   // Fix incorrect Terraform link in the sidebar and normalize other assistant links
   function fixSidebarAssistantLinks() {
     const map = {
-      'terraform': '/ai-assistant/terraform/',
-      'helm': '/ai-assistant/helm/',
-      'k8s': '/ai-assistant/k8s/',
-      'yaml': '/ai-assistant/yaml/',
-      'ansible': '/ai-assistant/ansible/',
-      'docker': '/ai-assistant/docker/'
+      'terraform': '/ai-assistant-terraform/',
+      'helm': '/ai-assistant-helm/',
+      'k8s': '/ai-assistant-k8s/',
+      'yaml': '/ai-assistant-yaml/',
+      'ansible': '/ai-assistant-ansible/',
+      'docker': '/ai-assistant-docker/'
     };
 
     const sidebar = safeQuery('#sidebar-container') || document;
@@ -114,7 +114,7 @@
 
     // Explicitly fix the typo if still present
     const bad = safeQuery('a[href="/ai-assistnat"]', sidebar);
-    if (bad) bad.setAttribute('href', '/ai-assistant/terraform/');
+    if (bad) bad.setAttribute('href', '/ai-assistant-terraform/');
   }
 
   // Public init
