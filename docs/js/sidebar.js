@@ -29,16 +29,16 @@
 
   // Map routes to data-link keys
   const routeMap = [
-    { match: /^\/$/, key: 'home' },
-    { match: /^\/ai-assistant\/terraform\/?$/i, key: 'terraform', openAI: true },
-    { match: /^\/ai-assistant\/helm\/?$/i, key: 'helm', openAI: true },
-    { match: /^\/ai-assistant\/k8s\/?$/i, key: 'k8s', openAI: true },
-    { match: /^\/ai-assistant\/ansible\/?$/i, key: 'ansible', openAI: true },
-    { match: /^\/ai-assistant\/yaml\/?$/i, key: 'yaml', openAI: true },
-    { match: /^\/ai-assistant\/docker\/?$/i, key: 'docker', openAI: true },
-    { match: /^\/profile\/?$/i, key: 'profile' },
-    { match: /^\/prompt-history\/?$/i, key: 'prompt-history' },
-  ];
+  { match: /^\/$/, key: 'home' },
+  { match: /^\/ai-assistant-terraform\/?$/i, key: 'terraform', openAI: true },
+  { match: /^\/ai-assistant-helm\/?$/i, key: 'helm', openAI: true },
+  { match: /^\/ai-assistant-k8s\/?$/i, key: 'k8s', openAI: true },
+  { match: /^\/ai-assistant-ansible\/?$/i, key: 'ansible', openAI: true },
+  { match: /^\/ai-assistant-yaml\/?$/i, key: 'yaml', openAI: true },
+  { match: /^\/ai-assistant-docker\/?$/i, key: 'docker', openAI: true },
+  { match: /^\/profile\/?$/i, key: 'profile' },
+  { match: /^\/prompt-history\/?$/i, key: 'prompt-history' },
+];
 
   const hit = routeMap.find(r => r.match.test(path));
   if (hit) {
