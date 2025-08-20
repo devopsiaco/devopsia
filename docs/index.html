@@ -109,14 +109,15 @@
 
     function handleStartBuilding() {
       const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login/';
+      const dest = user ? '/ai-assistant-terraform/' : '/login/?continue=%2Fai-assistant-terraform%2F';
+      window.location.href = dest;
     }
 
     onAuthStateChanged(auth, user => {
       const ctaBtn = document.getElementById('cta-build-btn');
       const homeBtn = document.getElementById('home-logo-btn');
       if (ctaBtn) {
-        ctaBtn.setAttribute('href', user ? '/ai-assistant-terraform/' : '/pricing/');
+        ctaBtn.setAttribute('href', user ? '/ai-assistant-terraform/' : '/login/?continue=%2Fai-assistant-terraform%2F');
       }
       if (homeBtn) {
         homeBtn.setAttribute('href', user ? '/ai-assistant-terraform/' : '/');
