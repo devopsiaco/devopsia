@@ -250,3 +250,65 @@ a {
 /* details/summary pointer + reset default marker */
 details > summary { list-style: none; }
 details > summary::-webkit-details-marker { display: none; }
+
+:root {
+  --brand-start: #16a34a; /* emerald-600 */
+  --brand-end:   #0ea5a4; /* teal-600 */
+  --banner-text: #ffffff;
+  --cta-bg:      #ef4444; /* red-500 */
+  --cta-bg-hov:  #dc2626; /* red-600 */
+  --header-min-h: 56px;   /* slim height */
+}
+
+/* Slim gradient banner */
+.gradient-banner {
+  background: linear-gradient(90deg, var(--brand-start) 0%, var(--brand-end) 100%);
+  color: var(--banner-text);
+  min-height: var(--header-min-h);
+}
+
+/* Compact vertical rhythm */
+.gradient-banner .banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding-block: .5rem;
+}
+
+@media (min-width: 768px) {
+  .gradient-banner .banner-inner {
+    padding-block: .625rem;
+  }
+}
+
+/* CTA button (kept red for contrast and urgency) */
+.banner-cta {
+  background: var(--cta-bg);
+  color: #fff;
+  border-radius: .5rem;
+  padding: .5rem .9rem;
+  font-weight: 600;
+  line-height: 1.1;
+}
+.banner-cta:hover,
+.banner-cta:focus-visible {
+  background: var(--cta-bg-hov);
+}
+
+/* Links in banner */
+.gradient-banner a {
+  color: #ffffff;
+}
+.gradient-banner a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Ensure content doesn't hide under a fixed header (if using fixed) */
+/* Uncomment if your header is position: fixed */
+/*
+body.with-fixed-header {
+  padding-top: var(--header-min-h);
+}
+*/
