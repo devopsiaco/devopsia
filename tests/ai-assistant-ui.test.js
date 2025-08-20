@@ -22,16 +22,21 @@ function loadAiAssistant(window, {plan='free'} = {}){
       .replace('setTimeout(() => toast.remove(), 3000);', '');
     const code = sanitized + '\nwindow.__getCurrentMode = () => currentMode;\n';
     const context = vm.createContext({ window, document: window.document, localStorage: window.localStorage, console });
-  // stub firebase and firestore helpers
-  context.auth = {};
-  context.db = {};
-  context.onAuthStateChanged = (auth, cb) => cb({ uid: 'u', emailVerified: true });
-  context.doc = () => ({});
-  context.getDoc = async () => ({ exists: () => true, data: () => ({ plan }) });
-  context.setDoc = async () => {};
-  context.collection = () => ({});
-  context.addDoc = async () => {};
-  context.serverTimestamp = () => 0;
+  context.firebase = {
+    auth: () => ({
+      currentUser: { uid: 'u' },
+      onAuthStateChanged: (cb) => cb({ uid: 'u', emailVerified: true })
+    }),
+    firestore: () => ({
+      collection: () => ({
+        doc: () => ({
+          get: async () => ({ exists: true, data: () => ({ plan }) }),
+          collection: () => ({ add: async () => {} })
+        })
+      }),
+      FieldValue: { serverTimestamp: () => 0 }
+    })
+  };
   const script = new vm.Script(code, { filename: 'ai-assistant.js' });
   script.runInContext(context);
   return { promptComponent: context.promptComponent, context };

@@ -1,18 +1,36 @@
-<aside class="w-64 min-h-screen bg-gray-100 p-4 flex flex-col justify-between">
-  <div>
-    <div id="sidebar-user" class="mb-4 text-sm text-gray-600"></div>
-    <h2 class="font-bold mb-3 text-lg">AI Assistants</h2>
-    <ul class="space-y-2">
-      <li><a href="/ai-assistant-terraform/" class="block px-2 py-1 rounded hover:bg-gray-200">Terraform</a></li>
-      <li><a href="/ai-assistant-helm/" class="block px-2 py-1 rounded hover:bg-gray-200">Helm</a></li>
-      <li><a href="/ai-assistant-k8s/" class="block px-2 py-1 rounded hover:bg-gray-200">K8s</a></li>
-      <li><a href="/ai-assistant-yaml/" class="block px-2 py-1 rounded hover:bg-gray-200">YAML</a></li>
-      <li><a href="/ai-assistant-ansible/" class="block px-2 py-1 rounded hover:bg-gray-200">Ansible</a></li>
-      <li><a href="/ai-assistant-docker/" class="block px-2 py-1 rounded hover:bg-gray-200">Docker</a></li>
-      <li id="prompt-history-item" class="hidden"><a href="/prompt-history/" class="block px-2 py-1 rounded hover:bg-gray-200">Prompt History</a></li>
-    </ul>
+<aside
+  id="sidebar"
+  class="w-72 max-w-full bg-white border-r md:static md:translate-x-0 fixed inset-y-0 -translate-x-full transition-transform duration-200 ease-out z-40"
+  aria-label="Main Navigation"
+>
+  <div class="p-4 flex items-center gap-3 border-b">
+    <img id="sidebar-avatar" alt="Avatar" class="w-10 h-10 rounded-full object-cover border" src='https://www.gravatar.com/avatar/?s=80&d=mp'>
+    <div class="min-w-0">
+      <div id="sidebar-user-email" class="text-sm font-medium truncate">Loading...</div>
+      <div id="sidebar-user-plan" class="text-xs text-gray-500">—</div>
+    </div>
+    <button id="nav-close" class="ml-auto md:hidden p-2 rounded hover:bg-gray-100" aria-label="Close menu">✕</button>
   </div>
-  <button id="logout-btn" class="mt-6 bg-red-100 hover:bg-red-200 text-red-600 px-4 py-2 rounded w-full">
-    Logout
-  </button>
+  <nav class="p-2">
+    <a href="/" class="sidebar-link block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="home">Home</a>
+    <!-- Collapsible AI Assistant group -->
+    <div class="mt-1">
+      <button id="ai-assistant-toggle" class="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-100" aria-expanded="false" aria-controls="ai-assistant-group">
+        <span class="font-medium">AI Assistant</span>
+        <span id="ai-assistant-caret" aria-hidden="true">▸</span>
+      </button>
+      <div id="ai-assistant-group" class="ml-3 mt-1 hidden">
+        <a href="/ai-assistant/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-root">Overview</a>
+        <a href="/ai-assistant-terraform/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-terraform">Terraform</a>
+        <a href="/ai-assistant-ansible/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-ansible">Ansible</a>
+        <a href="/ai-assistant-k8s/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-k8s">Kubernetes</a>
+        <a href="/ai-assistant-helm/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-helm">Helm</a>
+        <a href="/ai-assistant-yaml/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-yaml">YAML</a>
+        <a href="/ai-assistant-docker/" class="sidebar-sublink block px-3 py-2 rounded-lg hover:bg-gray-100" data-id="assistant-docker">Docker</a>
+      </div>
+    </div>
+    <a href="/prompt-history/" class="sidebar-link block px-3 py-2 rounded-lg hover:bg-gray-100 mt-1" data-id="prompt-history">Prompt History</a>
+    <a href="/user-account/" class="sidebar-link block px-3 py-2 rounded-lg hover:bg-gray-100 mt-1" data-id="user-account">User Account</a>
+    <button id="sidebar-logout" class="w-full mt-2 px-3 py-2 text-left rounded-lg hover:bg-gray-100">Logout</button>
+  </nav>
 </aside>
