@@ -1,29 +1,35 @@
-import { auth } from './firebase.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+// /docs/js/auth.js
+// Authentication utilities using Firebase Auth.
+export function getCurrentUserOnce() {
+  return new Promise(resolve => {
+    const unsub = firebase.auth().onAuthStateChanged(user => {
+      unsub();
+      resolve(user);
+    });
+  });
+}
 
-function updateAuthButton(user) {
-  const btn = document.getElementById('authButton');
-  if (!btn) return;
-  btn.onclick = null;
-  if (user) {
-    btn.textContent = 'Logout';
-    btn.href = '#';
-    btn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      await signOut(auth);
-      window.location.href = '/';
-    }, { once: true });
-  } else {
-    btn.textContent = 'Login';
-    btn.href = '/login/';
+export async function requireAuth({ mustBeVerified = false } = {}) {
+  const user = await getCurrentUserOnce();
+  if (!user || (mustBeVerified && !user.emailVerified)) {
+    const next = encodeURIComponent(window.location.pathname);
+    window.location.href = `/login/?next=${next}`;
+    throw new Error('AUTH_REQUIRED');
+  }
+  return user;
+}
+
+export async function sendVerificationEmail(user) {
+  try {
+    await user.sendEmailVerification();
+  } catch (e) {
+    console.error('Failed to send verification email', e);
+    throw e;
   }
 }
 
-document.addEventListener('header-loaded', () => {
-  updateAuthButton(auth.currentUser);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateAuthButton(auth.currentUser);
-  onAuthStateChanged(auth, updateAuthButton);
-});
+export function redirectPostLogin() {
+  const params = new URLSearchParams(window.location.search);
+  const next = params.get('next') || '/';
+  window.location.href = next;
+}

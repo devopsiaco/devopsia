@@ -1,7 +1,7 @@
-import { auth, db } from './firebase.js';
-import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
-
+// /docs/js/ai-assistant.js
+// Handles prompt submission and history saving.
+const auth = firebase.auth();
+const db = firebase.firestore();
 let userPlan = 'free';
 let currentMode = 'default';
 
@@ -17,42 +17,16 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 3000);
 }
 
-const loadingEl = document.getElementById('auth-loading');
-const contentEl = document.getElementById('protected-content');
-
-onAuthStateChanged(auth, (user) => {
-  if (user && user.emailVerified) {
-    if (loadingEl) loadingEl.classList.add('hidden');
-    if (contentEl) contentEl.classList.remove('hidden');
-  } else {
-    window.location.replace('/login/');
-  }
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const path = window.location.pathname;
-  const match = path.match(/ai-assistant-([^/]+)/);
-  if (match) {
-    const name = match[1]
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, c => c.toUpperCase());
-    const breadcrumb = document.createElement('nav');
-    breadcrumb.className = 'text-sm text-gray-500 mb-4';
-    breadcrumb.innerHTML = `<a href="/" class="hover:underline">Home</a> / ${name}`;
-    document.querySelector('main')?.prepend(breadcrumb);
-  }
-});
-
 export function promptComponent() {
   return {
     isPro: false,
     async init() {
-      onAuthStateChanged(auth, async (user) => {
+      auth.onAuthStateChanged(async (user) => {
         if (!user) return;
-        const userRef = doc(db, 'users', user.uid);
+        const userRef = db.collection('users').doc(user.uid);
         try {
-          const planSnap = await getDoc(userRef);
-          if (planSnap.exists() && typeof planSnap.data().plan === 'string') {
+          const planSnap = await userRef.get();
+          if (planSnap.exists && typeof planSnap.data().plan === 'string') {
             userPlan = planSnap.data().plan.toLowerCase();
             this.isPro = userPlan === 'pro';
           }
@@ -76,8 +50,10 @@ export function promptComponent() {
     }
   };
 }
+// expose for Alpine.js
+window.promptComponent = promptComponent;
 
-document.getElementById('runPrompt').addEventListener('click', async () => {
+document.getElementById('runPrompt')?.addEventListener('click', async () => {
   const prompt = document.getElementById('promptInput').value;
   const promptMode = currentMode;
   const tool = document.getElementById('tool')?.value || 'general';
@@ -99,11 +75,11 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     const user = auth.currentUser;
     if (user) {
       try {
-        await addDoc(collection(db, 'users', user.uid, 'prompts'), {
+        await db.collection('users').doc(user.uid).collection('prompts').add({
           prompt,
           mode: promptMode,
           response: data.output,
-          createdAt: serverTimestamp()
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
       } catch (err) {
         console.error('Failed to save prompt history', err);
