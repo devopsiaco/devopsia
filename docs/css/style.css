@@ -230,9 +230,3 @@ a {
   font-weight: bold;
   margin: 0.5rem 0 1rem 0;
 }
-
-/* Sidebar active link styling */
-.sidebar-link.active, .sidebar-sublink.active {
-  background-color: #f3f4f6;
-  font-weight: 600;
-}
