@@ -230,3 +230,23 @@ a {
   font-weight: bold;
   margin: 0.5rem 0 1rem 0;
 }
+
+/* Sidebar layout helpers */
+#app-sidebar { display: flex; flex-direction: column; }
+
+/* Ensure the page layout uses a two-column grid on large screens */
+@media (min-width: 1024px) {
+  .with-sidebar {
+    display: grid;
+    grid-template-columns: 16rem 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+}
+
+/* Prevent header overlap if header is fixed ~64px */
+.lg\:top-16 { top: 4rem; }
+
+/* details/summary pointer + reset default marker */
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
