@@ -5,11 +5,6 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-const PRICE_LOOKUP = {
-  pro_monthly: 'price_pro_monthly',
-  free: 'price_free'
-};
-
 exports.handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': 'https://devopsia.co',
@@ -26,36 +21,26 @@ exports.handler = async (event) => {
     if (!token) {
       return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized' }), headers };
     }
+
     const decoded = await admin.auth().verifyIdToken(token);
     const uid = decoded.uid;
 
-    if (!event.body) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Missing request body' }), headers };
-    }
-    const { priceKey, success_url, cancel_url } = JSON.parse(event.body);
-    const priceId = PRICE_LOOKUP[priceKey];
-    if (!priceId || !success_url || !cancel_url) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'Invalid parameters' }), headers };
-    }
-
     const db = admin.firestore();
-    const userDoc = await db.collection('users').doc(uid).get();
-    const data = userDoc.exists ? userDoc.data() : {};
+    const doc = await db.collection('users').doc(uid).get();
+    const data = doc.exists ? doc.data() : {};
     const customerId = data.stripeCustomerId;
+    if (!customerId) {
+      return { statusCode: 400, body: JSON.stringify({ error: 'Stripe customer not found' }), headers };
+    }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
+    const session = await stripe.billingPortal.sessions.create({
       customer: customerId,
-      line_items: [
-        { price: priceId, quantity: 1 }
-      ],
-      success_url,
-      cancel_url
+      return_url: 'https://devopsia.co/profile/'
     });
 
     return { statusCode: 200, body: JSON.stringify({ url: session.url }), headers };
   } catch (error) {
-    console.error('Stripe checkout error:', error);
-    return { statusCode: 500, body: JSON.stringify({ error: 'Checkout session creation failed' }), headers };
+    console.error('Stripe portal error:', error);
+    return { statusCode: 500, body: JSON.stringify({ error: 'Portal session creation failed' }), headers };
   }
 };
