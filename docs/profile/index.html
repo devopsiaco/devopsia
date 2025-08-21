@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Devopsia — Profile</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+  <!-- Top header -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="/" class="font-semibold text-lg">Devopsia</a>
+      <nav class="flex items-center gap-4 text-sm">
+        <a href="/pricing/" class="hover:underline">Pricing</a>
+        <a id="nav-ai" href="/ai-assistant-terraform/" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600 transition">Start Building</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-6 mt-6">
+
+    <!-- Sidebar -->
+    <aside id="sidebar-container" class="md:col-span-3">
+      <!-- populated via fetch('/components/sidebar.html') like other pages -->
+    </aside>
+
+    <!-- Main -->
+    <main class="md:col-span-9">
+      <!-- Breadcrumbs -->
+      <div class="text-sm text-gray-500 mb-3">
+        <a href="/" class="hover:underline">Home</a> / <span class="text-gray-700">Profile</span>
+      </div>
+
+      <h1 class="text-2xl font-semibold mb-4">Profile</h1>
+      <p class="text-gray-600 mb-6">Manage your account security and subscription.</p>
+
+      <!-- Account Card -->
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Account</h2>
+        <div class="space-y-2 text-sm">
+          <div><span class="text-gray-500">Email:</span> <span id="user-email" class="font-medium"></span></div>
+          <div id="email-verified-row" class="flex items-center gap-2">
+            <span class="text-gray-500">Email verification:</span>
+            <span id="email-verified-badge" class="inline-flex items-center px-2 py-0.5 rounded text-xs"></span>
+            <button id="resend-verify-btn" class="ml-2 hidden text-blue-600 hover:underline text-xs">Resend verification</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Password Card -->
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5 mb-6">
+        <h2 class="text-lg font-semibold mb-4">Password</h2>
+        <p class="text-sm text-gray-600 mb-3">For security, we’ll send a password reset email to your account address.</p>
+        <div class="flex items-center gap-3">
+          <button id="send-reset-btn" class="px-4 py-2 rounded-lg bg-gray-900 text-white hover:bg-black transition">Send reset email</button>
+          <span id="password-help" class="text-xs text-gray-500">You’ll receive a secure link to set a new password.</span>
+        </div>
+      </section>
+
+      <!-- Subscription Card -->
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-5">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold mb-1">Subscription</h2>
+            <p class="text-sm text-gray-600">View your current plan and manage billing.</p>
+          </div>
+          <span id="plan-badge" class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium text-gray-700 bg-gray-50">Loading…</span>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="text-sm">
+            <div class="text-gray-500">Status</div>
+            <div id="plan-status" class="font-medium">—</div>
+          </div>
+          <div class="text-sm">
+            <div class="text-gray-500">Renews</div>
+            <div id="plan-renew" class="font-medium">—</div>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <button id="upgrade-btn" class="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition">Upgrade</button>
+          <button id="downgrade-btn" class="px-4 py-2 rounded-lg bg-orange-600 text-white hover:bg-orange-700 transition">Change plan</button>
+          <button id="billing-portal-btn" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-900 hover:bg-gray-300 transition">Open Billing Portal</button>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">Upgrades and downgrades are applied via Stripe Checkout and Customer Portal.</p>
+      </section>
+
+      <!-- Toast container -->
+      <div id="toast" class="fixed bottom-4 right-4 hidden px-4 py-3 rounded-lg shadow-lg text-sm"></div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-10 py-8 text-center text-xs text-gray-500">© 2025 Devopsia</footer>
+
+  <!-- Firebase + page script -->
+  <script src="/js/firebase-init.js"></script>
+  <script>
+    // ---------------- Toast helpers ----------------
+    function showToast(msg, type = 'info') {
+      const el = document.getElementById('toast');
+      const palette = {
+        info:  ['bg-gray-900','text-white'],
+        success:['bg-green-600','text-white'],
+        error: ['bg-red-600','text-white'],
+        warn:  ['bg-orange-600','text-white'],
+      }[type] || ['bg-gray-900','text-white'];
+      el.className = 'fixed bottom-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg text-sm ' + palette.join(' ');
+      el.textContent = msg;
+      el.style.opacity = '1';
+      el.classList.remove('hidden');
+      setTimeout(() => { el.style.opacity = '0'; }, 2200);
+      setTimeout(() => { el.classList.add('hidden'); }, 2600);
+    }
+
+    // ---------------- Sidebar load ----------------
+    (async function loadSidebar(){
+      try {
+        const res = await fetch('/components/sidebar.html', { cache:'no-store' });
+        const html = await res.text();
+        const ctn = document.getElementById('sidebar-container');
+        if (ctn) ctn.innerHTML = html;
+
+        // highlight active link
+        const active = document.querySelector(`#sidebar-container a[href="${location.pathname}"]`);
+        if (active) active.classList.add('bg-gray-100','text-gray-900','font-semibold');
+
+        // load sidebar script for sign-out and dynamic behavior
+        const s = document.createElement('script');
+        s.src = '/js/sidebar.js';
+        document.body.appendChild(s);
+      } catch(e) {
+        console.error('Sidebar load failed', e);
+      }
+    })();
+
+    // ---------------- Auth guard ----------------
+    let currentUser = null;
+    firebase.auth().onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = '/login/';
+        return;
+      }
+      currentUser = user;
+
+      // Require email verification (adjust if you want to allow unverified)
+      if (!user.emailVerified) {
+        // show unverified badge but allow staying here to trigger resend
+        showEmailRow(user, false);
+        showToast('Please verify your email to unlock all features.', 'warn');
+      } else {
+        showEmailRow(user, true);
+      }
+
+      document.getElementById('user-email').textContent = user.email || '';
+
+      // Load subscription from Firestore: users/{uid}
+      try {
+        const db = firebase.firestore();
+        const doc = await db.collection('users').doc(user.uid).get();
+        const data = doc.exists ? doc.data() : {};
+        renderPlan(data);
+      } catch (e) {
+        console.error(e);
+        renderPlan({});
+      }
+    });
+
+    function showEmailRow(user, verified) {
+      const badge = document.getElementById('email-verified-badge');
+      const resendBtn = document.getElementById('resend-verify-btn');
+      if (verified) {
+        badge.textContent = 'Verified';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-xs bg-green-100 text-green-800 border border-green-200';
+        resendBtn.classList.add('hidden');
+      } else {
+        badge.textContent = 'Not verified';
+        badge.className = 'inline-flex items-center px-2 py-0.5 rounded text-xs bg-orange-100 text-orange-800 border border-orange-200';
+        resendBtn.classList.remove('hidden');
+        resendBtn.onclick = async () => {
+          try {
+            await currentUser.sendEmailVerification();
+            showToast('Verification email sent.', 'success');
+          } catch(e) {
+            console.error(e);
+            showToast('Failed to send verification email.', 'error');
+          }
+        };
+      }
+    }
+
+    // ---------------- Password reset ----------------
+    document.getElementById('send-reset-btn').addEventListener('click', async () => {
+      try {
+        const email = currentUser?.email;
+        if (!email) return;
+        await firebase.auth().sendPasswordResetEmail(email);
+        showToast('Password reset email sent.', 'success');
+      } catch (e) {
+        console.error(e);
+        showToast('Could not send reset email.', 'error');
+      }
+    });
+
+    // ---------------- Plan render ----------------
+    function renderPlan(data) {
+      const plan = data.plan || 'Free';
+      const status = data.status || 'active';
+      const ts = data.current_period_end ? new Date(data.current_period_end) : null;
+
+      const planBadge = document.getElementById('plan-badge');
+      const planStatus = document.getElementById('plan-status');
+      const planRenew = document.getElementById('plan-renew');
+
+      planBadge.textContent = plan;
+      planBadge.className = 'inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium ' +
+        (plan === 'Free' ? 'text-gray-700 bg-gray-50' :
+         plan === 'Pro'  ? 'text-white bg-green-600 border-green-600' :
+         plan === 'Team' ? 'text-white bg-blue-600 border-blue-600' :
+                           'text-white bg-purple-600 border-purple-600');
+
+      planStatus.textContent = status;
+      planRenew.textContent = ts ? ts.toLocaleDateString() : '—';
+    }
+
+    // ---------------- Billing actions ----------------
+    const CHECKOUT_API = 'https://api.devopsia.co/create-checkout-session';   // TODO: replace if different
+    const PORTAL_API   = 'https://api.devopsia.co/create-portal-session';     // TODO: implement if not present
+
+    // Example: open checkout preselecting a plan (change 'pro_monthly' to your price id mapping on backend)
+    document.getElementById('upgrade-btn').addEventListener('click', () => startCheckout('pro_monthly'));
+    document.getElementById('downgrade-btn').addEventListener('click', () => startCheckout('free'));
+    document.getElementById('billing-portal-btn').addEventListener('click', openBillingPortal);
+
+    async function startCheckout(priceKey) {
+      try {
+        const token = await currentUser.getIdToken();
+        const res = await fetch(CHECKOUT_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({
+            priceKey, // backend maps this to Stripe price ID
+            success_url: window.location.origin + '/profile/?status=success',
+            cancel_url: window.location.origin + '/profile/?status=cancel'
+          })
+        });
+        if (!res.ok) throw new Error('Checkout request failed');
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          showToast('Failed to start checkout.', 'error');
+        }
+      } catch (e) {
+        console.error(e);
+        showToast('Failed to start checkout.', 'error');
+      }
+    }
+
+    async function openBillingPortal() {
+      try {
+        const token = await currentUser.getIdToken();
+        const res = await fetch(PORTAL_API, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if (!res.ok) throw new Error('Portal request failed');
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          showToast('Could not open billing portal.', 'error');
+        }
+      } catch (e) {
+        console.error(e);
+        showToast('Could not open billing portal.', 'error');
+      }
+    }
+
+    // Optional: handle status query params from Stripe redirect
+    (function handleStatus(){
+      const params = new URLSearchParams(window.location.search);
+      const status = params.get('status');
+      if (status === 'success') showToast('Subscription updated.', 'success');
+      if (status === 'cancel')  showToast('Billing was canceled.', 'warn');
+    })();
+  </script>
+</body>
+</html>
