@@ -11,7 +11,7 @@ const emptyEl = document.getElementById('history-empty');
 
 function refreshEmptyState() {
   if (!emptyEl) return;
-  emptyEl.classList.toggle('hidden', listEl.children.length > 0);
+  emptyEl.classList.toggle('u-hidden', listEl.children.length > 0);
 }
 
 // Which subcollection holds history? prefer "history", fallback to "prompts"
@@ -70,8 +70,8 @@ onAuthStateChanged(auth, async (user) => {
     window.location.replace('/login/');
     return;
   }
-  if (loadingEl) loadingEl.classList.add('hidden');
-  if (contentEl) contentEl.classList.remove('hidden');
+  if (loadingEl) loadingEl.classList.add('u-hidden');
+  if (contentEl) contentEl.classList.remove('u-hidden');
 
   await detectHistoryCollection(user.uid);
 
@@ -152,7 +152,7 @@ onAuthStateChanged(auth, async (user) => {
         toggleBtn.textContent = '\u25B6 Expand';
 
         const body = document.createElement('pre');
-        body.className = 'history-body hidden';
+        body.className = 'history-body u-hidden';
         body.textContent = data.response || data.output || '';
 
         promptCol.appendChild(title);
@@ -188,14 +188,14 @@ onAuthStateChanged(auth, async (user) => {
         toggleBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           const collapsed = item.classList.toggle('is-collapsed');
-          body.classList.toggle('hidden', collapsed);
+          body.classList.toggle('u-hidden', collapsed);
           toggleBtn.textContent = collapsed ? '\u25B6 Expand' : '\u25BC Collapse';
         });
 
         // Optional: expand on title click
         title.addEventListener('click', (e) => {
           const collapsed = item.classList.toggle('is-collapsed');
-          body.classList.toggle('hidden', collapsed);
+          body.classList.toggle('u-hidden', collapsed);
           toggleBtn.textContent = collapsed ? '\u25B6 Expand' : '\u25BC Collapse';
         });
 

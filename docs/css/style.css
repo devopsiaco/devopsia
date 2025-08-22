@@ -384,7 +384,7 @@ body.with-fixed-header {
 }
 
 /* robust hidden helper (works even without Tailwind) */
-.hidden { display: none !important; }
+.u-hidden { display: none !important; }
 
 /* Responsive: stack meta under prompt on small screens */
 @media (max-width: 640px) {
