@@ -312,3 +312,41 @@ body.with-fixed-header {
   padding-top: var(--header-min-h);
 }
 */
+/* Prompt History layout helpers */
+.history-item {
+  @apply bg-white rounded-lg shadow border border-gray-200 p-4;
+}
+.history-grid {
+  @apply grid items-center gap-3;
+  grid-template-columns: 40px 1fr auto; /* star | prompt | meta */
+}
+.star-btn {
+  @apply w-6 h-6 flex items-center justify-center shrink-0 rounded;
+  line-height: 1; /* keep glyph centered */
+  font-size: 1.25rem; /* ~20px for ☆/⭐ glyph */
+}
+.prompt-text {
+  @apply text-gray-800 break-words;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;      /* show up to 3 lines, remove if you want full wrap */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.meta-wrap {
+  @apply flex items-center gap-3 justify-end text-sm text-gray-600;
+}
+.mode-badge {
+  @apply inline-block text-xs px-2 py-1 rounded bg-gray-100;
+}
+.history-body {
+  @apply mt-2 whitespace-pre-wrap hidden text-sm bg-gray-50 p-3 rounded border;
+}
+
+@media (max-width: 640px) { /* stack meta under prompt on small screens */
+  .history-grid {
+    grid-template-columns: 40px 1fr;
+  }
+  .meta-wrap {
+    @apply col-span-2 justify-start mt-2;
+  }
+}

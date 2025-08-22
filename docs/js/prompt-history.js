@@ -120,101 +120,85 @@ onAuthStateChanged(auth, async (user) => {
   if (exportJsonBtn) exportJsonBtn.addEventListener('click', () => exportHistory('json'));
   if (exportCsvBtn) exportCsvBtn.addEventListener('click', () => exportHistory('csv'));
   try {
-    const snap = await getOrderedDocs(user.uid, 50);
-    snap.forEach((docSnap) => {
-      const data = docSnap.data();
-      const item = document.createElement('li');
-      item.className = 'border rounded p-4 bg-gray-50';
-      item.dataset.id = docSnap.id;
-      if (data.isFavorite) item.classList.add('bg-yellow-50');
+      const snap = await getOrderedDocs(user.uid, 50);
+      snap.forEach((docSnap) => {
+        const data = docSnap.data();
+        const item = document.createElement('li');
+        item.className = 'history-item';
+        item.dataset.id = docSnap.id;
+        if (data.isFavorite) item.classList.add('bg-yellow-50');
 
-      const header = document.createElement('div');
-      header.className = 'flex justify-between items-center cursor-pointer';
+        // grid wrapper
+        const row = document.createElement('div');
+        row.className = 'history-grid';
 
-      const left = document.createElement('div');
-      left.className = 'flex items-center';
+        // col 1: star (fixed size)
+        const starBtn = document.createElement('button');
+        starBtn.type = 'button';
+        starBtn.className = 'star-btn';
+        starBtn.title = data.isFavorite ? 'Unfavorite' : 'Save to favorites';
+        starBtn.textContent = data.isFavorite ? '⭐' : '☆';
 
-      const starBtn = document.createElement('button');
-      starBtn.type = 'button';
-      starBtn.className = 'mr-2 text-xl p-1';
-      starBtn.textContent = data.isFavorite ? '⭐' : '☆';
+        // col 2: prompt (title + expandable body)
+        const promptCol = document.createElement('div');
+        const title = document.createElement('div');
+        const text = data.prompt || data.input || '';
+        title.className = 'prompt-text';
+        title.textContent = text;
+        const body = document.createElement('pre');
+        body.className = 'history-body';
+        body.textContent = data.response || data.output || '';
+        promptCol.appendChild(title);
+        promptCol.appendChild(body);
 
-      const title = document.createElement('div');
-      const text = data.prompt || '';
-      title.textContent = text.length > 100 ? text.slice(0, 100) + '…' : text;
+        // col 3: meta + delete
+        const metaCol = document.createElement('div');
+        metaCol.className = 'meta-wrap';
+        const modeSpan = document.createElement('span');
+        modeSpan.className = 'mode-badge';
+        modeSpan.textContent = data.mode || data.profile || 'default';
+        const dateSpan = document.createElement('span');
+        const date = data.createdAt?.toDate ? data.createdAt.toDate() : null;
+        dateSpan.textContent = date ? date.toLocaleString() : '';
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'delete-entry text-red-500 hover:text-red-700';
+        deleteBtn.textContent = 'Delete';
+        metaCol.appendChild(modeSpan);
+        metaCol.appendChild(dateSpan);
+        metaCol.appendChild(deleteBtn);
 
-      left.appendChild(starBtn);
-      left.appendChild(title);
+        // assemble row
+        row.appendChild(starBtn);
+        row.appendChild(promptCol);
+        row.appendChild(metaCol);
 
-      const meta = document.createElement('div');
-      const modeSpan = document.createElement('span');
-      modeSpan.className = 'text-xs px-2 py-1 rounded bg-gray-200 mr-2';
-      modeSpan.textContent = data.mode || '';
-      const dateSpan = document.createElement('span');
-      const date = data.createdAt?.toDate ? data.createdAt.toDate() : null;
-      dateSpan.className = 'text-xs text-gray-500';
-      dateSpan.textContent = date ? date.toLocaleString() : '';
-      meta.appendChild(modeSpan);
-      meta.appendChild(dateSpan);
-      if (data.isFavorite) {
-        const favSpan = document.createElement('span');
-        favSpan.className = 'text-yellow-500 ml-2';
-        favSpan.textContent = '⭐ Favorite';
-        meta.appendChild(favSpan);
-      }
+        // toggle details when clicking prompt area (but not star/delete)
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('.star-btn') || e.target.closest('.delete-entry')) return;
+          body.classList.toggle('hidden');
+        });
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.type = 'button';
-      deleteBtn.className = 'delete-entry text-red-500 hover:text-red-700 text-sm ml-2';
-      deleteBtn.textContent = '🗑️ Delete';
+        item.appendChild(row);
+        listEl.appendChild(item);
 
-      const right = document.createElement('div');
-      right.className = 'flex items-center';
-      right.appendChild(meta);
-      right.appendChild(deleteBtn);
-
-      header.appendChild(left);
-      header.appendChild(right);
-
-      const body = document.createElement('pre');
-      body.className = 'mt-2 whitespace-pre-wrap hidden text-sm bg-white p-2 rounded border';
-      body.textContent = data.response || '';
-
-      header.addEventListener('click', (e) => {
-        if (starBtn.contains(e.target) || e.target.closest('.delete-entry')) return;
-        body.classList.toggle('hidden');
-      });
-
-      starBtn.addEventListener('click', async (e) => {
-        e.stopPropagation();
-        const newVal = !data.isFavorite;
-        try {
-          await updateDoc(doc(db, 'users', user.uid, HISTORY_COLL, docSnap.id), { isFavorite: newVal });
-          data.isFavorite = newVal;
-          starBtn.textContent = newVal ? '⭐' : '☆';
-          if (newVal) {
-            item.classList.add('bg-yellow-50');
-            const favSpan = document.createElement('span');
-            favSpan.className = 'text-yellow-500 ml-2';
-            favSpan.textContent = '⭐ Favorite';
-            meta.appendChild(favSpan);
-          } else {
-            item.classList.remove('bg-yellow-50');
-            meta.querySelectorAll('.text-yellow-500').forEach((el) => el.remove());
+        starBtn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const newVal = !data.isFavorite;
+          try {
+            await updateDoc(doc(db, 'users', user.uid, HISTORY_COLL, docSnap.id), { isFavorite: newVal });
+            data.isFavorite = newVal;
+            starBtn.textContent = newVal ? '⭐' : '☆';
+            item.classList.toggle('bg-yellow-50', newVal);
+          } catch (err) {
+            console.error('Failed to toggle favorite', err);
           }
-        } catch (err) {
-          console.error('Failed to toggle favorite', err);
-        }
+        });
       });
-
-      item.appendChild(header);
-      item.appendChild(body);
-      listEl.appendChild(item);
-    });
-    refreshEmptyState();
-  } catch (err) {
-    console.error('Failed to load prompt history', err);
-  }
+      refreshEmptyState();
+    } catch (err) {
+      console.error('Failed to load prompt history', err);
+    }
   listEl.addEventListener('click', async (e) => {
     const btn = e.target.closest('.delete-entry');
     if (!btn) return;
