@@ -19,21 +19,24 @@
       <main id="main-content" class="flex-1 p-6 bg-white">
         <nav class="text-sm text-gray-500 mb-2"><a href="/">Home</a> / Prompt History</nav>
         <h1 class="text-2xl font-semibold mb-4">Prompt History</h1>
-        <!-- Action buttons: Save to Favorites and export options -->
+        <!-- Action buttons: Save to Favorites, export options, and clear all -->
         <div class="flex flex-col sm:flex-row justify-end items-center gap-4 mt-4 mb-6">
           <button id="save-favorites" type="button" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-sm py-2 px-4 rounded shadow">
             ⭐ Save to Favorites
           </button>
-          <div class="flex gap-2">
+          <div class="flex gap-2 items-center">
             <button id="export-json-btn" type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-sm py-2 px-4 rounded shadow">
               Export JSON
             </button>
             <button id="export-csv" type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-sm py-2 px-4 rounded shadow">
               Export CSV
             </button>
+            <button id="clear-all-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow">
+              Clear All
+            </button>
           </div>
         </div>
-        <div id="history-list" class="space-y-4"></div>
+        <ul id="history-list" class="space-y-4 list-none"></ul>
       </main>
     </div>
   </div>
