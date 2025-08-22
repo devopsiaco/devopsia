@@ -4,220 +4,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Devopsia — Pricing</title>
+  <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&family=Bitcount+Grid+Double&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/flame-icon.svg" type="image/svg+xml">
+  <script type="module" src="/js/site.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
-  <header x-data="{ open: false }" class="gradient-banner fixed top-0 inset-x-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 banner-inner">
-      <div class="text-2xl font-normal font-brand pr-2">Devopsia</div>
-      <nav class="hidden md:flex items-center gap-4">
-        <a href="/#features" class="hover:underline">Features</a>
-        <a href="/pricing/" class="hover:underline">Pricing</a>
-      </nav>
-      <div class="hidden md:flex items-center gap-2">
-        <a href="#" class="banner-cta" @click="open = false">Start Building</a>
-        <a id="authButton" href="/login/" class="hover:underline">Login</a>
-      </div>
-      <button @click="open = !open" class="ml-auto md:hidden focus:outline-none mr-4">
-        <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-    <div x-show="open" x-transition:enter="transition-all duration-300 ease-in-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition-all duration-300 ease-in-out" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="absolute top-full left-0 w-full bg-white text-gray-800 shadow-md z-50 rounded-b md:hidden" @click.away="open = false" x-cloak>
-      <nav class="flex flex-col p-4 space-y-2">
-        <a href="/#features" class="block" @click="open = false">Features</a>
-        <a href="/pricing/" class="block" @click="open = false">Pricing</a>
-        <a href="#" class="banner-cta block text-center" @click="open = false">Start Building</a>
-        <a id="authButton" href="/login/" class="block" @click="open = false">Login</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container mx-auto py-20 flex-grow">
-    <h1 class="text-4xl font-extrabold text-center mb-8">Pricing</h1>
-    <div class="flex justify-center mb-8" role="group" aria-label="Pricing toggle">
-      <button id="btnMonthly" aria-pressed="true" class="px-4 py-2 rounded-l-lg bg-orange-500 text-white font-semibold">Monthly</button>
-      <button id="btnAnnual" aria-pressed="false" class="px-4 py-2 rounded-r-lg bg-gray-200 text-gray-600 font-semibold">Annual</button>
-    </div>
-
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
-        <h2 class="text-xl font-bold mb-2">Free <span class="sr-only">Plan</span></h2>
-        <p class="text-4xl font-extrabold mb-4">$0<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 flex-grow mb-6">
-          <li>3 prompts/day (Haiku only)</li>
-          <li>No saved history</li>
-          <li>Watermarked outputs</li>
-          <li>Community access (limited)</li>
-        </ul>
-        <a href="/login/" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Free</a>
+<body>
+  <div id="site-header"></div>
+  <main class="safe-top">
+    <section class="pricing-wrap">
+      <div class="pricing-head">
+        <h1 class="pricing-title">Pricing</h1>
+        <div class="pricing-note">Choose a plan that fits. Upgrade/downgrade anytime.</div>
       </div>
 
-      <div class="relative bg-white p-6 rounded-lg shadow flex flex-col ring-2 ring-orange-500">
-        <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-1 text-xs font-semibold rounded bg-orange-500 text-white">Recommended</span>
-        <h2 class="text-xl font-bold mb-2">Pro</h2>
-        <p id="pricePro" class="text-4xl font-extrabold mb-4">$9<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 flex-grow mb-6">
-          <li>100 prompts/mo (Haiku + Sonnet)</li>
-          <li>Prompt history</li>
-          <li>Priority Claude queue</li>
-          <li>Usage dashboard</li>
-          <li>Auto-upgrade option</li>
-        </ul>
-        <a href="#" onclick="startCheckout('pro')" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Upgrade to Pro</a>
-      </div>
+      <div class="pricing-grid">
+        <!-- Free -->
+        <article class="tier" data-plan="free">
+          <h3>Free</h3>
+          <div class="who">Explorers, learners</div>
+          <div><span class="price">$0</span><span class="period">/mo</span></div>
+          <ul class="feature-list">
+            <li>10 prompts / month</li>
+            <li>Claude Haiku</li>
+            <li>Basic kits, limited AI</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-outline" href="/login/?plan=free">Get Started</a>
+          </div>
+        </article>
 
-      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
-        <h2 class="text-xl font-bold mb-2">Team</h2>
-        <p id="priceTeam" class="text-4xl font-extrabold mb-4">$29<span class="text-base font-medium">/mo</span></p>
-        <ul class="space-y-2 flex-grow mb-6">
-          <li>500 shared prompts/month</li>
-          <li>Shared prompt history</li>
-          <li>Collaboration on prompt kits</li>
-          <li>Role-based access control</li>
-        </ul>
-        <a href="#" onclick="startCheckout('team')" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Start Team Plan</a>
-      </div>
+        <!-- Pro -->
+        <article class="tier" data-plan="pro">
+          <h3>Pro</h3>
+          <div class="who">DevOps engineers, solo devs</div>
+          <div><span class="price">$15</span><span class="period">/mo</span></div>
+          <div class="badge-cap">100 prompts / month</div>
+          <ul class="feature-list">
+            <li>Haiku + Sonnet (small)</li>
+            <li>AI assistant, download history</li>
+            <li>Premium kits</li>
+          </ul>
+          <div class="actions">
+            <button class="btn btn-primary" data-checkout="pro">Upgrade</button>
+            <a class="btn btn-outline" href="/ai-assistant-terraform/">Try Now</a>
+          </div>
+        </article>
 
-      <div class="bg-white p-6 rounded-lg shadow flex flex-col">
-        <h2 class="text-xl font-bold mb-2">Enterprise</h2>
-        <p class="text-4xl font-extrabold mb-4">Custom</p>
-        <ul class="space-y-2 flex-grow mb-6">
-          <li>Custom prompt limits</li>
-          <li>Claude Opus + Sonnet support</li>
-          <li>SSO and audit logs</li>
-          <li>SLA and premium support</li>
-        </ul>
-        <a href="mailto:hello@devopsia.co" class="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Contact Sales</a>
+        <!-- Team -->
+        <article class="tier" data-plan="team">
+          <h3>Team</h3>
+          <div class="who">Small teams, consultants</div>
+          <div><span class="price">$49</span><span class="period">/mo</span></div>
+          <div class="badge-cap">500 prompts / month</div>
+          <ul class="feature-list">
+            <li>Shared workspace, templates</li>
+            <li>Haiku + Sonnet</li>
+            <li>Multi-user (5 seats)</li>
+          </ul>
+          <div class="actions">
+            <button class="btn btn-primary" data-checkout="team">Start Team</button>
+            <a class="btn btn-outline" href="/ai-assistant-terraform/">Try Now</a>
+          </div>
+        </article>
+
+        <!-- Enterprise -->
+        <article class="tier" data-plan="enterprise">
+          <h3>Enterprise</h3>
+          <div class="who">Large teams, orgs</div>
+          <div><span class="price">Custom</span></div>
+          <div class="badge-cap lock">Custom limits</div>
+          <ul class="feature-list">
+            <li>SSO, rate caps, audit logs</li>
+            <li>Sonnet + Opus + long context</li>
+            <li>Premium SLA</li>
+          </ul>
+          <div class="actions">
+            <a class="btn btn-primary" href="mailto:hello@devopsia.co?subject=Devopsia%20Enterprise">Contact Sales</a>
+          </div>
+        </article>
       </div>
-    </div>
+    </section>
   </main>
-
-  <footer class="text-center py-4">© 2025 Devopsia</footer>
-
-  <script>
-    const btnMonthly = document.getElementById('btnMonthly');
-    const btnAnnual = document.getElementById('btnAnnual');
-    const monthlyPro = 9;
-    const monthlyTeam = 29;
-
-    btnMonthly.addEventListener('click', () => {
-      btnMonthly.classList.add('bg-orange-500','text-white');
-      btnAnnual.classList.remove('bg-orange-500','text-white');
-      btnAnnual.classList.add('bg-gray-200','text-gray-600');
-      btnMonthly.classList.remove('bg-gray-200','text-gray-600');
-      btnMonthly.setAttribute('aria-pressed', 'true');
-      btnAnnual.setAttribute('aria-pressed', 'false');
-      document.getElementById('pricePro').innerHTML = `$${monthlyPro}<span class="text-base font-medium">/mo</span>`;
-      document.getElementById('priceTeam').innerHTML = `$${monthlyTeam}<span class="text-base font-medium">/mo</span>`;
-    });
-
-    btnAnnual.addEventListener('click', () => {
-      btnAnnual.classList.add('bg-orange-500','text-white');
-      btnMonthly.classList.remove('bg-orange-500','text-white');
-      btnMonthly.classList.add('bg-gray-200','text-gray-600');
-      btnAnnual.classList.remove('bg-gray-200','text-gray-600');
-      btnMonthly.setAttribute('aria-pressed', 'false');
-      btnAnnual.setAttribute('aria-pressed', 'true');
-      const yearlyPro = monthlyPro * 12;
-      const yearlyTeam = monthlyTeam * 12;
-      document.getElementById('pricePro').innerHTML = `$${yearlyPro}<span class="text-base font-medium">/yr</span>`;
-      document.getElementById('priceTeam').innerHTML = `$${yearlyTeam}<span class="text-base font-medium">/yr</span>`;
-    });
-  </script>
-
-  <script type="module" src="/js/firebase.js"></script>
-  <script type="module" src="/js/auth.js"></script>
+  <div id="site-footer"></div>
 
   <script type="module">
-    import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-    import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
-      authDomain: "devopsia.firebaseapp.com",
-      projectId: "devopsia-39ea5",
-      appId: "1:789816052410:web:241ea4bd6a5b60ba855083"
-    };
-
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    function handleStartBuilding() {
-      const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      window.location.href = user ? '/pricing/' : '/login/';
+    // Reuse your existing startCheckout(plan) if present; otherwise:
+    async function startCheckout(plan){
+      try{
+        const res = await fetch('https://api.devopsia.co/create-checkout-session', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ plan })
+        });
+        const { url } = await res.json();
+        if (url) location.href = url; else alert('Failed to start checkout.');
+      }catch(e){ console.error(e); alert('Failed to start checkout.'); }
     }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const buttons = Array.from(document.querySelectorAll('button, a')).filter(el =>
-        el.classList.contains('start-button') || el.textContent.trim() === 'Start Building'
-      );
-      buttons.forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.preventDefault();
-          handleStartBuilding();
-        });
-      });
+    document.querySelectorAll('[data-checkout]').forEach(btn=>{
+      btn.addEventListener('click', ()=> startCheckout(btn.getAttribute('data-checkout')));
     });
-  </script>
-
-  <script type="module">
-    import { getAuth } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-    import { getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js';
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyA0bTCMkxBeZ9RQsqWSBI92-M6fcnwGbOU",
-      authDomain: "devopsia-39ea5.firebaseapp.com",
-      projectId: "devopsia-39ea5",
-      storageBucket: "devopsia-39ea5.firebasestorage.app",
-      messagingSenderId: "789816052410",
-      appId: "1:789816052410:web:241ea4bd6a5b60ba855083",
-      measurementId: "G-V190R34CQD"
-    };
-
-    const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    window.startCheckout = async function(plan) {
-      console.log('Starting checkout for plan:', plan);
-      const user = auth.currentUser || (window.firebase && window.firebase.auth && window.firebase.auth().currentUser);
-      if (!user) {
-        alert('Please log in to continue.');
-        return;
-      }
-      try {
-        const response = await fetch('https://rlawt04271.execute-api.eu-north-1.amazonaws.com/live', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ plan, userId: user.uid })
-        });
-
-        if (!response.ok) {
-          throw new Error('Request failed with status ' + response.status);
-        }
-
-        const data = await response.json();
-        console.log('Checkout session created:', data);
-        if (data.checkoutUrl) {
-          window.location.href = data.checkoutUrl;
-        } else {
-          alert('Checkout URL not provided.');
-        }
-      } catch (err) {
-        console.error('Checkout error:', err);
-        alert('Failed to start checkout. Please try again.');
-      }
-    };
   </script>
 </body>
 </html>
