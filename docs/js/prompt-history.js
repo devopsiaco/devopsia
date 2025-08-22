@@ -1,12 +1,20 @@
 import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { collection, query, orderBy, limit, getDocs, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import { collection, query, orderBy, limit, getDocs, doc, updateDoc, deleteDoc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 const loadingEl = document.getElementById('auth-loading');
 const contentEl = document.getElementById('protected-content');
 const listEl = document.getElementById('history-list');
 const exportJsonBtn = document.getElementById('export-json-btn');
 const exportCsvBtn = document.getElementById('export-csv');
+
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.className = 'fixed top-4 right-4 bg-gray-800 text-white py-2 px-4 rounded shadow z-50';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user || !user.emailVerified) {
@@ -19,7 +27,7 @@ onAuthStateChanged(auth, async (user) => {
   const exportHistory = async (type) => {
     try {
       const qAll = query(
-        collection(db, 'users', user.uid, 'prompts'),
+        collection(db, 'users', user.uid, 'history'),
         orderBy('createdAt', 'desc')
       );
       const snapAll = await getDocs(qAll);
@@ -66,15 +74,16 @@ onAuthStateChanged(auth, async (user) => {
   if (exportCsvBtn) exportCsvBtn.addEventListener('click', () => exportHistory('csv'));
   try {
     const q = query(
-      collection(db, 'users', user.uid, 'prompts'),
+      collection(db, 'users', user.uid, 'history'),
       orderBy('createdAt', 'desc'),
       limit(50)
     );
     const snap = await getDocs(q);
     snap.forEach((docSnap) => {
       const data = docSnap.data();
-      const item = document.createElement('div');
+      const item = document.createElement('li');
       item.className = 'border rounded p-4 bg-gray-50';
+      item.dataset.id = docSnap.id;
       if (data.isFavorite) item.classList.add('bg-yellow-50');
 
       const header = document.createElement('div');
@@ -112,15 +121,25 @@ onAuthStateChanged(auth, async (user) => {
         meta.appendChild(favSpan);
       }
 
+      const deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'delete-entry text-red-500 hover:text-red-700 text-sm ml-2';
+      deleteBtn.textContent = '🗑️ Delete';
+
+      const right = document.createElement('div');
+      right.className = 'flex items-center';
+      right.appendChild(meta);
+      right.appendChild(deleteBtn);
+
       header.appendChild(left);
-      header.appendChild(meta);
+      header.appendChild(right);
 
       const body = document.createElement('pre');
       body.className = 'mt-2 whitespace-pre-wrap hidden text-sm bg-white p-2 rounded border';
       body.textContent = data.response || '';
 
       header.addEventListener('click', (e) => {
-        if (starBtn.contains(e.target)) return;
+        if (starBtn.contains(e.target) || e.target.closest('.delete-entry')) return;
         body.classList.toggle('hidden');
       });
 
@@ -128,7 +147,7 @@ onAuthStateChanged(auth, async (user) => {
         e.stopPropagation();
         const newVal = !data.isFavorite;
         try {
-          await updateDoc(doc(db, 'users', user.uid, 'prompts', docSnap.id), { isFavorite: newVal });
+          await updateDoc(doc(db, 'users', user.uid, 'history', docSnap.id), { isFavorite: newVal });
           data.isFavorite = newVal;
           starBtn.textContent = newVal ? '⭐' : '☆';
           if (newVal) {
@@ -152,5 +171,41 @@ onAuthStateChanged(auth, async (user) => {
     });
   } catch (err) {
     console.error('Failed to load prompt history', err);
+  }
+  listEl.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.delete-entry');
+    if (!btn) return;
+    e.stopPropagation();
+    const li = btn.closest('li[data-id]');
+    const entryId = li?.dataset.id;
+    const uid = auth.currentUser?.uid;
+    if (!entryId || !uid) return;
+    li.remove();
+    try {
+      await deleteDoc(doc(db, 'users', uid, 'history', entryId));
+      showToast('Entry deleted');
+    } catch (err) {
+      console.error('Failed to delete entry', err);
+    }
+  });
+
+  const clearAllBtn = document.getElementById('clear-all-btn');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to delete all history?')) return;
+      const uid = auth.currentUser?.uid;
+      if (!uid) return;
+      try {
+        const histRef = collection(db, 'users', uid, 'history');
+        const snapAll = await getDocs(histRef);
+        const batch = writeBatch(db);
+        snapAll.forEach((d) => batch.delete(d.ref));
+        await batch.commit();
+        listEl.innerHTML = '';
+        showToast('All history cleared');
+      } catch (err) {
+        console.error('Failed to clear history', err);
+      }
+    });
   }
 });
