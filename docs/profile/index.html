@@ -9,17 +9,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800">
+  <div id="top-banner"></div>
   <!-- Top header -->
-  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="/" class="font-semibold text-lg">Devopsia</a>
-      <nav class="flex items-center gap-4 text-sm">
-        <a href="/pricing/" class="hover:underline">Pricing</a>
-        <a id="nav-ai" href="/ai-assistant-terraform/" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-red-500 text-white hover:bg-red-600 transition">Start Building</a>
-      </nav>
-    </div>
-  </header>
-
+  
   <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-12 gap-6 mt-6">
 
     <!-- Sidebar -->
@@ -289,5 +281,6 @@
       if (status === 'cancel')  showToast('Billing was canceled.', 'warn');
     })();
   </script>
+  <script src="/js/header.js"></script>
 </body>
 </html>
