@@ -124,7 +124,7 @@ onAuthStateChanged(auth, async (user) => {
       snap.forEach((docSnap) => {
         const data = docSnap.data();
         const item = document.createElement('li');
-        item.className = 'history-item';
+        item.className = 'history-item is-collapsed';
         item.dataset.id = docSnap.id;
         if (data.isFavorite) item.classList.add('bg-yellow-50');
 
@@ -145,10 +145,18 @@ onAuthStateChanged(auth, async (user) => {
         const text = data.prompt || data.input || '';
         title.className = 'prompt-text';
         title.textContent = text;
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.type = 'button';
+        toggleBtn.className = 'toggle-btn text-sm text-blue-600 hover:underline';
+        toggleBtn.textContent = '\u25B6 Expand';
+
         const body = document.createElement('pre');
-        body.className = 'history-body';
+        body.className = 'history-body hidden';
         body.textContent = data.response || data.output || '';
+
         promptCol.appendChild(title);
+        promptCol.appendChild(toggleBtn);
         promptCol.appendChild(body);
 
         // col 3: meta + delete
@@ -174,13 +182,22 @@ onAuthStateChanged(auth, async (user) => {
         row.appendChild(metaCol);
 
         // toggle details when clicking prompt area (but not star/delete)
-        row.addEventListener('click', (e) => {
-          if (e.target.closest('.star-btn') || e.target.closest('.delete-entry')) return;
-          body.classList.toggle('hidden');
-        });
-
         item.appendChild(row);
         listEl.appendChild(item);
+
+        toggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const collapsed = item.classList.toggle('is-collapsed');
+          body.classList.toggle('hidden', collapsed);
+          toggleBtn.textContent = collapsed ? '\u25B6 Expand' : '\u25BC Collapse';
+        });
+
+        // Optional: expand on title click
+        title.addEventListener('click', (e) => {
+          const collapsed = item.classList.toggle('is-collapsed');
+          body.classList.toggle('hidden', collapsed);
+          toggleBtn.textContent = collapsed ? '\u25B6 Expand' : '\u25BC Collapse';
+        });
 
         starBtn.addEventListener('click', async (e) => {
           e.stopPropagation();
