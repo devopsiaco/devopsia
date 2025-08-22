@@ -1,21 +1,12 @@
 import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { collection, query, orderBy, limit, getDocs, doc, updateDoc, deleteDoc, writeBatch } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import { collection, query, orderBy, limit, getDocs, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 const loadingEl = document.getElementById('auth-loading');
 const contentEl = document.getElementById('protected-content');
 const listEl = document.getElementById('history-list');
 const exportJsonBtn = document.getElementById('export-json-btn');
 const exportCsvBtn = document.getElementById('export-csv');
-const clearAllBtn = document.getElementById('clear-all-btn');
-
-function showToast(message) {
-  const toast = document.createElement('div');
-  toast.textContent = message;
-  toast.className = 'fixed top-4 right-4 bg-gray-800 text-white py-2 px-4 rounded shadow z-50';
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3000);
-}
 
 onAuthStateChanged(auth, async (user) => {
   if (!user || !user.emailVerified) {
@@ -28,7 +19,7 @@ onAuthStateChanged(auth, async (user) => {
   const exportHistory = async (type) => {
     try {
       const qAll = query(
-        collection(db, 'users', user.uid, 'history'),
+        collection(db, 'users', user.uid, 'prompts'),
         orderBy('createdAt', 'desc')
       );
       const snapAll = await getDocs(qAll);
@@ -75,15 +66,14 @@ onAuthStateChanged(auth, async (user) => {
   if (exportCsvBtn) exportCsvBtn.addEventListener('click', () => exportHistory('csv'));
   try {
     const q = query(
-      collection(db, 'users', user.uid, 'history'),
+      collection(db, 'users', user.uid, 'prompts'),
       orderBy('createdAt', 'desc'),
       limit(50)
     );
     const snap = await getDocs(q);
     snap.forEach((docSnap) => {
       const data = docSnap.data();
-      const item = document.createElement('li');
-      item.dataset.id = docSnap.id;
+      const item = document.createElement('div');
       item.className = 'border rounded p-4 bg-gray-50';
       if (data.isFavorite) item.classList.add('bg-yellow-50');
 
@@ -115,11 +105,6 @@ onAuthStateChanged(auth, async (user) => {
       dateSpan.textContent = date ? date.toLocaleString() : '';
       meta.appendChild(modeSpan);
       meta.appendChild(dateSpan);
-      const deleteBtn = document.createElement('button');
-      deleteBtn.type = 'button';
-      deleteBtn.className = 'delete-entry text-red-500 hover:text-red-700 text-sm ml-2';
-      deleteBtn.textContent = '🗑️ Delete';
-      meta.appendChild(deleteBtn);
       if (data.isFavorite) {
         const favSpan = document.createElement('span');
         favSpan.className = 'text-yellow-500 ml-2';
@@ -143,7 +128,7 @@ onAuthStateChanged(auth, async (user) => {
         e.stopPropagation();
         const newVal = !data.isFavorite;
         try {
-          await updateDoc(doc(db, 'users', user.uid, 'history', docSnap.id), { isFavorite: newVal });
+          await updateDoc(doc(db, 'users', user.uid, 'prompts', docSnap.id), { isFavorite: newVal });
           data.isFavorite = newVal;
           starBtn.textContent = newVal ? '⭐' : '☆';
           if (newVal) {
@@ -167,42 +152,5 @@ onAuthStateChanged(auth, async (user) => {
     });
   } catch (err) {
     console.error('Failed to load prompt history', err);
-  }
-
-  if (listEl) {
-    listEl.addEventListener('click', async (e) => {
-      const btn = e.target.closest('.delete-entry');
-      if (!btn) return;
-      e.stopPropagation();
-      const li = btn.closest('li');
-      const entryId = li?.dataset.id;
-      if (!entryId) return;
-      li.remove();
-      try {
-        await deleteDoc(doc(db, 'users', user.uid, 'history', entryId));
-        showToast('Entry deleted');
-      } catch (err) {
-        console.error('Failed to delete entry', err);
-      }
-    }, true);
-  }
-
-  if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', async () => {
-      if (!confirm('Are you sure you want to delete all history?')) return;
-      try {
-        const qAll = query(collection(db, 'users', user.uid, 'history'));
-        const snapAll = await getDocs(qAll);
-        const batch = writeBatch(db);
-        snapAll.forEach((d) => {
-          batch.delete(doc(db, 'users', user.uid, 'history', d.id));
-        });
-        await batch.commit();
-        if (listEl) listEl.innerHTML = '';
-        showToast('All history cleared');
-      } catch (err) {
-        console.error('Failed to clear history', err);
-      }
-    });
   }
 });
