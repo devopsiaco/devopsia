@@ -7,6 +7,55 @@ const contentEl = document.getElementById('protected-content');
 const listEl = document.getElementById('history-list');
 const exportJsonBtn = document.getElementById('export-json-btn');
 const exportCsvBtn = document.getElementById('export-csv');
+const emptyEl = document.getElementById('history-empty');
+
+function refreshEmptyState() {
+  if (!emptyEl) return;
+  emptyEl.classList.toggle('hidden', listEl.children.length > 0);
+}
+
+// Which subcollection holds history? prefer "history", fallback to "prompts"
+let HISTORY_COLL = 'history';
+
+function colRef(uid) {
+  return collection(db, 'users', uid, HISTORY_COLL);
+}
+
+async function detectHistoryCollection(uid) {
+  // Prefer "history"
+  try {
+    const snapHistory = await getDocs(query(colRefWith('history'), limit(1)));
+    if (!snapHistory.empty) {
+      HISTORY_COLL = 'history';
+      return;
+    }
+  } catch (_) {}
+  // Fallback to "prompts"
+  try {
+    const snapPrompts = await getDocs(query(colRefWith('prompts'), limit(1)));
+    if (!snapPrompts.empty) {
+      HISTORY_COLL = 'prompts';
+      return;
+    }
+  } catch (_) {}
+  // Default to "history" even if empty (new accounts)
+  HISTORY_COLL = 'history';
+
+  function colRefWith(name) {
+    return collection(db, 'users', uid, name);
+  }
+}
+
+async function getOrderedDocs(uid, pageLimit = 50) {
+  // Try ordering by createdAt desc, fallback to plain get if it fails
+  try {
+    const q = query(colRef(uid), orderBy('createdAt', 'desc'), limit(pageLimit));
+    return await getDocs(q);
+  } catch (err) {
+    // Some docs may lack createdAt or index not built; fallback to unordered
+    return await getDocs(query(colRef(uid), limit(pageLimit)));
+  }
+}
 
 function showToast(message) {
   const toast = document.createElement('div');
@@ -24,13 +73,11 @@ onAuthStateChanged(auth, async (user) => {
   if (loadingEl) loadingEl.classList.add('hidden');
   if (contentEl) contentEl.classList.remove('hidden');
 
+  await detectHistoryCollection(user.uid);
+
   const exportHistory = async (type) => {
     try {
-      const qAll = query(
-        collection(db, 'users', user.uid, 'history'),
-        orderBy('createdAt', 'desc')
-      );
-      const snapAll = await getDocs(qAll);
+      const snapAll = await getDocs(colRef(user.uid)); // small datasets
       const data = snapAll.docs.map((d) => {
         const val = d.data();
         return {
@@ -73,12 +120,7 @@ onAuthStateChanged(auth, async (user) => {
   if (exportJsonBtn) exportJsonBtn.addEventListener('click', () => exportHistory('json'));
   if (exportCsvBtn) exportCsvBtn.addEventListener('click', () => exportHistory('csv'));
   try {
-    const q = query(
-      collection(db, 'users', user.uid, 'history'),
-      orderBy('createdAt', 'desc'),
-      limit(50)
-    );
-    const snap = await getDocs(q);
+    const snap = await getOrderedDocs(user.uid, 50);
     snap.forEach((docSnap) => {
       const data = docSnap.data();
       const item = document.createElement('li');
@@ -147,7 +189,7 @@ onAuthStateChanged(auth, async (user) => {
         e.stopPropagation();
         const newVal = !data.isFavorite;
         try {
-          await updateDoc(doc(db, 'users', user.uid, 'history', docSnap.id), { isFavorite: newVal });
+          await updateDoc(doc(db, 'users', user.uid, HISTORY_COLL, docSnap.id), { isFavorite: newVal });
           data.isFavorite = newVal;
           starBtn.textContent = newVal ? '⭐' : '☆';
           if (newVal) {
@@ -169,6 +211,7 @@ onAuthStateChanged(auth, async (user) => {
       item.appendChild(body);
       listEl.appendChild(item);
     });
+    refreshEmptyState();
   } catch (err) {
     console.error('Failed to load prompt history', err);
   }
@@ -182,11 +225,12 @@ onAuthStateChanged(auth, async (user) => {
     if (!entryId || !uid) return;
     li.remove();
     try {
-      await deleteDoc(doc(db, 'users', uid, 'history', entryId));
+      await deleteDoc(doc(db, 'users', uid, HISTORY_COLL, entryId));
       showToast('Entry deleted');
     } catch (err) {
       console.error('Failed to delete entry', err);
     }
+    refreshEmptyState();
   });
 
   const clearAllBtn = document.getElementById('clear-all-btn');
@@ -196,7 +240,7 @@ onAuthStateChanged(auth, async (user) => {
       const uid = auth.currentUser?.uid;
       if (!uid) return;
       try {
-        const histRef = collection(db, 'users', uid, 'history');
+        const histRef = colRef(uid);
         const snapAll = await getDocs(histRef);
         const batch = writeBatch(db);
         snapAll.forEach((d) => batch.delete(d.ref));
@@ -206,6 +250,7 @@ onAuthStateChanged(auth, async (user) => {
       } catch (err) {
         console.error('Failed to clear history', err);
       }
+      refreshEmptyState();
     });
   }
 });
