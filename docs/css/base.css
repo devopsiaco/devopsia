@@ -98,3 +98,71 @@ history-item{comp:initial;} /* marker for grep */
   .history-grid{grid-template-columns:40px 1fr;}
   .meta-wrap{grid-column:1 / -1;justify-content:flex-start;margin-top:.5rem;}
 }
+/// ===== Assistant Layout =====
+.app-grid{display:grid;grid-template-columns:240px 1fr;gap:1rem;}
+@media (max-width:1024px){.app-grid{grid-template-columns:1fr;}}
+.sidebar{
+  position:sticky; top:1rem;
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:var(--shadow-sm);padding:var(--pad-4);
+  height:fit-content;
+}
+.sidebar h2{margin:0 0 .5rem 0;font-size:.875rem;color:var(--muted);}
+.nav-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.25rem;}
+.nav-item a{
+  display:flex;align-items:center;gap:.5rem;
+  text-decoration:none;color:#111;padding:.5rem .5rem;border-radius:.375rem;
+}
+.nav-item a:hover{background:var(--panel-2);}
+.nav-item a.active{background:#ecfdf5;border:1px solid #bbf7d0;}
+.nav-foot{margin-top:1rem;border-top:1px dashed var(--border);padding-top:.75rem;display:flex;flex-direction:column;gap:.25rem;}
+
+.main-panel{display:block;}
+.page-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;}
+.breadcrumbs{font-size:.875rem;color:var(--muted);}
+.page-title{font-size:1.25rem;font-weight:600;color:#111;}
+
+.toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
+.select,.input,.textarea{
+  width:100%;max-width:none;
+  border:1px solid var(--border);border-radius:.375rem;background:#fff;color:#111;
+}
+.select{height:2.25rem;padding:.25rem .5rem;}
+.input{height:2.25rem;padding:.25rem .5rem;}
+.textarea{min-height:140px;padding:.5rem;resize:vertical;}
+.field{display:flex;flex-direction:column;gap:.375rem;}
+
+.panel{
+  background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-sm);
+  padding:1rem;
+}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
+.panel-title{font-weight:600;}
+.panel-actions{display:flex;align-items:center;gap:.5rem;}
+
+.codebox{
+  background:#0b1021;color:#e5e7eb;border-radius:.5rem;border:1px solid #1f2937;
+  padding:1rem;overflow:auto;white-space:pre;max-height:60vh;
+}
+.copy-btn{cursor:pointer;}
+.helper{font-size:.75rem;color:var(--muted);}
+
+.toast{position:fixed;bottom:1rem;right:1rem;background:#111;color:#fff;
+  padding:.5rem .75rem;border-radius:.375rem;box-shadow:var(--shadow-sm);display:none;}
+.toast.show{display:block;}
+
+.safe-top{padding-top:1rem;} /* prevent header overlap if header is sticky/fixed */
+
+
+/// ===== Buttons (reuse from base) quick aliases =====
+.btn-primary{background:var(--brand);color:#fff;border:1px solid var(--brand);}
+.btn-primary:hover{filter:brightness(0.95);}
+.btn-outline{background:#fff;border:1px solid var(--border);color:#111;}
+.btn-outline:hover{background:var(--panel-2);}
+
+/// ===== Badges / pills for modes =====
+.pill{display:inline-flex;align-items:center;gap:.375rem;font-size:.75rem;
+  padding:.25rem .5rem;border-radius:999px;background:var(--panel-2);color:#111;}
+.pill.lock::before{content:"🔒";}
+.pill.spark::before{content:"⚡";}
+.pill.shield::before{content:"🛡️";}
