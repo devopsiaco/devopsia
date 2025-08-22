@@ -312,41 +312,88 @@ body.with-fixed-header {
   padding-top: var(--header-min-h);
 }
 */
-/* Prompt History layout helpers */
+/* --- Prompt History layout helpers (no Tailwind @apply) --- */
 .history-item {
-  @apply bg-white rounded-lg shadow border border-gray-200 p-4;
+  background: #ffffff;
+  border-radius: 0.5rem;       /* rounded-lg */
+  border: 1px solid #e5e7eb;   /* border-gray-200 */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05); /* small shadow */
+  padding: 1rem;               /* p-4 */
 }
+
 .history-grid {
-  @apply grid items-center gap-3;
+  display: grid;
+  align-items: center;         /* items-center */
+  gap: 0.75rem;                /* gap-3 */
   grid-template-columns: 40px 1fr auto; /* star | prompt | meta */
 }
+
+/* fixed-size star cell */
 .star-btn {
-  @apply w-6 h-6 flex items-center justify-center shrink-0 rounded;
-  line-height: 1; /* keep glyph centered */
-  font-size: 1.25rem; /* ~20px for ☆/⭐ glyph */
+  width: 24px;                 /* w-6 */
+  height: 24px;                /* h-6 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;              /* shrink-0 */
+  border-radius: 0.25rem;
+  line-height: 1;
+  font-size: 1.25rem;          /* ~20px glyph size */
+  cursor: pointer;
 }
+
+/* prompt text: clamp when collapsed; full wrap when expanded */
 .prompt-text {
-  @apply text-gray-800 break-words;
+  color: #1f2937;              /* text-gray-800 */
+  word-break: break-word;
+}
+
+/* clamp ONLY when the row has .is-collapsed */
+.history-item.is-collapsed .prompt-text {
   display: -webkit-box;
-  -webkit-line-clamp: 3;      /* show up to 3 lines, remove if you want full wrap */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 .meta-wrap {
-  @apply flex items-center gap-3 justify-end text-sm text-gray-600;
-}
-.mode-badge {
-  @apply inline-block text-xs px-2 py-1 rounded bg-gray-100;
-}
-.history-body {
-  @apply mt-2 whitespace-pre-wrap hidden text-sm bg-gray-50 p-3 rounded border;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;                /* gap-3 */
+  justify-content: flex-end;   /* right align */
+  font-size: 0.875rem;         /* text-sm */
+  color: #4b5563;              /* text-gray-600 */
 }
 
-@media (max-width: 640px) { /* stack meta under prompt on small screens */
+.mode-badge {
+  display: inline-block;
+  font-size: 0.75rem;          /* text-xs */
+  padding: 0.25rem 0.5rem;     /* px-2 py-1 */
+  border-radius: 0.375rem;
+  background: #f3f4f6;         /* bg-gray-100 */
+}
+
+.history-body {
+  margin-top: 0.5rem;          /* mt-2 */
+  white-space: pre-wrap;       /* whitespace-pre-wrap */
+  font-size: 0.875rem;
+  background: #f9fafb;         /* bg-gray-50 */
+  padding: 0.75rem;            /* p-3 */
+  border-radius: 0.375rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* robust hidden helper (works even without Tailwind) */
+.hidden { display: none !important; }
+
+/* Responsive: stack meta under prompt on small screens */
+@media (max-width: 640px) {
   .history-grid {
     grid-template-columns: 40px 1fr;
   }
   .meta-wrap {
-    @apply col-span-2 justify-start mt-2;
+    grid-column: 1 / -1;       /* span across */
+    justify-content: flex-start;
+    margin-top: 0.5rem;
   }
 }
