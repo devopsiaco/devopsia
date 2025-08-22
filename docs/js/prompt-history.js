@@ -6,7 +6,7 @@ const loadingEl = document.getElementById('auth-loading');
 const contentEl = document.getElementById('protected-content');
 const listEl = document.getElementById('history-list');
 const exportJsonBtn = document.getElementById('export-json-btn');
-const exportCsvBtn = document.getElementById('export-csv');
+const exportCsvBtn = document.getElementById('export-csv-btn');
 const emptyEl = document.getElementById('history-empty');
 
 function refreshEmptyState() {
@@ -163,14 +163,14 @@ onAuthStateChanged(auth, async (user) => {
         const metaCol = document.createElement('div');
         metaCol.className = 'meta-wrap';
         const modeSpan = document.createElement('span');
-        modeSpan.className = 'mode-badge';
+        modeSpan.className = 'badge';
         modeSpan.textContent = data.mode || data.profile || 'default';
         const dateSpan = document.createElement('span');
         const date = data.createdAt?.toDate ? data.createdAt.toDate() : null;
         dateSpan.textContent = date ? date.toLocaleString() : '';
         const deleteBtn = document.createElement('button');
         deleteBtn.type = 'button';
-        deleteBtn.className = 'delete-entry text-red-500 hover:text-red-700';
+        deleteBtn.className = 'delete-entry btn btn-ghost text-danger';
         deleteBtn.textContent = 'Delete';
         metaCol.appendChild(modeSpan);
         metaCol.appendChild(dateSpan);
