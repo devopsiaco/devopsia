@@ -24,16 +24,19 @@
           <button id="save-favorites" type="button" class="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold text-sm py-2 px-4 rounded shadow">
             ⭐ Save to Favorites
           </button>
-          <div class="flex gap-2">
+          <div class="flex items-center gap-2">
             <button id="export-json-btn" type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-sm py-2 px-4 rounded shadow">
               Export JSON
             </button>
             <button id="export-csv" type="button" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold text-sm py-2 px-4 rounded shadow">
               Export CSV
             </button>
+            <button id="clear-all-btn" class="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded shadow">
+              Clear All
+            </button>
           </div>
         </div>
-        <div id="history-list" class="space-y-4"></div>
+        <ul id="history-list" class="space-y-4"></ul>
       </main>
     </div>
   </div>
