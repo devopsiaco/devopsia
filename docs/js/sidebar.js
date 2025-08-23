@@ -1,14 +1,13 @@
 // Requires Firebase Auth already initialized
 (function () {
-  const signOutBtn = document.getElementById('sidebar-signout');
+  const signOutBtn = document.getElementById('signout-btn');
   if (signOutBtn && window.firebase?.auth) {
     signOutBtn.addEventListener('click', async () => {
       try {
         await firebase.auth().signOut();
-        window.location.href = '/';
+        window.location.href = '/login/';
       } catch (e) {
         console.error('Sign out failed:', e);
-        alert('Sign out failed. See console for details.');
       }
     });
   }
