@@ -1,3 +1,4 @@
+/* Reset page chrome to remove gaps */
 html, body {
   margin: 0;
   padding: 0;
@@ -298,6 +299,11 @@ body.with-fixed-header {
   padding-top: var(--header-min-h);
 }
 */
+/* Give headings a comfortable scroll offset so they're not hidden under the sticky header */
+:target {
+  scroll-margin-top: 72px; /* ≈ header height; tweak if needed */
+}
+
 /* --- Prompt History layout helpers (no Tailwind @apply) --- */
 .history-item {
   background: #ffffff;
@@ -384,25 +390,29 @@ body.with-fixed-header {
   }
 }
 
-/* Make header span full width of viewport */
+/* Full-bleed, auto-height, sticky header */
 .site-header {
+  position: sticky;   /* keeps it visible while scrolling */
+  top: 0;
+  z-index: 1000;      /* above page content */
   width: 100%;
   background: #F4F4F2;
   border-bottom: 1px solid #0D0E0C;
-  margin: 0;         /* remove gaps */
-  padding: 0;        /* no forced spacing around */
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
 
-/* Let inner flex container auto-size */
+/* Flexible inner layout (no fixed max-width) */
 .site-header__inner {
   width: 100%;
-  max-width: none;   /* remove fixed 1200px cap */
+  max-width: none;       /* remove 1200px cap */
   margin: 0;
-  padding: 12px 20px;  /* flexible padding only */
+  padding: 12px 20px;    /* controls visual height */
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .site-header__logo {
@@ -457,14 +467,6 @@ body.with-fixed-header {
 .site-cta:active {
   transform: translateY(1px);
 }
-
-/* Optional: make header sticky if desired
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-*/
 
 /* Layout helpers */
 .container {

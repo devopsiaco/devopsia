@@ -22,24 +22,6 @@
         if (active) active.classList.add('is-active');
       }
 
-      // Ensure page content doesn’t slide under fixed header (if fixed later)
-      const header = mount.querySelector('.site-header');
-      if (header) {
-        const next = mount.nextElementSibling;
-        if (next && !next.dataset.headerAdjusted) {
-          const rect = header.getBoundingClientRect();
-          const h = Math.ceil(rect.height);
-          if (h > 0) {
-            const style = window.getComputedStyle(header);
-            const position = style.position;
-            if (position === 'fixed' || position === 'sticky') {
-              next.style.scrollMarginTop = h + 'px';
-              next.style.paddingTop = 'clamp(8px, 2vw, 16px)';
-              next.dataset.headerAdjusted = 'true';
-            }
-          }
-        }
-      }
     })
     .catch(err => {
       console.error('Failed to load header:', err);
