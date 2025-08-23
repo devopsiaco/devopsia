@@ -89,7 +89,7 @@
   <!-- Footer -->
   <footer class="mt-10 py-8 text-center text-xs text-gray-500">© 2025 Devopsia</footer>
 
-  <!-- Firebase + page script -->
+  <!-- Firebase must be first -->
   <script src="/js/firebase-init.js"></script>
   <script>
     // ---------------- Toast helpers ----------------
@@ -121,10 +121,7 @@
         const active = document.querySelector(`#sidebar-container a[href="${location.pathname}"]`);
         if (active) active.classList.add('bg-gray-100','text-gray-900','font-semibold');
 
-        // load sidebar script for sign-out and dynamic behavior
-        const s = document.createElement('script');
-        s.src = '/js/sidebar.js';
-        document.body.appendChild(s);
+        // sidebar.js is loaded globally after this block
       } catch(e) {
         console.error('Sidebar load failed', e);
       }
@@ -281,6 +278,8 @@
       if (status === 'cancel')  showToast('Billing was canceled.', 'warn');
     })();
   </script>
+  <!-- Load shared sidebar behavior last -->
+  <script src="/js/sidebar.js"></script>
   <script src="/js/header.js"></script>
 </body>
 </html>

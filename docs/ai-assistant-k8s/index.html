@@ -57,7 +57,7 @@
   <script type="module" src="/js/auth.js"></script>
   <script type="module" src="/js/ai-assistant.js"></script>
 
-  <!-- Firebase + page scripts -->
+  <!-- Firebase must load before sidebar.js -->
   <script src="/js/firebase-init.js"></script>
   <script>
     // Toast (optional but nice to keep consistent with /profile)
@@ -82,7 +82,7 @@
       setTimeout(() => { el.classList.add('hidden'); }, 2600);
     }
 
-    // Load sidebar HTML, highlight, and load sidebar.js AFTER injection
+    // Load sidebar HTML and highlight
     (async function loadSidebar(){
       try {
         const res = await fetch('/components/sidebar.html', { cache:'no-store' });
@@ -93,11 +93,6 @@
         // highlight here (fallback; sidebar.js also does it)
         const active = document.querySelector(`#sidebar-container a[href="${location.pathname}"]`);
         if (active) active.classList.add('bg-gray-100','text-gray-900','font-semibold');
-
-        // important: load the sidebar behavior after HTML is in DOM
-        const s = document.createElement('script');
-        s.src = '/js/sidebar.js';
-        document.body.appendChild(s);
       } catch(e) {
         console.error('Sidebar load failed', e);
       }
@@ -111,6 +106,8 @@
       // If you require verified emails here, add the check similar to /profile
     });
   </script>
+  <!-- Shared sidebar behavior (event-delegated sign out, highlight) -->
+  <script src="/js/sidebar.js"></script>
   <script src="/js/header.js"></script>
 </body>
 </html>
