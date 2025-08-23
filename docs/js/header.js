@@ -14,6 +14,7 @@
         { key: 'home', test: p => p === '/' || p === '' },
         { key: 'product', test: p => p.startsWith('/product') },
         { key: 'resources', test: p => p.startsWith('/resources') },
+        { key: 'pricing', test: p => p.startsWith('/pricing') },
       ];
       const match = map.find(m => m.test(path));
       if (match) {
