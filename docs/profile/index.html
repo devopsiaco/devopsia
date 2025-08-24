@@ -91,6 +91,7 @@
 
   <!-- Firebase must be first -->
   <script src="/js/firebase-init.js"></script>
+  <script src="/js/inactivity-timeout.js"></script>
   <script>
     // ---------------- Toast helpers ----------------
     function showToast(msg, type = 'info') {
@@ -131,6 +132,7 @@
     let currentUser = null;
     firebase.auth().onAuthStateChanged(async (user) => {
       if (!user) {
+        if (window.__autoLogout) return;
         window.location.href = '/login/';
         return;
       }

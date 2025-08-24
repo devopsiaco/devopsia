@@ -58,6 +58,7 @@
 
   <!-- Firebase must load before sidebar.js -->
   <script src="/js/firebase-init.js"></script>
+  <script src="/js/inactivity-timeout.js"></script>
   <script>
     // Toast (optional but nice to keep consistent with /profile)
     function showToast(msg, type = 'info') {
@@ -100,6 +101,7 @@
     // Auth guard for assistant pages
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        if (window.__autoLogout) return;
         window.location.href = '/login/';
       }
       // If you require verified emails here, add the check similar to /profile
