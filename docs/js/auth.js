@@ -103,6 +103,7 @@ onAuthStateChanged(auth, async (user) => {
                        path === '/profile/';
 
   if (!user) {
+    if (window.__autoLogout) return;
     if (requiresAuth) {
       const cont = encodeURIComponent(path + window.location.search);
       window.location.replace(`/login/?continue=${cont}`);
