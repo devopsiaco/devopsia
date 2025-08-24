@@ -32,13 +32,27 @@
         <img src="/assets/google-icon.svg" alt="Google logo" width="20" height="20">
         <span>Sign in with Google</span>
       </button>
-      <button id="resend-verification" class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Resend Verification Email</button>
+      <button id="resend-verification" type="button" class="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded">Resend Verification Email</button>
       <p class="mt-4 text-center text-sm">Don't have an account?
         <a href="/signup.html" class="text-orange-600 hover:underline">Sign up</a>
       </p>
     </div>
   </main>
   <footer class="text-center py-4">© 2025 Devopsia</footer>
+  <div id="resend-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded shadow w-full max-w-sm" role="dialog" aria-modal="true">
+      <h2 class="text-xl font-bold mb-4">Resend verification</h2>
+      <p class="mb-4 text-sm">Enter your email to receive a new verification link.</p>
+      <form id="resend-form" class="space-y-4">
+        <input type="email" id="resend-email" class="w-full border border-gray-300 rounded px-4 py-2" placeholder="Email" required>
+        <div id="resend-feedback" class="text-sm text-gray-600"></div>
+        <div class="flex justify-end gap-2">
+          <button type="button" id="resend-cancel" class="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400">Cancel</button>
+          <button type="submit" class="px-4 py-2 rounded bg-orange-500 hover:bg-orange-600 text-white">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <script type="module" src="/js/login.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>

@@ -1,5 +1,5 @@
 import { auth } from './firebase.js';
-import { signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, sendEmailVerification } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendEmailVerification, fetchSignInMethodsForEmail } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
 import { redirectAfterLogin } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const errorEl = document.getElementById('loginError');
   const googleBtn = document.getElementById('google-login');
   const resendBtn = document.getElementById('resend-verification');
+  const resendModal = document.getElementById('resend-modal');
+  const resendForm = document.getElementById('resend-form');
+  const resendEmailInput = document.getElementById('resend-email');
+  const resendFeedback = document.getElementById('resend-feedback');
+  const resendCancel = document.getElementById('resend-cancel');
 
   const showError = (msg) => {
     if (errorEl) {
@@ -51,29 +56,85 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const openResendModal = () => {
+    if (resendFeedback) {
+      resendFeedback.textContent = '';
+      resendFeedback.className = 'text-sm text-gray-600';
+    }
+    if (resendModal) {
+      resendModal.classList.remove('hidden');
+    }
+    if (resendEmailInput) {
+      resendEmailInput.focus();
+    }
+  };
+
+  const closeResendModal = () => {
+    if (resendModal) {
+      resendModal.classList.add('hidden');
+    }
+  };
+
   if (resendBtn) {
-    resendBtn.addEventListener('click', async () => {
-      const email = emailInput.value;
-      const password = passwordInput.value;
-      if (!email || !password) {
-        showError('Please enter your email and password first.');
+    resendBtn.addEventListener('click', () => {
+      if (emailInput && resendEmailInput) {
+        resendEmailInput.value = emailInput.value || '';
+      }
+      openResendModal();
+    });
+  }
+
+  if (resendCancel) {
+    resendCancel.addEventListener('click', closeResendModal);
+  }
+
+  if (resendModal) {
+    resendModal.addEventListener('click', (e) => {
+      if (e.target === resendModal) {
+        closeResendModal();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && resendModal && !resendModal.classList.contains('hidden')) {
+      closeResendModal();
+    }
+  });
+
+  if (resendForm) {
+    resendForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = resendEmailInput.value.trim();
+      if (!email) {
+        resendFeedback.textContent = 'Please enter an email address.';
+        resendFeedback.className = 'text-sm text-red-600';
         return;
       }
-      resendBtn.disabled = true;
-      const spin = document.createElement('span');
-      spin.className = 'spinner';
-      resendBtn.appendChild(spin);
+      const user = auth.currentUser;
       try {
-        const { user } = await signInWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(user);
-        await signOut(auth);
-        showError('A new verification email has been sent. Please check your inbox.');
+        if (user && user.email === email) {
+          await sendEmailVerification(user);
+          resendFeedback.textContent = 'Verification email sent.';
+          resendFeedback.className = 'text-sm text-green-600';
+        } else if (!user) {
+          const methods = await fetchSignInMethodsForEmail(auth, email);
+          if (methods.length > 0) {
+            resendFeedback.textContent = 'Please log in with this email first, then click Resend verification again.';
+            resendFeedback.className = 'text-sm text-gray-600';
+          } else {
+            resendFeedback.textContent = 'No account found for this email.';
+            resendFeedback.className = 'text-sm text-red-600';
+          }
+        } else {
+          resendFeedback.textContent = 'Please log in with this email first, then click Resend verification again.';
+          resendFeedback.className = 'text-sm text-gray-600';
+        }
       } catch (err) {
         console.error('Resend verification failed', err);
-        showError('Failed to send verification email. Please try again later.');
+        resendFeedback.textContent = 'Failed to send verification email. Please try again later.';
+        resendFeedback.className = 'text-sm text-red-600';
       }
-      resendBtn.disabled = false;
-      spin.remove();
     });
   }
 });
