@@ -3,11 +3,14 @@ import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/f
 import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
 
 let userPlan = 'free';
-let currentMode = 'default';
+let currentMode = 'secure';
 
-window.onModeChange = (mode) => {
-  currentMode = mode;
-};
+document.addEventListener('promptMode:change', (e) => {
+  currentMode = e.detail.mode;
+});
+document.addEventListener('DOMContentLoaded', () => {
+  document.dispatchEvent(new window.Event('promptMode:get'));
+});
 
 function showToast(message) {
   const toast = document.createElement('div');
@@ -59,19 +62,6 @@ export function promptComponent() {
         } catch (err) {
           console.error('Failed to load user settings', err);
         }
-        const secureBtn = document.querySelector('#prompt-mode-buttons .btn-mode[data-mode="secure"]');
-        if (secureBtn && !this.isPro) {
-          secureBtn.disabled = true;
-          secureBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        }
-        const self = this;
-        window.onModeChange = function(mode) {
-          if (mode === 'secure' && !self.isPro) {
-            showToast('Secure mode is available on Pro only');
-            return;
-          }
-          currentMode = mode;
-        };
       });
     }
   };

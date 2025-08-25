@@ -10,6 +10,7 @@
   <link rel="icon" href="assets/Lynx Logo Design.png" type="image/svg+xml">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>[x-cloak]{display:none !important;}</style>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800">
   <div id="top-banner"></div>
@@ -35,12 +36,75 @@
               </div>
             </div>
           </div>
-          <div class="mode-toolbar mb-4">
-            <div id="prompt-mode-buttons">
-              <button class="btn-mode" data-mode="default">Default</button>
-              <button class="btn-mode" data-mode="optimized">Optimized</button>
-              <button class="btn-mode" data-mode="secure">Secure</button>
+          <!-- Prompt Mode Dropdown -->
+          <div
+            x-data="promptModeDropdown()"
+            x-init="init()"
+            class="relative inline-block text-left mb-4"
+          >
+            <!-- Trigger -->
+            <button
+              @click="toggle()"
+              @keydown.arrow-down.prevent="openAndMove(1)"
+              @keydown.arrow-up.prevent="openAndMove(-1)"
+              @keydown.enter.prevent="openAndSelect()"
+              @keydown.space.prevent="toggle()"
+              @keydown.escape.prevent.stop="open = false"
+              :aria-expanded="open"
+              aria-haspopup="listbox"
+              class="inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium bg-white hover:bg-gray-50 border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <span x-html="iconFor(value)" aria-hidden="true"></span>
+              <span class="text-gray-700">Mode:</span>
+              <span class="text-gray-900" x-text="labelFor(value)"></span>
+              <svg class="w-4 h-4 text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+
+            <!-- Menu -->
+            <div
+              x-cloak
+              x-show="open"
+              @click.outside="open = false"
+              @keydown.escape.prevent.stop="open = false"
+              class="absolute z-20 mt-2 w-64 rounded-xl border border-gray-200 bg-white shadow-xl p-2"
+              role="listbox"
+              :aria-activedescendant="'mode-opt-' + activeIndex"
+            >
+              <template x-for="(opt, idx) in options" :key="opt.value">
+                <button
+                  type="button"
+                  @click="select(idx)"
+                  @mousemove="activeIndex = idx"
+                  @keydown.arrow-down.prevent="move(1)"
+                  @keydown.arrow-up.prevent="move(-1)"
+                  @keydown.enter.prevent="select(activeIndex)"
+                  @keydown.space.prevent="select(activeIndex)"
+                  :id="'mode-opt-' + idx"
+                  role="option"
+                  :aria-selected="value === opt.value"
+                  class="w-full flex items-start gap-3 rounded-lg px-3 py-2 text-left focus:outline-none"
+                  :class="activeIndex === idx ? 'bg-gray-50' : 'hover:bg-gray-50'"
+                  tabindex="-1"
+                >
+                  <div class="mt-0.5 shrink-0" x-html="iconFor(opt.value)" aria-hidden="true"></div>
+
+                  <div class="min-w-0">
+                    <div class="text-sm font-medium text-gray-900" x-text="opt.label"></div>
+                    <div class="text-xs text-gray-500" x-text="opt.desc"></div>
+                  </div>
+
+                  <div class="ml-auto flex items-center gap-2">
+                    <span class="text-[10px] text-gray-400 uppercase tracking-wide" x-text="opt.badge"></span>
+                    <div class="w-2.5 h-2.5 rounded-full" :class="value === opt.value ? 'bg-blue-600' : 'bg-gray-300'"></div>
+                  </div>
+                </button>
+              </template>
             </div>
+
+            <!-- Hidden input for existing code -->
+            <input type="hidden" id="prompt-mode" name="promptMode" x-model="value">
           </div>
         </div>
         <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Type your DevOps question..."></textarea>
@@ -93,6 +157,7 @@
     </main>
   </div>
 
+  <script src="/js/prompt-mode.js"></script>
   <script src="/js/ui-common.js"></script>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
