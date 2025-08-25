@@ -481,3 +481,11 @@ body.with-fixed-header {
 }
 
 .breadcrumb a { color: inherit; }
+
+/* File processor buttons alignment */
+#file-processor button {
+  line-height: 1.25;
+}
+#file-processor textarea {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

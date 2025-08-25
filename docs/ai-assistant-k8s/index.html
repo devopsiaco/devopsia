@@ -45,8 +45,51 @@
         <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="Describe your K8s question..."></textarea>
         <input type="hidden" id="tool" value="k8s">
         <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
-        <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
+      <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
       </div>
+      <section id="file-processor" class="mt-6 p-4 border rounded bg-white shadow-sm">
+        <h3 class="text-lg font-semibold mb-3">Upload a file to clean/optimize</h3>
+
+        <div class="grid gap-3">
+          <div>
+            <label class="block text-sm font-medium mb-1">Choose file (JSON/TXT/YAML, max based on plan)</label>
+            <input id="fp-file" type="file" accept=".json,.txt,.yaml,.yml" class="border p-2 rounded w-full" />
+            <p id="fp-file-hint" class="text-xs text-gray-500 mt-1">
+              Allowed: .json, .txt, .yaml, .yml
+            </p>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">Operation</label>
+            <select id="fp-operation" class="border p-2 rounded w-full">
+              <option value="clean">Clean & normalize</option>
+              <option value="format">Pretty‑format</option>
+              <option value="minify">Minify</option>
+              <option value="optimize">Optimize per instructions</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">Instructions (optional)</label>
+            <textarea id="fp-instructions" rows="3" class="border p-2 rounded w-full"
+              placeholder="e.g., remove comments, sort keys alphabetically, fix trailing commas"></textarea>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="fp-run" class="bg-black text-white px-4 py-2 rounded">Upload & Process</button>
+            <span id="fp-status" class="text-sm text-gray-600"></span>
+          </div>
+
+          <div id="fp-result-wrap" class="hidden">
+            <label class="block text-sm font-medium mb-1 mt-3">Result</label>
+            <textarea id="fp-result" rows="12" class="border p-2 rounded w-full font-mono"></textarea>
+            <div class="mt-2 flex gap-2">
+              <button id="fp-download" class="border px-3 py-2 rounded">Download result</button>
+              <button id="fp-copy" class="border px-3 py-2 rounded">Copy</button>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -111,6 +154,10 @@
   <!-- Shared sidebar behavior (event-delegated sign out, highlight) -->
   <script src="/js/sidebar.js"></script>
   <script src="/js/header.js"></script>
+  <script>
+    window.API_BASE = window.API_BASE || 'https://api.devopsia.co';
+  </script>
+  <script src="/js/file-processor.js" defer></script>
 </body>
 </html>
 
