@@ -494,3 +494,34 @@ body.with-fixed-header {
 #file-processor textarea {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
+
+/* Responsive hero images (works with or without Tailwind) */
+.hero-img {
+  width: 100%;
+  height: auto;
+  max-width: 520px;     /* cap image width on large screens */
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  object-fit: contain;  /* preserve full illustration */
+}
+
+/* Optional: ensure sections breathe on small screens */
+@media (max-width: 767px) {
+  section { padding-top: 2rem; padding-bottom: 2rem; }
+}
+
+/* Primary button (if not already defined) */
+.btn-primary {
+  background: linear-gradient(90deg, #1f7ae0, #7aa7ff);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.06s ease, box-shadow 0.2s ease;
+  box-shadow: 0 8px 24px rgba(31, 122, 224, 0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
