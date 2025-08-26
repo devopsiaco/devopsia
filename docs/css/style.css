@@ -501,8 +501,7 @@ body.with-fixed-header {
   height: auto;
   max-width: 520px;     /* cap image width on large screens */
   display: block;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+ 
   object-fit: contain;  /* preserve full illustration */
 }
 
