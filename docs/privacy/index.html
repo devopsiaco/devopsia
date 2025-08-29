@@ -1,91 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Devopsia — Privacy Policy</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
-  <link rel="icon" href="/assets/lynx-logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Ubuntu+Sans:wght@200;400;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/assets/lynx-logo.svg" type="image/svg+xml" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
+<body class="min-h-screen bg-gray-50 text-gray-800">
   <div id="top-banner"></div>
-    <div class="container pt-20">
-  <main>
-    <div class="card">
-      <h1>🔐 Devopsia Privacy Policy</h1>
-      <p>At Devopsia, your data’s not just numbers in a table — it’s a responsibility.<br>
-      This policy lays out how we collect, use, and guard your info like a well-secured kube cluster.</p>
 
-      <hr>
+  <main class="max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-10">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-semibold tracking-tight">Privacy Policy</h1>
+      <p id="effectiveDate" class="text-sm text-gray-500 mt-2">Effective Date: <span></span></p>
+      <script>
+        (function(){
+          const el = document.querySelector('#effectiveDate span');
+          if (el) {
+            const d = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            el.textContent = d.toLocaleDateString(undefined, options);
+          }
+        })();
+      </script>
+    </header>
 
-      <h2>📦 What We Collect</h2>
-      <p>When you register or interact with the platform, we may collect things like:<br>
-      • Your email address (no spam, we promise)<br>
-      • Profile and usage details<br>
-      • Logs that help us debug, improve, and sometimes just marvel at our system’s uptime</p>
+    <!-- At a Glance (friendly summary) -->
+    <section class="mb-8 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <h2 class="text-xl font-semibold mb-3">At a Glance</h2>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700">
+        <li>We collect your email, basic profile, and usage logs to operate and improve Devopsia.</li>
+        <li>We use cookies for preferences, performance, and security. You can control them in your browser.</li>
+        <li>We do not sell or rent your personal data.</li>
+        <li>You can access, correct, delete, or export your data anytime at <a class="text-blue-600 underline" href="mailto:privacy@devopsia.co">privacy@devopsia.co</a>.</li>
+      </ul>
+      <p class="mt-4 text-gray-600 italic">For the full details, please continue reading below ⬇️</p>
+    </section>
 
-      <hr>
+    <!-- Full professional policy -->
+    <section class="space-y-8">
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">1. Introduction</h2>
+        <p>We respect your privacy and are committed to protecting your personal data. This Privacy Policy explains what information we collect, how we use it, and the choices you have. By using Devopsia, you agree to this Policy.</p>
+      </section>
 
-      <h2>🧠 How We Use Your Data</h2>
-      <p>We use your data to:<br>
-      • Make Devopsia smarter, faster, and more helpful<br>
-      • Communicate updates, support info, and the occasional product love note<br>
-      • Keep the platform secure and running like a well-oiled CI/CD pipeline</p>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">2. Information We Collect</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Account Information:</strong> Email address and profile details you provide when creating an account.</li>
+          <li><strong>Usage Data:</strong> Interactions with our platform (e.g., feature usage, performance metrics, diagnostics, error logs).</li>
+          <li><strong>Technical Data:</strong> IP address, device and browser information, language, and settings required for security and performance.</li>
+          <li><strong>Cookies and Similar Technologies:</strong> To remember preferences, improve performance, secure sessions, and understand product usage.</li>
+        </ul>
+      </section>
 
-      <hr>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">3. How We Use Your Information</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Service Delivery:</strong> To provide, maintain, and support the Devopsia platform.</li>
+          <li><strong>Improvement &amp; Development:</strong> To analyze usage, debug issues, and enhance features and security.</li>
+          <li><strong>Communication:</strong> To send service notifications, updates, and support messages.</li>
+          <li><strong>Security:</strong> To protect accounts, prevent abuse and fraud, and maintain system integrity.</li>
+        </ul>
+        <p class="mt-3">We do not sell or rent your personal data to third parties.</p>
+      </section>
 
-      <h2>🍪 Cookies &amp; Techy Snacks</h2>
-      <p>We might drop cookies (not the edible kind) into your browser to:<br>
-      • Improve your experience<br>
-      • Remember preferences<br>
-      • Understand how you use Devopsia so we can make it better<br>
-      You can manage cookie preferences in your browser settings — or disable them entirely if you like living on the edge.</p>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">4. Your Rights</h2>
+        <p>If you are located in the EU or other regions with data protection laws, you may have the right to access, correct, delete, or export your personal data, and to object to or restrict certain processing.</p>
+        <p class="mt-2">To exercise your rights, contact us at <a class="text-blue-600 underline" href="mailto:privacy@devopsia.co">privacy@devopsia.co</a>. We may need to verify your identity before fulfilling requests.</p>
+      </section>
 
-      <hr>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">5. Cookies</h2>
+        <p>We use cookies to remember preferences, secure sessions, and understand usage. You can control cookies in your browser settings. Disabling cookies may impact some features.</p>
+      </section>
 
-      <h2>🇪🇺 Your Rights (GDPR Squad)</h2>
-      <p>If you’re hanging out in the European Union, the <strong>General Data Protection Regulation (GDPR)</strong> has your back.<br>
-      You have the right to:<br>
-      • Access your personal data<br>
-      • Correct inaccurate info<br>
-      • Request that we delete your data (aka the "rage quit" button)<br>
-      Just <a href="#">contact us</a> — we’ll handle your request with respect and speed (but no, not via carrier pigeon).</p>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">6. Data Retention</h2>
+        <p>We retain personal data only as long as necessary to provide services, comply with legal obligations, and enforce agreements. After this, we delete or anonymize data.</p>
+      </section>
 
-      <hr>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">7. Sharing &amp; Transfers</h2>
+        <p>We may share data with service providers who process it on our behalf, under appropriate safeguards and only for the purposes described in this Policy. We may transfer data to other countries using lawful transfer mechanisms.</p>
+      </section>
 
-      <h2>🗃️ Data Retention</h2>
-      <p>We hold on to your personal data only as long as necessary:<br>
-      • To keep the platform running<br>
-      • To comply with legal obligations<br>
-      • Or until our logs say, "Time to purge"</p>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">8. Security</h2>
+        <p>We use technical and organizational measures appropriate to the risk to protect your data. No system is 100% secure, but we continuously improve our safeguards.</p>
+      </section>
 
-      <hr>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">9. Children’s Privacy</h2>
+        <p>Devopsia is not intended for children under 16. If you believe a child has provided personal data, please contact us so we can take appropriate action.</p>
+      </section>
 
-      <h2>🔄 Policy Updates</h2>
-      <p>We iterate, just like your deployment pipeline. So this Privacy Policy may change from time to time.<br>
-      When we make meaningful changes, we’ll post the updated version here — no fine print tricks.</p>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">10. Changes to This Policy</h2>
+        <p>We may update this Policy from time to time. If changes are significant, we will notify you via the platform or email. The latest version will always be available on this page.</p>
+      </section>
 
-      <hr>
+      <section>
+        <h2 class="text-2xl font-semibold mb-3">11. Contact Us</h2>
+        <p>Questions or concerns about privacy?</p>
+        <p>Email: <a class="text-blue-600 underline" href="mailto:privacy@devopsia.co">privacy@devopsia.co</a></p>
+      </section>
+    </section>
 
-      <h2>📬 Contact Us</h2>
-      <p>Got questions, concerns, or just want to say hi?<br>
-      Drop us a line at <a href="mailto:privacy@devopsia.co">privacy@devopsia.co</a>.<br>
-      We're real humans (with laptops), and we’re here to help.</p>
-
-      <hr>
-
-      <p><strong>Thanks for trusting Devopsia — your secrets are safe in our vault.</strong> 🔐</p>
+    <div class="mt-12">
+      <a href="/" class="inline-flex items-center gap-2 text-sm text-blue-700 underline hover:no-underline">← Back to Home</a>
     </div>
   </main>
-  </div>
-  <script type="module" src="/js/firebase.js"></script>
-  <script type="module" src="/js/auth.js"></script>
-  <script defer src="/js/top-banner.js"></script>
-  <div id="footer-container"></div>
-  <script src="/js/footer-loader.js" defer></script>
+
+  <div id="site-footer"></div>
 </body>
 </html>
