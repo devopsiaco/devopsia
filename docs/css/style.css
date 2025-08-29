@@ -524,3 +524,13 @@ body.with-fixed-header {
 }
 .btn-primary:hover { transform: translateY(-1px); }
 .btn-primary:active { transform: translateY(0); }
+
+/* Subtle improvement for the floating card and transitions */
+header .ring-gray-200 { transition: box-shadow 150ms ease, transform 150ms ease; }
+header .rounded-2xl { will-change: transform; }
+@media (hover:hover) {
+  header .rounded-2xl:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+}
