@@ -7,18 +7,23 @@
   <link rel="stylesheet" href="/css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
   <link rel="icon" href="/assets/lynx-logo.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="min-h-screen flex flex-col bg-gray-50 text-gray-700">
   <div id="top-banner"></div>
 
-  <main class="container">
-    <nav aria-label="Breadcrumb" class="breadcrumb">
-      <a href="/">Home</a> / <span>Product</span>
-    </nav>
+  <div class="container pt-20">
+    <main>
+      <div class="card">
+        <nav aria-label="Breadcrumb" class="breadcrumb">
+          <a href="/">Home</a> / <span>Product</span>
+        </nav>
 
-    <h1>Product</h1>
-    <p>This page is under construction. We’ll detail the platform, assistants, and automations here.</p>
-  </main>
+        <h1>Product</h1>
+        <p>This page is under construction. We’ll detail the platform, assistants, and automations here.</p>
+      </div>
+    </main>
+  </div>
 
   <script defer src="/js/top-banner.js"></script>
   <div id="footer-container"></div>
