@@ -11,6 +11,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>[x-cloak]{display:none !important;}</style>
+  <!-- Central API base (execute-api + stage). Change once here if needed. -->
+  <script>
+    window.__DEVOPSIA_API_BASE = 'https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod';
+  </script>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800">
   <div id="top-banner"></div>
@@ -112,46 +116,27 @@
         <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
       <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
       </div>
-      <section id="file-processor" class="mt-6 p-4 border rounded bg-white shadow-sm">
-        <h3 class="text-lg font-semibold mb-3">Upload a file to clean/optimize</h3>
-
-        <div class="grid gap-3">
-          <div>
-            <label class="block text-sm font-medium mb-1">Choose file (JSON/TXT/YAML, max based on plan)</label>
-            <input id="fp-file" type="file" accept=".json,.txt,.yaml,.yml" class="border p-2 rounded w-full" />
-            <p id="fp-file-hint" class="text-xs text-gray-500 mt-1">
-              Allowed: .json, .txt, .yaml, .yml
-            </p>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium mb-1">Operation</label>
-            <select id="fp-operation" class="border p-2 rounded w-full">
-              <option value="clean">Clean & normalize</option>
-              <option value="format">Pretty‑format</option>
-              <option value="minify">Minify</option>
-              <option value="optimize">Optimize per instructions</option>
+      <!-- File Tools -->
+      <section class="mt-6 border rounded-xl p-4 bg-white/80 backdrop-blur">
+        <h2 class="text-lg font-semibold mb-3">File Tools</h2>
+        <div class="grid gap-3 md:grid-cols-2">
+          <div class="space-y-2">
+            <label class="block text-sm text-gray-600">Select file</label>
+            <input type="file" id="fileInput" class="block w-full border rounded px-3 py-2" />
+            <label class="block text-sm text-gray-600">Operation</label>
+            <select id="operationSelect" class="block w-full border rounded px-3 py-2">
+              <option value="clean">Clean (trim whitespace)</option>
+              <option value="format">Format (pretty-print JSON)</option>
+              <option value="minify">Minify (collapse whitespace)</option>
+              <option value="optimize">Optimize (AI-assisted)</option>
             </select>
+            <label class="block text-sm text-gray-600">Instructions (for Optimize)</label>
+            <textarea id="instructionsInput" class="block w-full min-h-[80px] border rounded px-3 py-2" placeholder="e.g., Keep YAML comments; sort keys if JSON."></textarea>
+            <button id="processFileBtn" class="mt-2 inline-flex items-center gap-2 px-4 py-2 rounded-lg border bg-gray-50 hover:bg-gray-100">Process File</button>
           </div>
-
-          <div>
-            <label class="block text-sm font-medium mb-1">Instructions (optional)</label>
-            <textarea id="fp-instructions" rows="3" class="border p-2 rounded w-full"
-              placeholder="e.g., remove comments, sort keys alphabetically, fix trailing commas"></textarea>
-          </div>
-
-          <div class="flex items-center gap-3">
-            <button id="fp-run" class="bg-black text-white px-4 py-2 rounded">Upload & Process</button>
-            <span id="fp-status" class="text-sm text-gray-600"></span>
-          </div>
-
-          <div id="fp-result-wrap" class="hidden">
-            <label class="block text-sm font-medium mb-1 mt-3">Result</label>
-            <textarea id="fp-result" rows="12" class="border p-2 rounded w-full font-mono"></textarea>
-            <div class="mt-2 flex gap-2">
-              <button id="fp-download" class="border px-3 py-2 rounded">Download result</button>
-              <button id="fp-copy" class="border px-3 py-2 rounded">Copy</button>
-            </div>
+          <div class="space-y-2">
+            <label class="block text-sm text-gray-600">Result</label>
+            <textarea id="processResult" class="block w-full h-[240px] border rounded px-3 py-2 font-mono text-sm" placeholder="Processed output will appear here"></textarea>
           </div>
         </div>
       </section>
@@ -218,10 +203,6 @@
   <!-- Shared sidebar behavior (event-delegated sign out, highlight) -->
   <script src="/js/sidebar.js"></script>
   <script src="/js/header.js"></script>
-  <script>
-    window.API_BASE = window.API_BASE || 'https://api.devopsia.co';
-  </script>
-  <script src="/js/file-processor.js" defer></script>
   <div id="footer-container"></div>
   <script src="/js/footer-loader.js" defer></script>
 </body>
