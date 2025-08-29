@@ -78,7 +78,9 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   }
   resultEl.textContent = 'Generating...';
   try {
-    const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/chat', {
+    // Central API base. Override via window.__DEVOPSIA_API_BASE if needed.
+    const API_BASE = (window.__DEVOPSIA_API_BASE || 'https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod').replace(/\/+$/, '');
+    const res = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, promptMode, tool })
@@ -103,3 +105,81 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     resultEl.textContent = 'Error generating code';
   }
 });
+
+// ---------------------------
+// File processing integration
+// ---------------------------
+(function attachFileProcessing() {
+  const API_BASE = (window.__DEVOPSIA_API_BASE || 'https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod').replace(/\/+$/, '');
+
+  async function postJSON(path, payload) {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const raw = await res.text();
+    let data; try { data = raw ? JSON.parse(raw) : {}; } catch { data = { _parseError: raw }; }
+    if (!res.ok) {
+      const detail = data?.detail || data?.error || data?._parseError || raw || `HTTP ${res.status}`;
+      throw new Error(detail);
+    }
+    return data;
+  }
+
+  // Optional per-page UI (only wires if present)
+  const fileInput = document.getElementById('fileInput');
+  const operationSelect = document.getElementById('operationSelect');
+  const instructionsInput = document.getElementById('instructionsInput');
+  const processBtn = document.getElementById('processFileBtn');
+  const resultEl = document.getElementById('processResult');
+
+  if (!processBtn) return;
+
+  processBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+      showToast('Please choose a file first.');
+      return;
+    }
+    const file = fileInput.files[0];
+    const fileName = file.name || 'input.txt';
+    const operation = (operationSelect?.value || 'clean').toLowerCase();
+    const instructions = (instructionsInput?.value || '').trim();
+
+    // Read file
+    let content;
+    try { content = await file.text(); }
+    catch (err) { console.error('Read file failed:', err); showToast('Failed to read file.'); return; }
+
+    // Guard ~1.2MB
+    const byteLen = new TextEncoder().encode(content).length;
+    if (byteLen > 1_150_000) { showToast('File too large for processing (~>1.2MB).'); return; }
+
+    const original = processBtn.textContent;
+    processBtn.disabled = true;
+    processBtn.textContent = 'Processing...';
+    if (resultEl) resultEl.textContent = 'Processing...';
+
+    try {
+      const data = await postJSON('/process-file', { operation, fileName, content, instructions });
+      const out = data?.resultText ?? '';
+      if (!out) throw new Error('No resultText returned');
+      if (resultEl) {
+        if ('value' in resultEl) resultEl.value = out;
+        else resultEl.textContent = out;
+      }
+      showToast('File processed.');
+    } catch (err) {
+      console.error('Process file error:', err);
+      if (resultEl) {
+        const msg = String(err?.message || err || 'Error processing file');
+        resultEl.textContent = `Error: ${msg}`;
+      }
+      showToast('Error processing file.');
+    } finally {
+      processBtn.disabled = false;
+      processBtn.textContent = original;
+    }
+  });
+})();
