@@ -78,7 +78,7 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   }
   resultEl.textContent = 'Generating...';
   try {
-    const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/generate', {
+    const res = await fetch('https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ prompt, promptMode, tool })
