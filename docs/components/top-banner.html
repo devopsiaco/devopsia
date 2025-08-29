@@ -1,0 +1,59 @@
+<!-- Floating Top Banner (shared) -->
+<!-- Requires: Tailwind CDN and (optional) Alpine.js for menu toggle -->
+<header x-data="{ open: false }" class="w-full">
+  <!-- Outer spacing to create the “floating” effect -->
+  <div class="px-4 sm:px-6 lg:px-8 mt-4 mb-4">
+    <!-- Card-like container -->
+    <div class="max-w-7xl mx-auto bg-white/95 backdrop-blur rounded-2xl shadow-md ring-1 ring-gray-200 border border-gray-100">
+      <!-- Top row -->
+      <div class="flex items-center justify-between px-4 sm:px-6 py-3">
+        <!-- Left: Logo + Brand -->
+        <a href="/" class="flex items-center gap-3 shrink-0">
+          <img src="/assets/octopus-logo.png" alt="Devopsia" class="h-9 w-9 rounded-lg object-contain">
+          <span class="font-ubuntu text-gray-900 text-xl tracking-wide">DevopsIA</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-2">
+          <a href="/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Home</a>
+          <a href="/product/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Product</a>
+          <a href="/resources/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Resources</a>
+          <a href="/pricing/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Pricing</a>
+          <!-- Primary CTA -->
+          <a href="/login/" class="ml-2 inline-flex items-center px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-800">
+            Start building
+          </a>
+        </nav>
+
+        <!-- Mobile burger -->
+        <button
+          class="md:hidden inline-flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 focus:outline-none"
+          @click="open = !open" aria-label="Toggle menu" :aria-expanded="open.toString()">
+          <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile dropdown -->
+      <div class="md:hidden" x-show="open" x-transition>
+        <nav class="px-4 sm:px-6 pb-3 flex flex-col gap-1">
+          <a href="/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Home</a>
+          <a href="/product/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Product</a>
+          <a href="/resources/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Resources</a>
+          <a href="/pricing/" class="px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100">Pricing</a>
+          <a href="/login/" class="mt-1 inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gray-900 text-white hover:bg-gray-800">
+            Start building
+          </a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+
+
