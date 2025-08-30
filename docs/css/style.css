@@ -534,3 +534,62 @@ header .rounded-2xl { will-change: transform; }
     transform: translateY(-1px);
   }
 }
+
+/* ====== Login Page Background & Panel ====== */
+
+/* Large radial gradient "blob" behind the panel */
+.login-gradient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* Layered radial gradients for warm, friendly glow */
+  background:
+    radial-gradient(40rem 40rem at 30% 30%, rgba(255, 183, 77, 0.45), transparent 60%),
+    radial-gradient(35rem 35rem at 70% 40%, rgba(66, 165, 245, 0.35), transparent 65%),
+    radial-gradient(30rem 30rem at 50% 70%, rgba(76, 175, 80, 0.30), transparent 65%);
+  filter: blur(20px);
+  transform: translateZ(0);
+}
+
+/* Hovering card look */
+.login-card {
+  /* sizing tuned for responsiveness; adjust as needed */
+  width: min(100%, 480px);
+  padding: 2rem;
+  /* subtle lift */
+  transform: translateZ(0);
+}
+
+/* Tiny "Home" button that sits just above-left corner of the panel */
+.login-home-btn {
+  position: absolute;
+  top: -1.75rem;   /* space above panel */
+  left: 0.25rem;   /* just off the panel's left edge */
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  border-radius: 9999px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(4px);
+  color: #111827; /* gray-900 */
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  text-decoration: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+.login-home-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.16);
+  background: rgba(255,255,255,0.95);
+}
+.login-home-btn:focus-visible {
+  outline: 2px solid #60a5fa; /* blue-400 */
+  outline-offset: 2px;
+}
+
+/* Motion-reduced preference */
+@media (prefers-reduced-motion: reduce) {
+  .login-home-btn {
+    transition: none;
+  }
+}
