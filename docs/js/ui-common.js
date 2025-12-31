@@ -95,6 +95,9 @@
   // Fix incorrect Terraform link in the sidebar and normalize other assistant links
   function fixSidebarAssistantLinks() {
     const map = {
+      'aws': '/ai-assistant-aws/',
+      'azure': '/ai-assistant-azure/',
+      'gcp': '/ai-assistant-gcp/',
       'terraform': '/ai-assistant-terraform/',
       'helm': '/ai-assistant-helm/',
       'k8s': '/ai-assistant-k8s/',

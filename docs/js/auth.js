@@ -9,6 +9,7 @@ function getPostLoginRoute() {
     if (cont && typeof cont === 'string' && cont.startsWith('/')) {
       const allowed = [
         '/', '/pricing/', '/prompt-history/',
+        '/ai-assistant-aws/', '/ai-assistant-azure/', '/ai-assistant-gcp/',
         '/ai-assistant-terraform/', '/ai-assistant-helm/',
         '/ai-assistant-k8s/', '/ai-assistant-ansible/',
         '/ai-assistant-yaml/', '/ai-assistant-docker/',
@@ -19,7 +20,7 @@ function getPostLoginRoute() {
   } catch (e) {
     console.warn('continue param parse failed', e);
   }
-  return '/ai-assistant-terraform/';
+  return '/ai-assistant-aws/';
 }
 
 // --- Email verification gate ---
@@ -68,7 +69,7 @@ function updateAuthButton(user) {
 
 // --- Update Start Building CTAs ---
 function updateStartBuildingLinks(user) {
-  const dest = user ? '/ai-assistant-terraform/' : '/login/?continue=%2Fai-assistant-terraform%2F';
+  const dest = user ? '/ai-assistant-aws/' : '/login/?continue=%2Fai-assistant-aws%2F';
   document.querySelectorAll('#start-building-cta, .start-button, .banner-cta').forEach((el) => {
     if (el.tagName === 'A') {
       el.setAttribute('href', dest);
