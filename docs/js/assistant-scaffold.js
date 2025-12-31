@@ -21,6 +21,71 @@
       <h1 class="text-2xl font-semibold">${title}</h1>
       ${subtitle ? `<p class="text-gray-600 mb-4">${subtitle}</p>` : ''}
       <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
+        <div id="context-selectors" class="space-y-3">
+          <div class="grid gap-3 md:grid-cols-2">
+            <div class="space-y-2">
+              <div class="text-[11px] font-semibold text-gray-600 tracking-wide uppercase">Cloud</div>
+              <div class="flex flex-wrap gap-2" data-selector-group="cloud">
+                <button type="button" data-value="aws" class="px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  AWS
+                </button>
+                <button type="button" data-value="azure" class="px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Azure
+                </button>
+                <button type="button" data-value="gcp" class="px-3 py-2 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  GCP
+                </button>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="text-[11px] font-semibold text-gray-600 tracking-wide uppercase">Goal</div>
+              <div class="flex flex-wrap gap-2" data-selector-group="goal">
+                <button type="button" data-value="build" class="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Build
+                </button>
+                <button type="button" data-value="migrate" class="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Migrate
+                </button>
+                <button type="button" data-value="operate" class="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Operate
+                </button>
+                <button type="button" data-value="secure" class="px-3 py-2 rounded-full border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-blue-400 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  Secure
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="border rounded-lg bg-gray-50/80 border-gray-200">
+            <button type="button" id="advanced-selector-toggle" class="w-full flex items-center justify-between px-4 py-2 text-sm font-semibold text-gray-700">
+              <span>Advanced options</span>
+              <svg class="w-4 h-4 text-gray-500 transition-transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.24a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div id="advanced-selector-panel" class="hidden border-t border-gray-200 px-4 py-3 space-y-3 bg-white">
+              <div class="grid gap-3 md:grid-cols-2">
+                <div class="space-y-1">
+                  <label class="text-sm font-medium text-gray-700">Output format</label>
+                  <select data-selector="output-format" class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                    <option value="terraform">Terraform</option>
+                    <option value="yaml">YAML</option>
+                    <option value="bicep">Bicep</option>
+                    <option value="cli">CLI</option>
+                    <option value="runbook">Runbook</option>
+                  </select>
+                </div>
+                <div class="space-y-1">
+                  <label class="text-sm font-medium text-gray-700">Profile</label>
+                  <select data-selector="profile" class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+                    <option value="secure">Secure</option>
+                    <option value="optimized">Optimized</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div>
           <div class="flex items-center mb-1">
             <span class="block text-sm font-medium">Prompt Mode</span>
