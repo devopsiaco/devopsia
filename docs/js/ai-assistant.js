@@ -4,12 +4,125 @@ import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https:
 
 let userPlan = 'free';
 let currentMode = 'secure';
+const STORAGE_KEYS = {
+  cloud: 'devopsia.cloud',
+  goal: 'devopsia.goal',
+  outputFormat: 'devopsia.outputFormat',
+  profile: 'devopsia.profile'
+};
+
+function safeRead(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (err) {
+    console.error('Local storage read failed', err);
+    return null;
+  }
+}
+
+function safeWrite(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (err) {
+    console.error('Local storage write failed', err);
+  }
+}
+
+function setActivePills(group, value) {
+  group.querySelectorAll('button[data-value]').forEach((btn) => {
+    const isActive = btn.dataset.value === value;
+    btn.dataset.active = String(isActive);
+    btn.classList.toggle('border-blue-500', isActive);
+    btn.classList.toggle('text-blue-700', isActive);
+    btn.classList.toggle('bg-blue-50', isActive);
+    btn.classList.toggle('shadow-sm', isActive);
+  });
+}
+
+function hydrateContextSelectors() {
+  const container = document.getElementById('context-selectors');
+  if (!container) return;
+
+  const defaultCloud = (window.DEVOPSIA_CLOUD || document.getElementById('tool')?.value || 'aws').toLowerCase();
+  const selections = {
+    cloud: (safeRead(STORAGE_KEYS.cloud) || defaultCloud).toLowerCase(),
+    goal: (safeRead(STORAGE_KEYS.goal) || 'build').toLowerCase(),
+    outputFormat: (safeRead(STORAGE_KEYS.outputFormat) || 'terraform').toLowerCase(),
+    profile: (safeRead(STORAGE_KEYS.profile) || 'secure').toLowerCase()
+  };
+
+  Object.entries(selections).forEach(([key, val]) => {
+    safeWrite(STORAGE_KEYS[key], val);
+  });
+
+  const cloudGroup = container.querySelector('[data-selector-group="cloud"]');
+  const goalGroup = container.querySelector('[data-selector-group="goal"]');
+  const outputFormatSelect = container.querySelector('select[data-selector="output-format"]');
+  const profileSelect = container.querySelector('select[data-selector="profile"]');
+  const advancedPanel = container.querySelector('#advanced-selector-panel');
+  const advancedToggle = container.querySelector('#advanced-selector-toggle');
+  const toggleIcon = advancedToggle?.querySelector('svg');
+
+  if (cloudGroup) {
+    setActivePills(cloudGroup, selections.cloud);
+    cloudGroup.querySelectorAll('button[data-value]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.value;
+        setActivePills(cloudGroup, value);
+        safeWrite(STORAGE_KEYS.cloud, value);
+      });
+    });
+  }
+
+  if (goalGroup) {
+    setActivePills(goalGroup, selections.goal);
+    goalGroup.querySelectorAll('button[data-value]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const value = btn.dataset.value;
+        setActivePills(goalGroup, value);
+        safeWrite(STORAGE_KEYS.goal, value);
+      });
+    });
+  }
+
+  if (outputFormatSelect) {
+    const hasMatch = Array.from(outputFormatSelect.options).some((opt) => opt.value === selections.outputFormat);
+    outputFormatSelect.value = hasMatch ? selections.outputFormat : outputFormatSelect.options[0]?.value || 'terraform';
+    outputFormatSelect.addEventListener('change', (e) => {
+      const value = e.target.value;
+      safeWrite(STORAGE_KEYS.outputFormat, value);
+    });
+  }
+
+  if (profileSelect) {
+    const hasMatch = Array.from(profileSelect.options).some((opt) => opt.value === selections.profile);
+    profileSelect.value = hasMatch ? selections.profile : profileSelect.options[0]?.value || 'secure';
+    profileSelect.addEventListener('change', (e) => {
+      const value = e.target.value;
+      safeWrite(STORAGE_KEYS.profile, value);
+    });
+  }
+
+  if (advancedToggle && advancedPanel) {
+    advancedToggle.addEventListener('click', () => {
+      const isHidden = advancedPanel.classList.contains('hidden');
+      advancedPanel.classList.toggle('hidden', !isHidden);
+      if (toggleIcon) {
+        toggleIcon.classList.toggle('rotate-180', isHidden);
+      }
+    });
+  }
+}
 
 document.addEventListener('promptMode:change', (e) => {
   currentMode = e.detail.mode;
 });
 document.addEventListener('DOMContentLoaded', () => {
   document.dispatchEvent(new window.Event('promptMode:get'));
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  hydrateContextSelectors();
 });
 
 function showToast(message) {
