@@ -148,6 +148,41 @@ function formatMetadata(data) {
   return `${toLabel(cloud)} • ${toLabel(goal)} • ${toLabel(profile)} • ${toLabel(format)}`;
 }
 
+function stringifyStructured(structured) {
+  if (!structured || typeof structured !== 'object') return '';
+  const parts = [];
+  if (structured.summary) parts.push(`Summary: ${structured.summary}`);
+  if (Array.isArray(structured.plan) && structured.plan.length) parts.push(`Plan: ${structured.plan.join(' | ')}`);
+  if (Array.isArray(structured.validation) && structured.validation.length) {
+    const checks = structured.validation
+      .map((item) => {
+        if (!item || typeof item !== 'object') return '';
+        const name = item.label || item.name || item.title || '';
+        if (!name) return '';
+        const status = item.status ?? item.ok ?? item.passed ?? false;
+        return `${status ? '✅' : '⚠️'} ${name}`;
+      })
+      .filter(Boolean)
+      .join(', ');
+    if (checks) parts.push(`Validation: ${checks}`);
+  }
+  if (Array.isArray(structured.artifacts) && structured.artifacts.length) {
+    const names = structured.artifacts
+      .map((art, idx) => art?.filename || art?.name || art?.type || `Artifact ${idx + 1}`)
+      .filter(Boolean)
+      .join(', ');
+    if (names) parts.push(`Artifacts: ${names}`);
+  }
+  if (structured.notes) parts.push(`Notes: ${structured.notes}`);
+  return parts.join('\n');
+}
+
+function pickResponseText(data) {
+  const text = data.responseText || data.response || data.output || data.text || '';
+  if (text) return text;
+  return stringifyStructured(data.responseStructured);
+}
+
 onAuthStateChanged(auth, async (user) => {
   if (!user || !user.emailVerified) {
     window.location.replace('/login/');
@@ -252,7 +287,7 @@ onAuthStateChanged(auth, async (user) => {
 
         const body = document.createElement('pre');
         body.className = 'history-body u-hidden';
-        body.textContent = data.response || data.output || '';
+        body.textContent = pickResponseText(data);
 
         promptCol.appendChild(title);
         promptCol.appendChild(metadata);

@@ -18,6 +18,8 @@ const VALID_VALUES = {
   profile: ['secure', 'optimized', 'default']
 };
 
+const MAX_ARTIFACT_CHARS = 12000;
+
 function safeRead(key) {
   try {
     return window.localStorage.getItem(key);
@@ -25,6 +27,288 @@ function safeRead(key) {
     console.error('Local storage read failed', err);
     return null;
   }
+}
+
+function ensureResultContainer() {
+  const el = document.getElementById('result');
+  if (!el) return null;
+  if (el.dataset.enhanced === 'true') return el;
+
+  let container = el;
+  if (el.tagName === 'PRE') {
+    container = document.createElement('div');
+    container.id = el.id;
+    container.className = el.className;
+    el.replaceWith(container);
+  }
+
+  container.dataset.enhanced = 'true';
+  container.classList.add('space-y-4');
+  return container;
+}
+
+function normalizeList(value) {
+  if (!value) return [];
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => {
+        if (typeof item === 'string') return item;
+        if (item && typeof item === 'object') return item.text || item.title || item.step || item.summary || '';
+        return '';
+      })
+      .filter(Boolean);
+  }
+  if (typeof value === 'string') {
+    return value
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
+function normalizeArtifacts(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (!item || typeof item !== 'object') return null;
+      const content = typeof item.content === 'string' ? item.content : item.body || item.text || '';
+      const type = item.type || item.artifactType || item.kind || '';
+      const filename = item.filename || item.path || item.name || '';
+      const summary = item.summary || item.description || '';
+      return { content, type, filename, summary };
+    })
+    .filter((item) => item && (item.content || item.summary || item.filename || item.type));
+}
+
+function normalizeValidation(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (!item || typeof item !== 'object') return null;
+      const label = item.label || item.name || item.check || item.title || '';
+      const status = item.status ?? item.ok ?? item.passed ?? item.valid ?? false;
+      const detail = item.detail || item.reason || item.notes || '';
+      return { label, status, detail };
+    })
+    .filter((item) => item && item.label);
+}
+
+function normalizeResponsePayload(data) {
+  const responseText = (data?.output || data?.response || data?.text || '').toString();
+  const structured = data?.responseStructured || data?.structured || data?.structuredResponse || null;
+
+  const summary = structured?.summary || data?.summary || '';
+  const plan = normalizeList(structured?.plan || data?.plan || structured?.steps);
+  const artifacts = normalizeArtifacts(structured?.artifacts || data?.artifacts || structured?.files || structured?.attachments);
+  const validation = normalizeValidation(structured?.validation || data?.validation || structured?.checks);
+  const notes = structured?.notes || data?.notes || '';
+
+  const hasStructured = Boolean(summary || plan.length || artifacts.length || validation.length || notes);
+
+  return {
+    responseText,
+    summary,
+    plan,
+    artifacts,
+    validation,
+    notes,
+    hasStructured,
+    responseStructured: structured
+  };
+}
+
+function trimStructured(structured) {
+  if (!structured || typeof structured !== 'object') return null;
+  const clone = { ...structured };
+  if (Array.isArray(clone.artifacts)) {
+    clone.artifacts = clone.artifacts.map((item) => {
+      if (!item || typeof item !== 'object') return item;
+      const copy = { ...item };
+      if (typeof copy.content === 'string' && copy.content.length > MAX_ARTIFACT_CHARS) {
+        const truncatedBy = copy.content.length - MAX_ARTIFACT_CHARS;
+        copy.content = `${copy.content.slice(0, MAX_ARTIFACT_CHARS)}\n\n[...truncated ${truncatedBy} chars]`;
+        copy.truncated = true;
+      }
+      return copy;
+    });
+  }
+  return clone;
+}
+
+function renderCopyButton(text) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className =
+    'ml-auto inline-flex items-center gap-1 rounded border border-gray-300 bg-white px-2 py-1 text-xs text-gray-700 hover:bg-gray-50';
+  btn.textContent = 'Copy';
+  btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(text || '');
+      showToast('Copied to clipboard');
+    } catch (err) {
+      console.error('Copy failed', err);
+      showToast('Unable to copy', 'error');
+    }
+  });
+  return btn;
+}
+
+function renderStructuredResponse(container, payload) {
+  if (!container) return;
+  const { responseText, summary, plan, artifacts, validation, notes, hasStructured } = normalizeResponsePayload(payload || {});
+
+  container.innerHTML = '';
+
+  if (!hasStructured) {
+    container.classList.add('whitespace-pre-wrap', 'font-mono', 'text-sm');
+    container.textContent = responseText || 'No response';
+    return;
+  }
+
+  container.classList.remove('whitespace-pre-wrap', 'font-mono');
+  container.classList.add('text-sm', 'space-y-4');
+
+  const sectionWrap = document.createElement('div');
+  sectionWrap.className = 'space-y-4';
+
+  const summarySection = document.createElement('div');
+  summarySection.className = 'space-y-1';
+  const summaryTitle = document.createElement('h3');
+  summaryTitle.className = 'font-semibold text-gray-900';
+  summaryTitle.textContent = 'Summary';
+  const summaryBody = document.createElement('p');
+  summaryBody.className = 'text-gray-800 whitespace-pre-line';
+  summaryBody.textContent = summary || responseText || 'No summary provided';
+  summarySection.appendChild(summaryTitle);
+  summarySection.appendChild(summaryBody);
+  sectionWrap.appendChild(summarySection);
+
+  if (plan.length) {
+    const planSection = document.createElement('div');
+    planSection.className = 'space-y-2';
+    const planTitle = document.createElement('h3');
+    planTitle.className = 'font-semibold text-gray-900';
+    planTitle.textContent = 'Plan';
+    const list = document.createElement('ul');
+    list.className = 'list-disc list-inside space-y-1 text-gray-800';
+    plan.forEach((item) => {
+      const li = document.createElement('li');
+      li.textContent = item;
+      list.appendChild(li);
+    });
+    planSection.appendChild(planTitle);
+    planSection.appendChild(list);
+    sectionWrap.appendChild(planSection);
+  }
+
+  if (artifacts.length) {
+    const artifactsSection = document.createElement('div');
+    artifactsSection.className = 'space-y-2';
+    const artifactsTitle = document.createElement('h3');
+    artifactsTitle.className = 'font-semibold text-gray-900';
+    artifactsTitle.textContent = 'Artifacts';
+    artifactsSection.appendChild(artifactsTitle);
+
+    const artifactsWrap = document.createElement('div');
+    artifactsWrap.className = 'space-y-3';
+
+    artifacts.forEach((artifact, idx) => {
+      const details = document.createElement('details');
+      details.className = 'rounded border border-gray-200 bg-white shadow-sm';
+      if (idx === 0) details.open = true;
+
+      const summaryEl = document.createElement('summary');
+      summaryEl.className = 'flex items-center gap-2 cursor-pointer px-3 py-2 text-gray-900 font-medium';
+      const label = artifact.filename || artifact.type || `Artifact ${idx + 1}`;
+      const meta = [];
+      if (artifact.type) meta.push(artifact.type);
+      if (artifact.filename) meta.push(artifact.filename);
+      summaryEl.textContent = meta.length ? meta.join(' • ') : label;
+
+      const body = document.createElement('div');
+      body.className = 'border-t border-gray-200 p-3 space-y-2';
+      if (artifact.summary) {
+        const summaryPara = document.createElement('p');
+        summaryPara.className = 'text-gray-700';
+        summaryPara.textContent = artifact.summary;
+        body.appendChild(summaryPara);
+      }
+
+      const pre = document.createElement('pre');
+      pre.className = 'bg-gray-50 border border-gray-200 rounded p-3 overflow-x-auto text-xs whitespace-pre-wrap';
+      const code = document.createElement('code');
+      code.textContent = artifact.content || '';
+      pre.appendChild(code);
+
+      const copyRow = document.createElement('div');
+      copyRow.className = 'flex items-center';
+      copyRow.appendChild(renderCopyButton(artifact.content || ''));
+
+      body.appendChild(copyRow);
+      body.appendChild(pre);
+
+      details.appendChild(summaryEl);
+      details.appendChild(body);
+      artifactsWrap.appendChild(details);
+    });
+
+    artifactsSection.appendChild(artifactsWrap);
+    sectionWrap.appendChild(artifactsSection);
+  }
+
+  if (validation.length) {
+    const valSection = document.createElement('div');
+    valSection.className = 'space-y-2';
+    const valTitle = document.createElement('h3');
+    valTitle.className = 'font-semibold text-gray-900';
+    valTitle.textContent = 'Validation';
+    const list = document.createElement('ul');
+    list.className = 'space-y-1';
+
+    validation.forEach((item) => {
+      const li = document.createElement('li');
+      li.className = 'flex items-start gap-2 text-gray-800';
+      const indicator = document.createElement('span');
+      indicator.textContent = item.status ? '✅' : '⚠️';
+      const text = document.createElement('div');
+      text.className = 'flex-1';
+      const title = document.createElement('div');
+      title.className = 'font-medium';
+      title.textContent = item.label;
+      text.appendChild(title);
+      if (item.detail) {
+        const detail = document.createElement('div');
+        detail.className = 'text-xs text-gray-600';
+        detail.textContent = item.detail;
+        text.appendChild(detail);
+      }
+      li.appendChild(indicator);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+
+    valSection.appendChild(valTitle);
+    valSection.appendChild(list);
+    sectionWrap.appendChild(valSection);
+  }
+
+  if (notes) {
+    const notesSection = document.createElement('div');
+    notesSection.className = 'space-y-1';
+    const notesTitle = document.createElement('h3');
+    notesTitle.className = 'font-semibold text-gray-900';
+    notesTitle.textContent = 'Notes';
+    const notesBody = document.createElement('p');
+    notesBody.className = 'text-gray-800 whitespace-pre-line';
+    notesBody.textContent = notes;
+    notesSection.appendChild(notesTitle);
+    notesSection.appendChild(notesBody);
+    sectionWrap.appendChild(notesSection);
+  }
+
+  container.appendChild(sectionWrap);
 }
 
 function safeWrite(key, value) {
@@ -220,14 +504,17 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   const prompt = document.getElementById('promptInput').value;
   const promptMode = currentMode;
   const tool = document.getElementById('tool')?.value || 'general';
-  const resultEl = document.getElementById('result');
+  const resultEl = ensureResultContainer();
   const context = resolveContextMetadata();
   const requestId = generateRequestId();
   if (promptMode === 'secure' && userPlan !== 'pro') {
     showToast('Secure mode is available on Pro only');
     return;
   }
-  resultEl.textContent = 'Generating...';
+  if (resultEl) {
+    resultEl.textContent = 'Generating...';
+    resultEl.classList.add('whitespace-pre-wrap', 'font-mono', 'text-sm');
+  }
   try {
     // Central API base. Override via window.__DEVOPSIA_API_BASE if needed.
     const API_BASE = (window.__DEVOPSIA_API_BASE || 'https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod').replace(/\/+$/, '');
@@ -238,14 +525,31 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     });
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
-    resultEl.textContent = data.output;
+    const normalized = normalizeResponsePayload(data);
+
+    renderStructuredResponse(resultEl, data);
+
     const user = auth.currentUser;
     if (user) {
       try {
+        const structured =
+          normalized.responseStructured ||
+          (normalized.hasStructured
+            ? {
+                summary: normalized.summary,
+                plan: normalized.plan,
+                artifacts: normalized.artifacts,
+                validation: normalized.validation,
+                notes: normalized.notes
+              }
+            : null);
+
         await addDoc(collection(db, 'users', user.uid, 'prompts'), {
           prompt,
           mode: promptMode,
-          response: data.output,
+          response: normalized.responseText,
+          responseText: normalized.responseText,
+          responseStructured: trimStructured(structured),
           cloud: context.cloud,
           goal: context.goal,
           outputFormat: context.outputFormat,
@@ -262,7 +566,11 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
       }
     }
   } catch (err) {
-    resultEl.textContent = 'Error generating code';
+    console.error('Prompt run failed', err);
+    if (resultEl) {
+      resultEl.textContent = 'Error generating code';
+      resultEl.classList.add('whitespace-pre-wrap', 'font-mono', 'text-sm');
+    }
   }
 });
 
