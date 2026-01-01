@@ -18,19 +18,51 @@
   <div id="protected-content" class="u-hidden">
         <div class="with-sidebar px-4 lg:px-6 pt-16 min-h-screen">
       <div id="sidebar-container" class="lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)]"></div>
-      <main id="main-content" class="flex-1 p-6 bg-white">
-        <div class="container flex items-center justify-between p-4">
-          <nav class="text-muted text-sm"><a href="/">Home</a> / Prompt History</nav>
-          <div class="flex items-center gap-2">
-            <button id="export-json-btn" class="btn btn-ghost">Export JSON</button>
-            <button id="export-csv-btn" class="btn btn-ghost">Export CSV</button>
-            <button id="clear-all-btn" class="btn btn-danger">Clear All</button>
+        <main id="main-content" class="flex-1 p-6 bg-white">
+          <div class="container flex items-center justify-between p-4">
+            <nav class="text-muted text-sm"><a href="/">Home</a> / Prompt History</nav>
+            <div class="flex items-center gap-2">
+              <button id="export-json-btn" class="btn btn-ghost">Export JSON</button>
+              <button id="export-csv-btn" class="btn btn-ghost">Export CSV</button>
+              <button id="clear-all-btn" class="btn btn-danger">Clear All</button>
+            </div>
           </div>
-        </div>
-        <ul id="history-list" class="container p-4"></ul>
-      </main>
+          <div class="container px-4 pb-2">
+            <div class="flex flex-wrap gap-4 items-center bg-gray-50 border border-gray-200 rounded-lg p-4" id="history-filters">
+              <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <span>Cloud</span>
+                <select id="history-filter-cloud" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                  <option value="all">All</option>
+                  <option value="aws">AWS</option>
+                  <option value="azure">Azure</option>
+                  <option value="gcp">GCP</option>
+                </select>
+              </label>
+              <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <span>Goal</span>
+                <select id="history-filter-goal" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                  <option value="all">All</option>
+                  <option value="build">Build</option>
+                  <option value="migrate">Migrate</option>
+                  <option value="operate">Operate</option>
+                  <option value="secure">Secure</option>
+                </select>
+              </label>
+              <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <span>Profile</span>
+                <select id="history-filter-profile" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                  <option value="all">All</option>
+                  <option value="secure">Secure</option>
+                  <option value="optimized">Optimized</option>
+                  <option value="default">Default</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          <ul id="history-list" class="container p-4"></ul>
+        </main>
+      </div>
     </div>
-  </div>
   <script type="module" src="/js/firebase.js"></script>
   <script type="module" src="/js/auth.js"></script>
   <script type="module" src="/js/prompt-history.js"></script>
