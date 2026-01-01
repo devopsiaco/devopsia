@@ -1,0 +1,52 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "cloud", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "cloud", "op": "ASCENDING" },
+        { "fieldPath": "goal", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "cloud", "op": "ASCENDING" },
+        { "fieldPath": "profile", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "cloud", "op": "ASCENDING" },
+        { "fieldPath": "outputFormat", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
