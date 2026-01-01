@@ -11,6 +11,13 @@ const STORAGE_KEYS = {
   profile: 'devopsia.profile'
 };
 
+const VALID_VALUES = {
+  cloud: ['aws', 'azure', 'gcp', 'unknown'],
+  goal: ['build', 'migrate', 'operate', 'secure', 'unknown'],
+  outputFormat: ['terraform', 'yaml', 'bicep', 'cli', 'runbook', 'unknown'],
+  profile: ['secure', 'optimized', 'default']
+};
+
 function safeRead(key) {
   try {
     return window.localStorage.getItem(key);
@@ -26,6 +33,35 @@ function safeWrite(key, value) {
   } catch (err) {
     console.error('Local storage write failed', err);
   }
+}
+
+function normalizeSelection(value, category, fallback) {
+  const allowed = VALID_VALUES[category] || [];
+  const normalized = value ? String(value).toLowerCase() : '';
+  if (normalized && allowed.includes(normalized)) return normalized;
+  const fallbackNormalized = fallback ? String(fallback).toLowerCase() : '';
+  if (fallbackNormalized && allowed.includes(fallbackNormalized)) return fallbackNormalized;
+  return 'unknown';
+}
+
+function resolveContextMetadata() {
+  const pageCloud = (window.DEVOPSIA_CLOUD || document.getElementById('tool')?.value || 'unknown').toLowerCase();
+  const cloud = normalizeSelection(safeRead(STORAGE_KEYS.cloud) || pageCloud, 'cloud', pageCloud || 'unknown');
+  const goal = normalizeSelection(safeRead(STORAGE_KEYS.goal) || 'build', 'goal', 'build');
+  const outputFormat = normalizeSelection(
+    safeRead(STORAGE_KEYS.outputFormat) || 'terraform',
+    'outputFormat',
+    'terraform'
+  );
+  const profile = normalizeSelection(safeRead(STORAGE_KEYS.profile) || 'secure', 'profile', 'secure');
+
+  return { cloud, goal, outputFormat, profile };
+}
+
+function generateRequestId() {
+  const randomUUID = globalThis.crypto?.randomUUID;
+  if (typeof randomUUID === 'function') return randomUUID();
+  return `req-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 function setActivePills(group, value) {
@@ -185,6 +221,8 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   const promptMode = currentMode;
   const tool = document.getElementById('tool')?.value || 'general';
   const resultEl = document.getElementById('result');
+  const context = resolveContextMetadata();
+  const requestId = generateRequestId();
   if (promptMode === 'secure' && userPlan !== 'pro') {
     showToast('Secure mode is available on Pro only');
     return;
@@ -196,7 +234,7 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     const res = await fetch(`${API_BASE}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt, promptMode, tool })
+      body: JSON.stringify({ prompt, promptMode, tool, context })
     });
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
@@ -208,6 +246,15 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
           prompt,
           mode: promptMode,
           response: data.output,
+          cloud: context.cloud,
+          goal: context.goal,
+          outputFormat: context.outputFormat,
+          profile: context.profile,
+          assistantType: 'cloud',
+          assistantCloud: context.cloud,
+          requestId,
+          model: data.model || data.modelName,
+          pagePath: window.location?.pathname,
           createdAt: serverTimestamp()
         });
       } catch (err) {
