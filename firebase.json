@@ -1,0 +1,9 @@
+{
+  "firestore": {
+    "rules": "infra/firestore.rules",
+    "indexes": "infra/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "infra/firebase.storage.rules"
+  }
+}
