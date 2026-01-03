@@ -5,6 +5,17 @@
       "queryScope": "COLLECTION",
       "fields": [
         { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "assistantType", "op": "ASCENDING" },
+        { "fieldPath": "createdAt", "op": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "prompts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "uid", "op": "ASCENDING" },
+        { "fieldPath": "assistantType", "op": "ASCENDING" },
+        { "fieldPath": "format", "op": "ASCENDING" },
         { "fieldPath": "createdAt", "op": "DESCENDING" }
       ]
     },

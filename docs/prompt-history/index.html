@@ -30,31 +30,56 @@
           <div class="container px-4 pb-2">
             <div class="flex flex-wrap gap-4 items-center bg-gray-50 border border-gray-200 rounded-lg p-4" id="history-filters">
               <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
-                <span>Cloud</span>
-                <select id="history-filter-cloud" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                <span>Assistant Type</span>
+                <select id="history-filter-assistant" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
                   <option value="all">All</option>
-                  <option value="aws">AWS</option>
-                  <option value="azure">Azure</option>
-                  <option value="gcp">GCP</option>
+                  <option value="cloud">Cloud</option>
+                  <option value="format">Advanced</option>
                 </select>
               </label>
-              <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
-                <span>Goal</span>
-                <select id="history-filter-goal" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+              <div class="flex flex-wrap gap-4 items-center" id="history-cloud-filter-group">
+                <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <span>Cloud</span>
+                  <select id="history-filter-cloud" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                    <option value="all">All</option>
+                    <option value="aws">AWS</option>
+                    <option value="azure">Azure</option>
+                    <option value="gcp">GCP</option>
+                  </select>
+                </label>
+                <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <span>Goal</span>
+                  <select id="history-filter-goal" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                    <option value="all">All</option>
+                    <option value="build">Build</option>
+                    <option value="migrate">Migrate</option>
+                    <option value="operate">Operate</option>
+                    <option value="secure">Secure</option>
+                  </select>
+                </label>
+                <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                  <span>Profile</span>
+                  <select id="history-filter-profile" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
+                    <option value="all">All</option>
+                    <option value="secure">Secure</option>
+                    <option value="optimized">Optimized</option>
+                    <option value="default">Default</option>
+                  </select>
+                </label>
+              </div>
+              <label class="flex items-center gap-2 text-sm font-medium text-gray-700 hidden" id="history-format-filter">
+                <span>Format</span>
+                <select id="history-filter-format" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
                   <option value="all">All</option>
-                  <option value="build">Build</option>
-                  <option value="migrate">Migrate</option>
-                  <option value="operate">Operate</option>
-                  <option value="secure">Secure</option>
-                </select>
-              </label>
-              <label class="flex items-center gap-2 text-sm font-medium text-gray-700">
-                <span>Profile</span>
-                <select id="history-filter-profile" class="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white">
-                  <option value="all">All</option>
-                  <option value="secure">Secure</option>
-                  <option value="optimized">Optimized</option>
-                  <option value="default">Default</option>
+                  <option value="terraform">Terraform</option>
+                  <option value="kubernetes">Kubernetes</option>
+                  <option value="helm">Helm</option>
+                  <option value="ansible">Ansible</option>
+                  <option value="docker">Docker</option>
+                  <option value="github-actions">GitHub Actions</option>
+                  <option value="gitlab-ci">GitLab CI</option>
+                  <option value="observability">Observability</option>
+                  <option value="policy">Policy</option>
                 </select>
               </label>
             </div>
