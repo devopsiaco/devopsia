@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Observability Format Assistant - Devopsia</title>
+  <title>Advanced Observability Formats | Devopsia</title>
+  <meta name="description" content="Create logging, metrics, and tracing configs with Grafana, Prometheus, or OTel pipelines backed by validation and SLO guardrails." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Observability format assistant',
       subtitle: 'OTel pipelines, log parsing, and standard attributes for debugging.',
       promptPlaceholder: 'Ask for observability pipelines, tracing, and log enrichment...',
-      tool: 'observability'
+      tool: 'observability',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'OTel collector pipelines, Prometheus scrape rules, Grafana dashboards, and alerting configs wired to receivers.' },
+        { label: 'Validation', detail: 'promtool/unit test cues, synthetic check ideas, and sampling/retention guardrails for metrics and logs.' },
+        { label: 'Gotchas', detail: 'Cardinality controls, tenant labeling, and secret-free webhook URLs with rotation guidance.' }
+      ]
     });
   </script>
 

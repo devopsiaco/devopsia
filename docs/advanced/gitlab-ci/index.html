@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GitLab CI Format Assistant - Devopsia</title>
+  <title>Advanced GitLab CI Formats | Devopsia</title>
+  <meta name="description" content="Generate GitLab CI pipelines with secure runners, deploy jobs, and environment promotions backed by validation and compliance." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'GitLab CI format assistant',
       subtitle: 'Compliance-ready GitLab CI pipelines with deploy, auth, and release controls.',
       promptPlaceholder: 'Ask for GitLab CI pipelines with security and deployment stages...',
-      tool: 'gitlab-ci'
+      tool: 'gitlab-ci',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: '.gitlab-ci.yml pipelines with stages, includes, protected environments, and per-project runner tags.' },
+        { label: 'Validation', detail: 'Pipeline linting tips, merge request-only jobs, and policy checks for artifact retention and approvals.' },
+        { label: 'Gotchas', detail: 'Protected variables, limited runner scopes, and cache/artifact isolation across branches and environments.' }
+      ]
     });
   </script>
 

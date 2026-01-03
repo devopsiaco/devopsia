@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GitHub Actions Format Assistant - Devopsia</title>
+  <title>Advanced GitHub Actions Formats | Devopsia</title>
+  <meta name="description" content="Design secure GitHub Actions workflows with OIDC cloud auth, reusable jobs, release orchestration, and compliance guardrails." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'GitHub Actions format assistant',
       subtitle: 'Secure CI/CD workflows, OIDC cloud auth, and release orchestration.',
       promptPlaceholder: 'Ask for GitHub Actions workflows and reusable job templates...',
-      tool: 'github-actions'
+      tool: 'github-actions',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Workflow YAMLs, reusable jobs, environment protection rules, and cloud auth via OIDC with minimal scopes.' },
+        { label: 'Validation', detail: 'actionlint pointers, branch protection cues, and matrix/test coverage checks for gated deployments.' },
+        { label: 'Gotchas', detail: 'Pin actions by digest, restrict GITHUB_TOKEN permissions, and keep caches/artifacts scoped to branches.' }
+      ]
     });
   </script>
 

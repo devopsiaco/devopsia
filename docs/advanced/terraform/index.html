@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Terraform Format Assistant - Devopsia</title>
+  <title>Advanced Terraform Formats | Devopsia</title>
+  <meta name="description" content="Generate secure Terraform modules, remote state backends, IAM policies, and cluster bootstraps with validation and drift safeguards." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Terraform format assistant',
       subtitle: 'Secure Terraform blueprints for modules, remote state, IAM, and cluster bootstrap.',
       promptPlaceholder: 'Ask for Terraform formats, modules, or security guardrails...',
-      tool: 'terraform'
+      tool: 'terraform',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Module stubs, backend configs, provider blocks, and tfvars templates with least-privilege IAM roles.' },
+        { label: 'Validation', detail: 'Plan/apply checklists, terraform validate/fmt hints, and policy-as-code guardrails for drift and state safety.' },
+        { label: 'Gotchas', detail: 'Remote state locking, workspace isolation, and secret inputs handled via variables or Vault—not inline values.' }
+      ]
     });
   </script>
 
