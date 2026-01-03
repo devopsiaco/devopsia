@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced / Formats - Devopsia</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Ubuntu+Sans:wght@200;400;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/lynx-logo.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+  <div id="top-banner"></div>
+
+  <main class="max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-12">
+    <nav aria-label="Breadcrumb" class="text-sm text-gray-500 mb-4">
+      <a href="/" class="hover:underline">Home</a> / <span class="text-gray-700">Advanced / Formats</span>
+    </nav>
+
+    <section class="space-y-4 mb-10">
+      <p class="text-sm font-semibold text-orange-600 uppercase tracking-wide">Advanced</p>
+      <h1 class="text-3xl md:text-4xl font-semibold text-gray-900">Task templates for every format</h1>
+      <p class="text-lg text-gray-700 max-w-3xl">
+        Task templates for Terraform, Kubernetes, CI/CD, Ansible, Observability, and Policy-as-code.
+      </p>
+    </section>
+
+    <section class="grid gap-4 md:gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <a href="/advanced/terraform/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Terraform</h2>
+            <p class="mt-2 text-sm text-gray-600">Provision secure, multi-cloud infrastructure with reusable IaC recipes.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/kubernetes/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Kubernetes YAML</h2>
+            <p class="mt-2 text-sm text-gray-600">Deploy clusters, workloads, and add-ons with validated YAML blueprints.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/helm/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Helm</h2>
+            <p class="mt-2 text-sm text-gray-600">Chart scaffolds and values files tuned for progressive delivery.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/github-actions/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">GitHub Actions</h2>
+            <p class="mt-2 text-sm text-gray-600">CI/CD workflows with security gates, reusable actions, and caching.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/gitlab-ci/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">GitLab CI</h2>
+            <p class="mt-2 text-sm text-gray-600">Pipelines for build, test, and deploy with compliance and DAST baked in.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/docker/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Docker</h2>
+            <p class="mt-2 text-sm text-gray-600">Hardened Dockerfiles, multi-stage builds, and image scanning defaults.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/ansible/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Ansible</h2>
+            <p class="mt-2 text-sm text-gray-600">Playbooks for secure configuration, patching, and app rollouts.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/observability/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Observability</h2>
+            <p class="mt-2 text-sm text-gray-600">Dashboards, alerting policies, and runbooks for resilient operations.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+
+      <a href="/advanced/policy/" class="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition">
+        <div class="flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold text-gray-900">Policy-as-code</h2>
+            <p class="mt-2 text-sm text-gray-600">OPA and Sentinel templates to enforce guardrails across stacks.</p>
+          </div>
+          <span class="text-gray-400 group-hover:text-orange-500 transition">→</span>
+        </div>
+      </a>
+    </section>
+  </main>
+
+  <script defer src="/js/top-banner.js"></script>
+  <div id="footer-container"></div>
+  <script src="/js/footer-loader.js" defer></script>
+</body>
+</html>
