@@ -19,26 +19,47 @@ const listEl = document.getElementById('history-list');
 const exportJsonBtn = document.getElementById('export-json-btn');
 const exportCsvBtn = document.getElementById('export-csv-btn');
 const emptyEl = document.getElementById('history-empty');
+const filterAssistantSelect = document.getElementById('history-filter-assistant');
 const filterCloudSelect = document.getElementById('history-filter-cloud');
 const filterGoalSelect = document.getElementById('history-filter-goal');
 const filterProfileSelect = document.getElementById('history-filter-profile');
+const filterFormatSelect = document.getElementById('history-filter-format');
+const cloudFilterGroup = document.getElementById('history-cloud-filter-group');
+const formatFilterLabel = document.getElementById('history-format-filter');
 
 const STORAGE_KEYS = {
+  assistantType: 'devopsia.history.assistantType',
   cloud: 'devopsia.history.cloud',
   goal: 'devopsia.history.goal',
-  profile: 'devopsia.history.profile'
+  profile: 'devopsia.history.profile',
+  format: 'devopsia.history.format'
 };
 
 const FILTER_DEFAULTS = {
+  assistantType: 'all',
   cloud: 'all',
   goal: 'all',
-  profile: 'all'
+  profile: 'all',
+  format: 'all'
 };
 
 const FILTER_OPTIONS = {
+  assistantType: ['all', 'cloud', 'format'],
   cloud: ['all', 'aws', 'azure', 'gcp'],
   goal: ['all', 'build', 'migrate', 'operate', 'secure'],
-  profile: ['all', 'secure', 'optimized', 'default']
+  profile: ['all', 'secure', 'optimized', 'default'],
+  format: [
+    'all',
+    'terraform',
+    'kubernetes',
+    'helm',
+    'ansible',
+    'docker',
+    'github-actions',
+    'gitlab-ci',
+    'observability',
+    'policy'
+  ]
 };
 
 function refreshEmptyState() {
@@ -72,10 +93,18 @@ function normalizeFilter(value, type) {
 
 function getSavedFilters() {
   return {
+    assistantType: normalizeFilter(safeRead(STORAGE_KEYS.assistantType), 'assistantType'),
     cloud: normalizeFilter(safeRead(STORAGE_KEYS.cloud), 'cloud'),
     goal: normalizeFilter(safeRead(STORAGE_KEYS.goal), 'goal'),
-    profile: normalizeFilter(safeRead(STORAGE_KEYS.profile), 'profile')
+    profile: normalizeFilter(safeRead(STORAGE_KEYS.profile), 'profile'),
+    format: normalizeFilter(safeRead(STORAGE_KEYS.format), 'format')
   };
+}
+
+function syncFilterVisibility(assistantType) {
+  const isAdvanced = assistantType === 'format';
+  if (cloudFilterGroup) cloudFilterGroup.classList.toggle('hidden', isAdvanced);
+  if (formatFilterLabel) formatFilterLabel.classList.toggle('hidden', !isAdvanced);
 }
 
 // Which subcollection holds history? prefer "history", fallback to "prompts"
@@ -112,9 +141,17 @@ async function detectHistoryCollection(uid) {
 
 async function getOrderedDocs(uid, pageLimit = 50, filters = FILTER_DEFAULTS) {
   const clauses = [];
-  if (filters.cloud && filters.cloud !== 'all') clauses.push(where('cloud', '==', filters.cloud));
-  if (filters.goal && filters.goal !== 'all') clauses.push(where('goal', '==', filters.goal));
-  if (filters.profile && filters.profile !== 'all') clauses.push(where('profile', '==', filters.profile));
+  if (filters.assistantType && filters.assistantType !== 'all') {
+    clauses.push(where('assistantType', '==', filters.assistantType));
+  }
+  if (filters.format && filters.format !== 'all') {
+    clauses.push(where('format', '==', filters.format));
+  }
+  if (filters.assistantType !== 'format') {
+    if (filters.cloud && filters.cloud !== 'all') clauses.push(where('cloud', '==', filters.cloud));
+    if (filters.goal && filters.goal !== 'all') clauses.push(where('goal', '==', filters.goal));
+    if (filters.profile && filters.profile !== 'all') clauses.push(where('profile', '==', filters.profile));
+  }
 
   // Try ordering by createdAt desc, fallback to plain get if it fails
   try {
@@ -134,18 +171,38 @@ function showToast(message) {
   setTimeout(() => toast.remove(), 3000);
 }
 
+function toLabel(value) {
+  if (!value) return 'Unknown';
+  const normalized = String(value).toLowerCase();
+  const map = {
+    aws: 'AWS',
+    gcp: 'GCP',
+    ci: 'CI',
+    rbac: 'RBAC'
+  };
+  if (map[normalized]) return map[normalized];
+  return normalized
+    .split(/[-_\s]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 function formatMetadata(data) {
-  const cloud = (data.cloud || 'unknown').toString();
+  const assistantType = (data.assistantType || '').toLowerCase();
+  const isAdvanced = assistantType === 'format' || Boolean(data.format);
+  const output = data.outputFormat || data.format || data.mode || 'unknown';
+
+  if (isAdvanced) {
+    const formatLabel = toLabel(data.format || data.outputFormat || 'unknown');
+    const templateLabel = toLabel(data.templateTitle || data.templateId || 'Template');
+    return `${formatLabel} • ${templateLabel} • ${toLabel(output)}`;
+  }
+
+  const cloud = (data.assistantCloud || data.cloud || 'unknown').toString();
   const goal = (data.goal || 'unknown').toString();
   const profile = (data.profile || data.mode || 'default').toString();
-  const format = (data.outputFormat || data.mode || 'unknown').toString();
-
-  const toLabel = (value) => {
-    if (!value) return 'Unknown';
-    return value.charAt(0).toUpperCase() + value.slice(1);
-  };
-
-  return `${toLabel(cloud)} • ${toLabel(goal)} • ${toLabel(profile)} • ${toLabel(format)}`;
+  return `${toLabel(cloud)} • ${toLabel(goal)} • ${toLabel(profile)} • ${toLabel(output)}`;
 }
 
 function stringifyStructured(structured) {
@@ -194,6 +251,11 @@ onAuthStateChanged(auth, async (user) => {
   await detectHistoryCollection(user.uid);
 
   let activeFilters = getSavedFilters();
+  if (activeFilters.assistantType === 'format') {
+    activeFilters = { ...activeFilters, cloud: 'all', goal: 'all', profile: 'all' };
+  } else {
+    activeFilters = { ...activeFilters, format: 'all' };
+  }
 
   const exportHistory = async (type) => {
     try {
@@ -241,9 +303,12 @@ onAuthStateChanged(auth, async (user) => {
   if (exportCsvBtn) exportCsvBtn.addEventListener('click', () => exportHistory('csv'));
 
   const hydrateFilterControls = () => {
+    if (filterAssistantSelect) filterAssistantSelect.value = activeFilters.assistantType;
     if (filterCloudSelect) filterCloudSelect.value = activeFilters.cloud;
     if (filterGoalSelect) filterGoalSelect.value = activeFilters.goal;
     if (filterProfileSelect) filterProfileSelect.value = activeFilters.profile;
+    if (filterFormatSelect) filterFormatSelect.value = activeFilters.format;
+    syncFilterVisibility(activeFilters.assistantType);
   };
 
   const loadHistory = async () => {
@@ -299,7 +364,8 @@ onAuthStateChanged(auth, async (user) => {
         metaCol.className = 'meta-wrap';
         const modeSpan = document.createElement('span');
         modeSpan.className = 'badge';
-        modeSpan.textContent = data.mode || data.profile || 'default';
+        const badgeLabel = data.assistantType === 'format' ? 'Advanced' : data.mode || data.profile || 'default';
+        modeSpan.textContent = toLabel(badgeLabel);
         const dateSpan = document.createElement('span');
         const date = data.createdAt?.toDate ? data.createdAt.toDate() : null;
         dateSpan.textContent = date ? date.toLocaleString() : '';
@@ -354,22 +420,33 @@ onAuthStateChanged(auth, async (user) => {
   };
 
   const handleFilterChange = () => {
-    activeFilters = {
+    const selected = {
+      assistantType: normalizeFilter(filterAssistantSelect?.value, 'assistantType'),
       cloud: normalizeFilter(filterCloudSelect?.value, 'cloud'),
       goal: normalizeFilter(filterGoalSelect?.value, 'goal'),
-      profile: normalizeFilter(filterProfileSelect?.value, 'profile')
+      profile: normalizeFilter(filterProfileSelect?.value, 'profile'),
+      format: normalizeFilter(filterFormatSelect?.value, 'format')
     };
 
-    Object.entries(activeFilters).forEach(([key, val]) => {
-      safeWrite(STORAGE_KEYS[key], val);
-    });
+    const isAdvanced = selected.assistantType === 'format';
+    activeFilters = {
+      assistantType: selected.assistantType,
+      cloud: isAdvanced ? 'all' : selected.cloud,
+      goal: isAdvanced ? 'all' : selected.goal,
+      profile: isAdvanced ? 'all' : selected.profile,
+      format: isAdvanced ? selected.format : 'all'
+    };
 
+    Object.entries(selected).forEach(([key, val]) => safeWrite(STORAGE_KEYS[key], val));
+    syncFilterVisibility(selected.assistantType);
     loadHistory();
   };
 
+  if (filterAssistantSelect) filterAssistantSelect.addEventListener('change', handleFilterChange);
   if (filterCloudSelect) filterCloudSelect.addEventListener('change', handleFilterChange);
   if (filterGoalSelect) filterGoalSelect.addEventListener('change', handleFilterChange);
   if (filterProfileSelect) filterProfileSelect.addEventListener('change', handleFilterChange);
+  if (filterFormatSelect) filterFormatSelect.addEventListener('change', handleFilterChange);
 
   hydrateFilterControls();
   loadHistory();
