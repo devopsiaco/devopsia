@@ -73,6 +73,9 @@
                     <option value="bicep">Bicep</option>
                     <option value="cli">CLI</option>
                     <option value="runbook">Runbook</option>
+                    <option value="dockerfile">Dockerfile</option>
+                    <option value="markdown">Markdown</option>
+                    <option value="rego">Rego</option>
                   </select>
                 </div>
                 <div class="space-y-1">
@@ -85,6 +88,23 @@
               </div>
             </div>
           </div>
+        </div>
+        <div id="template-picker" class="hidden border rounded-lg bg-gray-50/80 border-gray-200 p-4 space-y-3">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="text-[11px] font-semibold text-gray-600 tracking-wide uppercase">Templates</div>
+              <p class="text-sm text-gray-600">Start from a curated prompt for this format.</p>
+            </div>
+            <span class="text-[10px] font-semibold text-orange-600 bg-orange-50 border border-orange-200 rounded-full px-2 py-1">Beta</span>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-gray-700" for="template-select">Template</label>
+            <select id="template-select" class="block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500">
+              <option value="">Freeform prompt</option>
+            </select>
+          </div>
+          <p id="template-description" class="hidden text-sm text-gray-700"></p>
+          <div id="template-fields" class="space-y-3"></div>
         </div>
         <div>
           <div class="flex items-center mb-1">
