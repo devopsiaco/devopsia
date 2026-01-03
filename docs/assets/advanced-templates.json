@@ -1,0 +1,1263 @@
+{
+    "terraform": [
+        {
+            "id": "tf-module-scaffold",
+            "title": "Module scaffold",
+            "description": "Generate a secure Terraform module skeleton with inputs, outputs, README, and examples.",
+            "defaultOutputFormat": "terraform",
+            "promptTemplate": "Create a Terraform module scaffold for {{app_name}} that targets {{cloud}} with secure defaults and documented variables.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "Application name",
+                    "type": "text",
+                    "placeholder": "payments-api"
+                },
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "compliance",
+                    "label": "Compliance focus",
+                    "type": "text",
+                    "placeholder": "CIS, SOC2"
+                }
+            ]
+        },
+        {
+            "id": "tf-remote-state",
+            "title": "Remote state backend",
+            "description": "Configure a remote state backend with encryption, locking, and workspace isolation.",
+            "defaultOutputFormat": "terraform",
+            "promptTemplate": "Produce Terraform code for a remote state backend in {{cloud}} with encryption at rest and state locking for {{team_name}}.",
+            "fields": [
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "team_name",
+                    "label": "Team",
+                    "type": "text",
+                    "placeholder": "platform"
+                },
+                {
+                    "key": "bucket_name",
+                    "label": "State bucket name",
+                    "type": "text",
+                    "placeholder": "tfstate-shared"
+                }
+            ]
+        },
+        {
+            "id": "tf-iam-role",
+            "title": "IAM role with least privilege",
+            "description": "Define an IAM role and policy attachments with MFA and session boundaries.",
+            "defaultOutputFormat": "terraform",
+            "promptTemplate": "Write Terraform for an IAM role named {{role_name}} that only allows {{allowed_actions}} with MFA condition and tagging.",
+            "fields": [
+                {
+                    "key": "role_name",
+                    "label": "Role name",
+                    "type": "text",
+                    "placeholder": "deploy-role"
+                },
+                {
+                    "key": "allowed_actions",
+                    "label": "Allowed actions",
+                    "type": "text",
+                    "placeholder": "ec2:Describe*, ssm:SendCommand"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner tag",
+                    "type": "text",
+                    "placeholder": "platform-security"
+                }
+            ]
+        },
+        {
+            "id": "tf-baseline",
+            "title": "Environment baseline",
+            "description": "Build a secure Terraform environment baseline with VPC, KMS, and logging.",
+            "defaultOutputFormat": "terraform",
+            "promptTemplate": "Create a Terraform baseline for {{environment}} including VPC, private subnets, KMS keys, and audit logging to {{log_destination}}.",
+            "fields": [
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "production"
+                },
+                {
+                    "key": "cidr",
+                    "label": "VPC CIDR",
+                    "type": "text",
+                    "placeholder": "10.10.0.0/16"
+                },
+                {
+                    "key": "log_destination",
+                    "label": "Log destination",
+                    "type": "text",
+                    "placeholder": "cloudwatch"
+                }
+            ]
+        },
+        {
+            "id": "tf-k8s-bootstrap",
+            "title": "Kubernetes bootstrap via Terraform",
+            "description": "Provision a managed Kubernetes cluster with node pools, IRSA/workload identity, and addons.",
+            "defaultOutputFormat": "terraform",
+            "promptTemplate": "Generate Terraform to provision a {{cloud}} managed Kubernetes cluster for {{team_name}} with IRSA/workload identity and autoscaling node pools.",
+            "fields": [
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "team_name",
+                    "label": "Team",
+                    "type": "text",
+                    "placeholder": "platform"
+                },
+                {
+                    "key": "node_size",
+                    "label": "Node size",
+                    "type": "text",
+                    "placeholder": "m6i.large"
+                }
+            ]
+        }
+    ],
+    "kubernetes": [
+        {
+            "id": "k8s-prod-deployment",
+            "title": "Production deployment",
+            "description": "Create a production-ready Deployment with probes, HPA, and PodDisruptionBudgets.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Generate Kubernetes Deployment YAML for {{app_name}} in namespace {{namespace}} with liveness/readiness probes and autoscaling.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "api-service"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "replicas",
+                    "label": "Replicas",
+                    "type": "text",
+                    "placeholder": "3"
+                }
+            ]
+        },
+        {
+            "id": "k8s-ingress",
+            "title": "Ingress with TLS",
+            "description": "Expose services with ingress, TLS certificates, and secure annotations.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create an Ingress for service {{service_name}} on host {{dns_name}} with TLS, security headers, and least-privilege annotations.",
+            "fields": [
+                {
+                    "key": "service_name",
+                    "label": "Service name",
+                    "type": "text",
+                    "placeholder": "api"
+                },
+                {
+                    "key": "dns_name",
+                    "label": "DNS name",
+                    "type": "text",
+                    "placeholder": "api.example.com"
+                },
+                {
+                    "key": "ingress_class",
+                    "label": "Ingress class",
+                    "type": "text",
+                    "placeholder": "nginx"
+                }
+            ]
+        },
+        {
+            "id": "k8s-rbac",
+            "title": "RBAC profiles",
+            "description": "Define Roles and RoleBindings with least-privilege permissions for namespaces.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide Kubernetes RBAC YAML granting {{subjects}} only the required verbs on {{resources}} in namespace {{namespace}}.",
+            "fields": [
+                {
+                    "key": "subjects",
+                    "label": "Subjects",
+                    "type": "text",
+                    "placeholder": "serviceAccount:deploy-bot"
+                },
+                {
+                    "key": "resources",
+                    "label": "Resources",
+                    "type": "text",
+                    "placeholder": "deployments,pods"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "platform"
+                }
+            ]
+        },
+        {
+            "id": "k8s-network-policy",
+            "title": "NetworkPolicy",
+            "description": "Restrict pod egress/ingress with named selectors and common allowlists.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Draft a Kubernetes NetworkPolicy for namespace {{namespace}} allowing {{allowed_destinations}} and denying other traffic.",
+            "fields": [
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "allowed_destinations",
+                    "label": "Allowed destinations",
+                    "type": "text",
+                    "placeholder": "databases, observability"
+                },
+                {
+                    "key": "app_label",
+                    "label": "App label",
+                    "type": "text",
+                    "placeholder": "app: api"
+                }
+            ]
+        },
+        {
+            "id": "k8s-secrets",
+            "title": "Secrets patterns",
+            "description": "Standardize secret management with sealed secrets or external secret stores.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide Kubernetes YAML to deliver secrets for {{app_name}} using {{secret_store}} with rotation guidance.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "batch-jobs"
+                },
+                {
+                    "key": "secret_store",
+                    "label": "Secret store",
+                    "type": "text",
+                    "placeholder": "External Secrets + AWS Secrets Manager"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "ops"
+                }
+            ]
+        }
+    ],
+    "helm": [
+        {
+            "id": "helm-chart-scaffold",
+            "title": "Chart scaffold",
+            "description": "Bootstrap a Helm chart with helpers, templates, and default values.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create a Helm chart scaffold for {{chart_name}} with helper templates and labels aligned to {{org}} standards.",
+            "fields": [
+                {
+                    "key": "chart_name",
+                    "label": "Chart name",
+                    "type": "text",
+                    "placeholder": "platform-api"
+                },
+                {
+                    "key": "org",
+                    "label": "Org/Team",
+                    "type": "text",
+                    "placeholder": "devops"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Default namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                }
+            ]
+        },
+        {
+            "id": "helm-values-envs",
+            "title": "Values for environments",
+            "description": "Create layered values files for dev, stage, and prod with overrides.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Generate Helm values.yaml snippets for {{app_name}} covering dev, stage, and prod with secure defaults and overrides for {{slo}}.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "checkout"
+                },
+                {
+                    "key": "slo",
+                    "label": "SLO/priority",
+                    "type": "text",
+                    "placeholder": "99.9% availability"
+                },
+                {
+                    "key": "ingress_host",
+                    "label": "Ingress host",
+                    "type": "text",
+                    "placeholder": "app.example.com"
+                }
+            ]
+        },
+        {
+            "id": "helm-ingress",
+            "title": "Ingress templating",
+            "description": "Template ingress with TLS, HSTS, and path rules using values-driven config.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide a Helm template for ingress that reads hosts and TLS from values for {{chart_name}} with security headers.",
+            "fields": [
+                {
+                    "key": "chart_name",
+                    "label": "Chart name",
+                    "type": "text",
+                    "placeholder": "edge-service"
+                },
+                {
+                    "key": "ingress_class",
+                    "label": "Ingress class",
+                    "type": "text",
+                    "placeholder": "nginx"
+                },
+                {
+                    "key": "service_name",
+                    "label": "Service name",
+                    "type": "text",
+                    "placeholder": "edge"
+                }
+            ]
+        },
+        {
+            "id": "helm-helpers-labels",
+            "title": "Helpers and labels",
+            "description": "Add Helm helper templates for labels, selectors, and common annotations.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Write Helm _helpers.tpl snippets that apply common labels and annotations for {{team_name}} across all resources.",
+            "fields": [
+                {
+                    "key": "team_name",
+                    "label": "Team name",
+                    "type": "text",
+                    "placeholder": "sre"
+                },
+                {
+                    "key": "release_name",
+                    "label": "Release name",
+                    "type": "text",
+                    "placeholder": "edge"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner label",
+                    "type": "text",
+                    "placeholder": "platform"
+                }
+            ]
+        },
+        {
+            "id": "helm-upgrade-safe",
+            "title": "Upgrade-safe patterns",
+            "description": "Design upgrade-safe Helm templates with hooks and validation.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Propose Helm patterns for {{app_name}} to ensure upgrade safety, schema validation, and rollback hooks.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "ml-service"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "strategy",
+                    "label": "Upgrade strategy",
+                    "type": "text",
+                    "placeholder": "rolling"
+                }
+            ]
+        }
+    ],
+    "github-actions": [
+        {
+            "id": "gha-ci",
+            "title": "CI workflow",
+            "description": "Lint, test, and scan with caching and required checks for pull requests.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Draft a GitHub Actions CI workflow for {{repo_name}} that runs lint, tests, and security scans with cache and required approvals.",
+            "fields": [
+                {
+                    "key": "repo_name",
+                    "label": "Repo",
+                    "type": "text",
+                    "placeholder": "service-api"
+                },
+                {
+                    "key": "language",
+                    "label": "Language",
+                    "type": "text",
+                    "placeholder": "node"
+                },
+                {
+                    "key": "test_command",
+                    "label": "Test command",
+                    "type": "text",
+                    "placeholder": "npm test"
+                }
+            ]
+        },
+        {
+            "id": "gha-docker-build-push",
+            "title": "Docker build and push",
+            "description": "Build and push images with multi-arch and attestations.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create a GitHub Actions workflow to build and push a Docker image for {{app_name}} to {{registry}} using OIDC and provenance attestations.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "payments"
+                },
+                {
+                    "key": "registry",
+                    "label": "Registry",
+                    "type": "text",
+                    "placeholder": "ghcr.io/org"
+                },
+                {
+                    "key": "image_tag",
+                    "label": "Image tag",
+                    "type": "text",
+                    "placeholder": "sha"
+                }
+            ]
+        },
+        {
+            "id": "gha-deploy-k8s",
+            "title": "Deploy to Kubernetes",
+            "description": "Deploy to Kubernetes with rollout checks, health gates, and RBAC safety.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide a GitHub Actions workflow to deploy {{app_name}} to cluster {{cluster_name}} with rollout status checks and sealed secret handling.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "edge-gateway"
+                },
+                {
+                    "key": "cluster_name",
+                    "label": "Cluster",
+                    "type": "text",
+                    "placeholder": "prod-eks"
+                },
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                }
+            ]
+        },
+        {
+            "id": "gha-oidc-cloud-auth",
+            "title": "OIDC cloud auth",
+            "description": "Use GitHub OIDC to assume cloud roles without long-lived secrets.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Compose a GitHub Actions workflow that allows role assumption in {{cloud}} using OIDC for {{environment}} deployments without stored secrets.",
+            "fields": [
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "staging"
+                },
+                {
+                    "key": "role_name",
+                    "label": "Role name",
+                    "type": "text",
+                    "placeholder": "gha-deploy"
+                }
+            ]
+        },
+        {
+            "id": "gha-release-flow",
+            "title": "Release flow",
+            "description": "Automate tagging, changelog, and artifact signing for releases.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Generate a release workflow for {{repo_name}} that tags versions, builds artifacts, signs them, and publishes changelogs.",
+            "fields": [
+                {
+                    "key": "repo_name",
+                    "label": "Repo",
+                    "type": "text",
+                    "placeholder": "cli-tool"
+                },
+                {
+                    "key": "artifact_type",
+                    "label": "Artifact type",
+                    "type": "text",
+                    "placeholder": "docker image"
+                },
+                {
+                    "key": "signing",
+                    "label": "Signing",
+                    "type": "text",
+                    "placeholder": "cosign"
+                }
+            ]
+        }
+    ],
+    "gitlab-ci": [
+        {
+            "id": "gl-ci",
+            "title": "CI pipeline",
+            "description": "GitLab CI pipeline with lint, tests, and security scanning stages.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Produce a .gitlab-ci.yml for {{project_name}} with lint, test, SAST, and dependency scanning jobs using caches and needs graph.",
+            "fields": [
+                {
+                    "key": "project_name",
+                    "label": "Project",
+                    "type": "text",
+                    "placeholder": "service"
+                },
+                {
+                    "key": "language",
+                    "label": "Language",
+                    "type": "text",
+                    "placeholder": "python"
+                },
+                {
+                    "key": "test_command",
+                    "label": "Test command",
+                    "type": "text",
+                    "placeholder": "pytest"
+                }
+            ]
+        },
+        {
+            "id": "gl-docker-build-push",
+            "title": "Docker build and push",
+            "description": "Build and push Docker images with registry auth and scanning.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create GitLab CI jobs to build and push a Docker image for {{app_name}} to {{registry}} with build cache and vulnerability scan.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "orders"
+                },
+                {
+                    "key": "registry",
+                    "label": "Registry",
+                    "type": "text",
+                    "placeholder": "registry.gitlab.com/org"
+                },
+                {
+                    "key": "image_tag",
+                    "label": "Image tag",
+                    "type": "text",
+                    "placeholder": "latest"
+                }
+            ]
+        },
+        {
+            "id": "gl-deploy",
+            "title": "Deploy pipeline",
+            "description": "Deploy to environments with approvals, manual gates, and rollout checks.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide GitLab CI deployment jobs for {{environment}} that apply manifests or Helm charts with manual approvals and canary stages for {{app_name}}.",
+            "fields": [
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "production"
+                },
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "api"
+                },
+                {
+                    "key": "deploy_strategy",
+                    "label": "Deploy strategy",
+                    "type": "text",
+                    "placeholder": "canary"
+                }
+            ]
+        },
+        {
+            "id": "gl-auth",
+            "title": "Cloud auth",
+            "description": "Use short-lived cloud credentials or workload identity in GitLab CI.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Show GitLab CI configuration for {{cloud}} workload identity or vault-based secrets so jobs deploy without long-lived keys for {{team_name}}.",
+            "fields": [
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "team_name",
+                    "label": "Team",
+                    "type": "text",
+                    "placeholder": "platform"
+                },
+                {
+                    "key": "vault_path",
+                    "label": "Vault path",
+                    "type": "text",
+                    "placeholder": "secret/platform/ci"
+                }
+            ]
+        },
+        {
+            "id": "gl-release-flow",
+            "title": "Release flow",
+            "description": "Automate GitLab release creation with changelogs, tags, and artifacts.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Generate GitLab CI jobs that cut a release for {{project_name}}, update changelog, tag commit, and publish artifacts with signatures.",
+            "fields": [
+                {
+                    "key": "project_name",
+                    "label": "Project",
+                    "type": "text",
+                    "placeholder": "web"
+                },
+                {
+                    "key": "artifact_type",
+                    "label": "Artifact type",
+                    "type": "text",
+                    "placeholder": "container"
+                },
+                {
+                    "key": "signing",
+                    "label": "Signing",
+                    "type": "text",
+                    "placeholder": "cosign"
+                }
+            ]
+        }
+    ],
+    "docker": [
+        {
+            "id": "docker-multi-stage",
+            "title": "Multi-stage build",
+            "description": "Create a multi-stage Dockerfile with caching and vulnerability scanning hooks.",
+            "defaultOutputFormat": "dockerfile",
+            "promptTemplate": "Write a multi-stage Dockerfile for {{app_name}} using base image {{base_image}} with non-root user and build cache hints.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "api"
+                },
+                {
+                    "key": "base_image",
+                    "label": "Base image",
+                    "type": "text",
+                    "placeholder": "node:20-alpine"
+                },
+                {
+                    "key": "port",
+                    "label": "Expose port",
+                    "type": "text",
+                    "placeholder": "8080"
+                }
+            ]
+        },
+        {
+            "id": "docker-non-root",
+            "title": "Non-root hardening",
+            "description": "Harden Dockerfiles to drop root, add healthchecks, and minimize attack surface.",
+            "defaultOutputFormat": "dockerfile",
+            "promptTemplate": "Produce a Dockerfile for {{app_name}} that runs as non-root, adds healthcheck, and strips unnecessary packages with {{base_image}}.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "worker"
+                },
+                {
+                    "key": "base_image",
+                    "label": "Base image",
+                    "type": "text",
+                    "placeholder": "python:3.11-slim"
+                },
+                {
+                    "key": "user",
+                    "label": "Runtime user",
+                    "type": "text",
+                    "placeholder": "appuser"
+                }
+            ]
+        },
+        {
+            "id": "docker-compose-stack",
+            "title": "Compose stack",
+            "description": "Author a docker-compose stack with healthchecks, secrets, and networks.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create a docker-compose.yaml for {{app_name}} with services {{services}} including healthchecks, secrets, and isolated networks.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "Stack name",
+                    "type": "text",
+                    "placeholder": "analytics"
+                },
+                {
+                    "key": "services",
+                    "label": "Services",
+                    "type": "text",
+                    "placeholder": "api,db,otel"
+                },
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "staging"
+                }
+            ]
+        },
+        {
+            "id": "docker-cache-opt",
+            "title": "Cache optimization",
+            "description": "Optimize Docker builds with cache mounts, buildx, and dependency layering.",
+            "defaultOutputFormat": "dockerfile",
+            "promptTemplate": "Show Dockerfile and build args for {{app_name}} that optimize cache usage, dependency layers, and SBOM generation.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "frontend"
+                },
+                {
+                    "key": "package_manager",
+                    "label": "Package manager",
+                    "type": "text",
+                    "placeholder": "npm"
+                },
+                {
+                    "key": "sbom_tool",
+                    "label": "SBOM tool",
+                    "type": "text",
+                    "placeholder": "syft"
+                }
+            ]
+        },
+        {
+            "id": "docker-troubleshoot",
+            "title": "Troubleshooting guide",
+            "description": "Checklist for debugging slow builds, network issues, and image bloat.",
+            "defaultOutputFormat": "markdown",
+            "promptTemplate": "Provide a Docker troubleshooting playbook for {{issue_type}} affecting {{app_name}} including commands and remediation steps.",
+            "fields": [
+                {
+                    "key": "issue_type",
+                    "label": "Issue type",
+                    "type": "text",
+                    "placeholder": "slow builds"
+                },
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "worker"
+                },
+                {
+                    "key": "platform",
+                    "label": "Platform",
+                    "type": "text",
+                    "placeholder": "linux/amd64"
+                }
+            ]
+        }
+    ],
+    "ansible": [
+        {
+            "id": "ans-role-scaffold",
+            "title": "Role scaffold",
+            "description": "Create an Ansible role with tasks, handlers, defaults, and molecule tests.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Generate an Ansible role scaffold named {{role_name}} with tasks, handlers, defaults, vars, and Molecule tests for {{os_target}}.",
+            "fields": [
+                {
+                    "key": "role_name",
+                    "label": "Role name",
+                    "type": "text",
+                    "placeholder": "hardening"
+                },
+                {
+                    "key": "os_target",
+                    "label": "OS target",
+                    "type": "text",
+                    "placeholder": "ubuntu-22.04"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner",
+                    "type": "text",
+                    "placeholder": "sre"
+                }
+            ]
+        },
+        {
+            "id": "ans-baseline",
+            "title": "Baseline hardening",
+            "description": "Baseline hardening playbook with CIS controls, auditd, and patch cadence.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Write an Ansible playbook to baseline harden {{host_group}} with CIS controls, auditd, and secure SSH defaults.",
+            "fields": [
+                {
+                    "key": "host_group",
+                    "label": "Host group",
+                    "type": "text",
+                    "placeholder": "linux_servers"
+                },
+                {
+                    "key": "timezone",
+                    "label": "Timezone",
+                    "type": "text",
+                    "placeholder": "UTC"
+                },
+                {
+                    "key": "reboot_window",
+                    "label": "Reboot window",
+                    "type": "text",
+                    "placeholder": "Sun 02:00"
+                }
+            ]
+        },
+        {
+            "id": "ans-inventory",
+            "title": "Inventory patterns",
+            "description": "Inventory layout using group_vars, host_vars, and dynamic sources.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Show an Ansible inventory structure for {{environment}} with group_vars, host_vars, and dynamic inventory plugin examples for {{cloud}}.",
+            "fields": [
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                },
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "core"
+                }
+            ]
+        },
+        {
+            "id": "ans-deploy-app",
+            "title": "Deploy application",
+            "description": "Deploy application artifacts with handlers, templating, and health checks.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Provide an Ansible playbook to deploy {{app_name}} version {{app_version}} with templated configs, systemd service, and health checks.",
+            "fields": [
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "inventory-api"
+                },
+                {
+                    "key": "app_version",
+                    "label": "Version",
+                    "type": "text",
+                    "placeholder": "1.4.0"
+                },
+                {
+                    "key": "service_user",
+                    "label": "Service user",
+                    "type": "text",
+                    "placeholder": "appsvc"
+                }
+            ]
+        },
+        {
+            "id": "ans-patch-reboot",
+            "title": "Patch and reboot",
+            "description": "Coordinated patching with maintenance windows, snapshots, and rollback.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create an Ansible playbook for {{host_group}} that patches packages, snapshots volumes, and reboots safely within {{maintenance_window}}.",
+            "fields": [
+                {
+                    "key": "host_group",
+                    "label": "Host group",
+                    "type": "text",
+                    "placeholder": "db"
+                },
+                {
+                    "key": "maintenance_window",
+                    "label": "Maintenance window",
+                    "type": "text",
+                    "placeholder": "Sat 01:00-03:00"
+                },
+                {
+                    "key": "notification",
+                    "label": "Notification channel",
+                    "type": "text",
+                    "placeholder": "ops-room"
+                }
+            ]
+        }
+    ],
+    "observability": [
+        {
+            "id": "obs-otel-pipeline",
+            "title": "OTel pipeline",
+            "description": "Design OpenTelemetry collector pipelines for traces, metrics, and logs.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Create an OpenTelemetry Collector pipeline for {{environment}} that receives, processes, and exports traces/logs with {{exporter}}.",
+            "fields": [
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "staging"
+                },
+                {
+                    "key": "exporter",
+                    "label": "Exporter",
+                    "type": "text",
+                    "placeholder": "otlphttp"
+                },
+                {
+                    "key": "sampling",
+                    "label": "Sampling",
+                    "type": "text",
+                    "placeholder": "10% traces"
+                }
+            ]
+        },
+        {
+            "id": "obs-app-traces",
+            "title": "App tracing",
+            "description": "Instrument services for distributed tracing with baggage and service metadata.",
+            "defaultOutputFormat": "markdown",
+            "promptTemplate": "Provide tracing guidance for {{language}} service {{app_name}} using OpenTelemetry with standardized attributes and baggage propagation.",
+            "fields": [
+                {
+                    "key": "language",
+                    "label": "Language",
+                    "type": "text",
+                    "placeholder": "go"
+                },
+                {
+                    "key": "app_name",
+                    "label": "App name",
+                    "type": "text",
+                    "placeholder": "orders"
+                },
+                {
+                    "key": "framework",
+                    "label": "Framework",
+                    "type": "text",
+                    "placeholder": "grpc"
+                }
+            ]
+        },
+        {
+            "id": "obs-log-parsing",
+            "title": "Log parsing",
+            "description": "Create log parsing pipelines with filters, redaction, and routing.",
+            "defaultOutputFormat": "yaml",
+            "promptTemplate": "Draft log pipeline configuration for {{source}} logs that performs redaction, parsing, and routes to {{destination}} with reliability.",
+            "fields": [
+                {
+                    "key": "source",
+                    "label": "Log source",
+                    "type": "text",
+                    "placeholder": "nginx"
+                },
+                {
+                    "key": "destination",
+                    "label": "Destination",
+                    "type": "text",
+                    "placeholder": "loki"
+                },
+                {
+                    "key": "redaction",
+                    "label": "Redaction rules",
+                    "type": "text",
+                    "placeholder": "mask emails"
+                }
+            ]
+        },
+        {
+            "id": "obs-attributes",
+            "title": "Standard attributes",
+            "description": "Apply standard resource attributes and semantic conventions across telemetry.",
+            "defaultOutputFormat": "markdown",
+            "promptTemplate": "List required telemetry attributes for {{service_type}} including resource attributes and semantic conventions for {{team_name}}.",
+            "fields": [
+                {
+                    "key": "service_type",
+                    "label": "Service type",
+                    "type": "text",
+                    "placeholder": "http"
+                },
+                {
+                    "key": "team_name",
+                    "label": "Team",
+                    "type": "text",
+                    "placeholder": "payments"
+                },
+                {
+                    "key": "compliance",
+                    "label": "Compliance",
+                    "type": "text",
+                    "placeholder": "PCI"
+                }
+            ]
+        },
+        {
+            "id": "obs-debug",
+            "title": "Debug playbook",
+            "description": "Troubleshoot missing signals with sampling, filters, and alert checks.",
+            "defaultOutputFormat": "markdown",
+            "promptTemplate": "Provide an observability debug checklist for {{symptom}} in {{environment}} including alert verification and sampling tweaks.",
+            "fields": [
+                {
+                    "key": "symptom",
+                    "label": "Symptom",
+                    "type": "text",
+                    "placeholder": "missing traces"
+                },
+                {
+                    "key": "environment",
+                    "label": "Environment",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "tools",
+                    "label": "Tools",
+                    "type": "text",
+                    "placeholder": "grafana, tempo"
+                }
+            ]
+        }
+    ],
+    "policy": [
+        {
+            "id": "policy-conftest-scaffold",
+            "title": "Conftest scaffold",
+            "description": "Bootstrap a conftest policy package with tests and Rego helpers.",
+            "defaultOutputFormat": "rego",
+            "promptTemplate": "Create a conftest policy scaffold for {{target}} with package naming, helper libraries, and example tests.",
+            "fields": [
+                {
+                    "key": "target",
+                    "label": "Target",
+                    "type": "text",
+                    "placeholder": "terraform"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner",
+                    "type": "text",
+                    "placeholder": "compliance"
+                },
+                {
+                    "key": "policy_dir",
+                    "label": "Policy directory",
+                    "type": "text",
+                    "placeholder": "policy/"
+                }
+            ]
+        },
+        {
+            "id": "policy-tf-deny-public",
+            "title": "Terraform deny public",
+            "description": "Deny public exposure for Terraform-managed resources with tests.",
+            "defaultOutputFormat": "rego",
+            "promptTemplate": "Write Rego policies for Terraform plans to block public exposure of {{resource_types}} with unit tests and remediation messages.",
+            "fields": [
+                {
+                    "key": "resource_types",
+                    "label": "Resource types",
+                    "type": "text",
+                    "placeholder": "s3 buckets, load balancers"
+                },
+                {
+                    "key": "severity",
+                    "label": "Severity",
+                    "type": "text",
+                    "placeholder": "high"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner",
+                    "type": "text",
+                    "placeholder": "security"
+                }
+            ]
+        },
+        {
+            "id": "policy-k8s-restricted",
+            "title": "Kubernetes restricted",
+            "description": "Restrict Kubernetes workloads (privileged, hostPath, capabilities) via policy.",
+            "defaultOutputFormat": "rego",
+            "promptTemplate": "Provide Rego policies for Kubernetes manifests to forbid privileged pods, hostPath, and unsafe capabilities for {{namespace}}.",
+            "fields": [
+                {
+                    "key": "namespace",
+                    "label": "Namespace",
+                    "type": "text",
+                    "placeholder": "prod"
+                },
+                {
+                    "key": "exemptions",
+                    "label": "Exemptions",
+                    "type": "text",
+                    "placeholder": "monitoring namespace"
+                },
+                {
+                    "key": "alert_channel",
+                    "label": "Alert channel",
+                    "type": "text",
+                    "placeholder": "#security"
+                }
+            ]
+        },
+        {
+            "id": "policy-allowed-regions",
+            "title": "Allowed regions/types",
+            "description": "Ensure workloads deploy only to approved regions and resource classes.",
+            "defaultOutputFormat": "rego",
+            "promptTemplate": "Write a policy to enforce allowed regions {{regions}} and instance types {{instance_types}} for {{cloud}} with tests.",
+            "fields": [
+                {
+                    "key": "regions",
+                    "label": "Allowed regions",
+                    "type": "text",
+                    "placeholder": "us-east-1, eu-west-1"
+                },
+                {
+                    "key": "instance_types",
+                    "label": "Instance types",
+                    "type": "text",
+                    "placeholder": "m6i, c7g"
+                },
+                {
+                    "key": "cloud",
+                    "label": "Cloud",
+                    "type": "select",
+                    "options": [
+                        "aws",
+                        "azure",
+                        "gcp"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "policy-tests",
+            "title": "Policy tests",
+            "description": "Add test cases and fixtures to validate policy behavior across inputs.",
+            "defaultOutputFormat": "rego",
+            "promptTemplate": "Generate Rego unit tests for {{policy_scope}} covering allow and deny scenarios with fixtures and CI guidance.",
+            "fields": [
+                {
+                    "key": "policy_scope",
+                    "label": "Policy scope",
+                    "type": "text",
+                    "placeholder": "terraform networking"
+                },
+                {
+                    "key": "ci_system",
+                    "label": "CI system",
+                    "type": "text",
+                    "placeholder": "GitHub Actions"
+                },
+                {
+                    "key": "owner",
+                    "label": "Owner",
+                    "type": "text",
+                    "placeholder": "compliance"
+                }
+            ]
+        }
+    ]
+}

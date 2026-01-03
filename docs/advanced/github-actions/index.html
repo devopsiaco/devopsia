@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Actions Format Assistant - Devopsia</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
+  <link rel="icon" href="/assets/lynx-logo.svg" type="image/svg+xml">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>[x-cloak]{display:none !important;}</style>
+  <script>
+    window.__DEVOPSIA_API_BASE = 'https://e0wxwjllp0.execute-api.eu-north-1.amazonaws.com/prod';
+    window.DEVOPSIA_ASSISTANT_TYPE = 'format';
+    window.DEVOPSIA_FORMAT = 'github-actions';
+  </script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-800">
+  <div id="top-banner"></div>
+  <div id="assistant-root"></div>
+
+  <script src="/js/assistant-scaffold.js"></script>
+  <script>
+    renderAssistantPage({
+      title: 'GitHub Actions format assistant',
+      subtitle: 'Secure CI/CD workflows, OIDC cloud auth, and release orchestration.',
+      promptPlaceholder: 'Ask for GitHub Actions workflows and reusable job templates...',
+      tool: 'github-actions'
+    });
+  </script>
+
+  <script src="/js/prompt-mode.js"></script>
+  <script src="/js/ui-common.js"></script>
+  <script type="module" src="/js/firebase.js"></script>
+  <script type="module" src="/js/auth.js"></script>
+  <script type="module" src="/js/ai-assistant.js"></script>
+
+  <script src="/js/firebase-init.js"></script>
+  <script src="/js/inactivity-timeout.js"></script>
+  <script>
+    attachAssistantChrome();
+  </script>
+  <script src="/js/sidebar.js"></script>
+  <script defer src="/js/top-banner.js"></script>
+  <div id="footer-container"></div>
+  <script src="/js/footer-loader.js" defer></script>
+</body>
+</html>
