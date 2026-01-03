@@ -14,11 +14,19 @@ const STORAGE_KEYS = {
 const VALID_VALUES = {
   cloud: ['aws', 'azure', 'gcp', 'unknown'],
   goal: ['build', 'migrate', 'operate', 'secure', 'unknown'],
-  outputFormat: ['terraform', 'yaml', 'bicep', 'cli', 'runbook', 'unknown'],
+  outputFormat: ['terraform', 'yaml', 'bicep', 'cli', 'runbook', 'dockerfile', 'markdown', 'rego', 'unknown'],
   profile: ['secure', 'optimized', 'default']
 };
 
 const MAX_ARTIFACT_CHARS = 12000;
+
+const templateState = {
+  templates: [],
+  selected: null,
+  format: (window.DEVOPSIA_FORMAT || '').toLowerCase()
+};
+
+let selectedTemplateMeta = { id: null, title: null, defaultOutputFormat: null };
 
 function safeRead(key) {
   try {
@@ -45,6 +53,122 @@ function ensureResultContainer() {
   container.dataset.enhanced = 'true';
   container.classList.add('space-y-4');
   return container;
+}
+
+function interpolateTemplate(templateString, values = {}) {
+  if (!templateString || typeof templateString !== 'string') return '';
+  return templateString.replace(/{{\s*([^}]+)\s*}}/g, (_, key) => {
+    const replacement = values[key.trim()];
+    return replacement != null ? replacement : '';
+  });
+}
+
+function collectTemplateValues() {
+  const container = document.getElementById('template-fields');
+  if (!container) return {};
+  const values = {};
+  container.querySelectorAll('[data-field-key]').forEach((el) => {
+    values[el.dataset.fieldKey] = (el.value || '').trim();
+  });
+  return values;
+}
+
+function setOutputFormatFromTemplate(template) {
+  const select = document.querySelector('select[data-selector="output-format"]');
+  if (!select || !template?.defaultOutputFormat) return;
+  const desired = String(template.defaultOutputFormat).toLowerCase();
+  if (!desired) return;
+
+  const hasOption = Array.from(select.options).some((opt) => opt.value === desired);
+  if (!hasOption) {
+    const opt = document.createElement('option');
+    opt.value = desired;
+    opt.textContent = desired.charAt(0).toUpperCase() + desired.slice(1);
+    select.appendChild(opt);
+  }
+
+  select.value = desired;
+  safeWrite(STORAGE_KEYS.outputFormat, desired);
+}
+
+function renderTemplateFields(template, defaults = {}) {
+  const container = document.getElementById('template-fields');
+  const descriptionEl = document.getElementById('template-description');
+  if (!container || !descriptionEl) return;
+
+  container.innerHTML = '';
+
+  if (!template) {
+    descriptionEl.textContent = '';
+    descriptionEl.classList.add('hidden');
+    return;
+  }
+
+  if (template.description) {
+    descriptionEl.textContent = template.description;
+    descriptionEl.classList.remove('hidden');
+  } else {
+    descriptionEl.textContent = '';
+    descriptionEl.classList.add('hidden');
+  }
+
+  const fields = Array.isArray(template.fields) ? template.fields : [];
+  if (!fields.length) return;
+
+  fields.forEach((field) => {
+    if (!field?.key) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'space-y-1';
+
+    const label = document.createElement('label');
+    label.className = 'block text-sm font-medium text-gray-700';
+    label.textContent = field.label || field.key;
+    label.htmlFor = `tpl-${field.key}`;
+    wrapper.appendChild(label);
+
+    let input;
+    const fieldType = field.type === 'select' ? 'select' : 'text';
+    if (fieldType === 'select') {
+      input = document.createElement('select');
+      input.className =
+        'block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500';
+      (field.options || []).forEach((opt) => {
+        const optionEl = document.createElement('option');
+        optionEl.value = opt;
+        optionEl.textContent = opt;
+        input.appendChild(optionEl);
+      });
+    } else {
+      input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = field.placeholder || '';
+      input.className =
+        'block w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-800 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500';
+    }
+
+    input.id = `tpl-${field.key}`;
+    input.dataset.fieldKey = field.key;
+    if (defaults[field.key]) {
+      const defaultVal = defaults[field.key];
+      const isSelectMatch =
+        fieldType !== 'select' || Array.from(input.options).some((opt) => opt.value === defaultVal);
+      if (isSelectMatch) input.value = defaultVal;
+    }
+    input.addEventListener('input', updatePromptFromTemplate);
+    input.addEventListener('change', updatePromptFromTemplate);
+
+    wrapper.appendChild(input);
+    container.appendChild(wrapper);
+  });
+}
+
+function updatePromptFromTemplate() {
+  if (!templateState.selected) return;
+  const promptInput = document.getElementById('promptInput');
+  if (!promptInput) return;
+  const values = collectTemplateValues();
+  const rendered = interpolateTemplate(templateState.selected.promptTemplate || '', values);
+  promptInput.value = rendered.trim();
 }
 
 function normalizeList(value) {
@@ -434,6 +558,66 @@ function hydrateContextSelectors() {
   }
 }
 
+function handleTemplateChange(templateId) {
+  const selected = templateState.templates.find((tpl) => tpl.id === templateId) || null;
+  templateState.selected = selected;
+  selectedTemplateMeta = {
+    id: selected?.id || null,
+    title: selected?.title || null,
+    defaultOutputFormat: selected?.defaultOutputFormat || null
+  };
+
+  const defaults = resolveContextMetadata();
+  if (!selected) {
+    renderTemplateFields(null, defaults);
+    return;
+  }
+
+  setOutputFormatFromTemplate(selected);
+  renderTemplateFields(selected, defaults);
+  updatePromptFromTemplate();
+}
+
+async function initTemplatePicker() {
+  const section = document.getElementById('template-picker');
+  const select = document.getElementById('template-select');
+  const fields = document.getElementById('template-fields');
+  const description = document.getElementById('template-description');
+
+  if (!section || !select || !fields || !description) return;
+  if ((window.DEVOPSIA_ASSISTANT_TYPE || '').toLowerCase() !== 'format') return;
+
+  const formatKey = (window.DEVOPSIA_FORMAT || '').toLowerCase();
+  if (!formatKey) return;
+
+  let data;
+  try {
+    const res = await fetch('/assets/advanced-templates.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Template request failed (${res.status})`);
+    data = await res.json();
+  } catch (err) {
+    console.warn('Failed to load format templates', err);
+    return;
+  }
+
+  const templates = Array.isArray(data?.[formatKey]) ? data[formatKey] : [];
+  if (!templates.length) return;
+
+  templateState.templates = templates;
+  templateState.format = formatKey;
+  section.classList.remove('hidden');
+
+  select.innerHTML = '<option value="">Freeform prompt</option>';
+  templates.forEach((tpl) => {
+    const opt = document.createElement('option');
+    opt.value = tpl.id || '';
+    opt.textContent = tpl.title || tpl.id;
+    select.appendChild(opt);
+  });
+
+  select.addEventListener('change', (e) => handleTemplateChange(e.target.value));
+}
+
 document.addEventListener('promptMode:change', (e) => {
   currentMode = e.detail.mode;
 });
@@ -443,6 +627,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   hydrateContextSelectors();
+  initTemplatePicker();
 });
 
 function showToast(message) {
@@ -505,7 +690,22 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
   const promptMode = currentMode;
   const tool = document.getElementById('tool')?.value || 'general';
   const resultEl = ensureResultContainer();
+  const assistantType = (window.DEVOPSIA_ASSISTANT_TYPE || 'cloud').toLowerCase();
+  const isFormatAssistant = assistantType === 'format';
+  const formatValue = (window.DEVOPSIA_FORMAT || 'unknown').toLowerCase();
   const context = resolveContextMetadata();
+  const outputFormatSelect = document.querySelector('select[data-selector="output-format"]');
+  if (outputFormatSelect?.value) {
+    context.outputFormat = normalizeSelection(outputFormatSelect.value, 'outputFormat', context.outputFormat);
+  }
+
+  if (isFormatAssistant) {
+    context.assistantType = 'format';
+    context.format = formatValue;
+    context.goal = context.goal || 'build';
+    context.templateId = selectedTemplateMeta.id;
+    context.templateTitle = selectedTemplateMeta.title;
+  }
   const requestId = generateRequestId();
   if (promptMode === 'secure' && userPlan !== 'pro') {
     showToast('Secure mode is available on Pro only');
@@ -554,8 +754,11 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
           goal: context.goal,
           outputFormat: context.outputFormat,
           profile: context.profile,
-          assistantType: 'cloud',
+          assistantType: context.assistantType || assistantType || 'cloud',
           assistantCloud: context.cloud,
+          format: context.format || (isFormatAssistant ? formatValue : null),
+          templateId: context.templateId || null,
+          templateTitle: context.templateTitle || null,
           requestId,
           model: data.model || data.modelName,
           pagePath: window.location?.pathname,
