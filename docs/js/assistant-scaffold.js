@@ -4,8 +4,14 @@
       title = 'AI Assistant',
       subtitle = '',
       promptPlaceholder = 'Type your DevOps question...',
-      tool = 'general'
+      tool = 'general',
+      backLink,
+      formatNote,
+      guardrailNote,
+      whatYouGet = []
     } = config;
+
+    const hasWhatYouGet = Array.isArray(whatYouGet) && whatYouGet.length > 0;
 
     const toolInput = tool ? `<input type="hidden" id="tool" value="${tool}">` : '';
 
@@ -20,6 +26,8 @@
 
       <h1 class="text-2xl font-semibold">${title}</h1>
       ${subtitle ? `<p class="text-gray-600 mb-4">${subtitle}</p>` : ''}
+      ${backLink ? `<div class="mb-4"><a href="${backLink.href}" class="inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:text-blue-800 hover:underline">← ${backLink.text}</a></div>` : ''}
+      ${formatNote ? `<div class="mb-4 text-sm text-gray-800 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">${formatNote}</div>` : ''}
       <div x-data="promptComponent()" id="promptContainer" class="bg-white p-6 rounded-lg shadow space-y-4">
         <div id="context-selectors" class="space-y-3">
           <div class="grid gap-3 md:grid-cols-2">
@@ -186,8 +194,21 @@
         <textarea id="promptInput" class="w-full p-4 border rounded" rows="5" placeholder="${promptPlaceholder}"></textarea>
         ${toolInput}
         <button id="runPrompt" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded w-full">Run Prompt</button>
+        ${guardrailNote ? `<p class="text-[12px] text-gray-600 text-center">${guardrailNote}</p>` : ''}
       <pre id="result" class="bg-gray-100 p-4 rounded overflow-x-auto whitespace-pre-wrap"></pre>
       </div>
+      ${hasWhatYouGet ? `<section class="mt-6 border rounded-xl p-4 bg-white/80 backdrop-blur">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-semibold">What you'll get</h2>
+          <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Files · Validation · Gotchas</span>
+        </div>
+        <ul class="grid gap-3 md:grid-cols-3">
+          ${whatYouGet.map(item => `<li class="rounded-lg border border-gray-200 bg-gray-50/70 p-3">
+            <div class="text-sm font-semibold text-gray-800">${item.label}</div>
+            <p class="text-sm text-gray-600 mt-1">${item.detail}</p>
+          </li>`).join('')}
+        </ul>
+      </section>` : ''}
       <section class="mt-6 border rounded-xl p-4 bg-white/80 backdrop-blur">
         <h2 class="text-lg font-semibold mb-3">File Tools</h2>
         <div class="grid gap-3 md:grid-cols-2">

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Helm Format Assistant - Devopsia</title>
+  <title>Advanced Helm Formats | Devopsia</title>
+  <meta name="description" content="Build production-ready Helm charts with values schemas, Kubernetes security defaults, and release automation guidance." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Helm format assistant',
       subtitle: 'Chart scaffolds, helpers, and upgrade-safe values strategies.',
       promptPlaceholder: 'Ask for Helm chart templates, helpers, and ingress patterns...',
-      tool: 'helm'
+      tool: 'helm',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Chart.yaml, values.yaml samples, values.schema.json, and templates with network policies and pod security defaults.' },
+        { label: 'Validation', detail: 'helm lint/template tips, kubeval or kubeconform checks, and upgrade/diff guidance before rollout.' },
+        { label: 'Gotchas', detail: 'Secret/credential sourcing, post-render steps, and safe upgrade hooks with rollback plans.' }
+      ]
     });
   </script>
 

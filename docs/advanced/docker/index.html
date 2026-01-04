@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Docker Format Assistant - Devopsia</title>
+  <title>Advanced Docker Formats | Devopsia</title>
+  <meta name="description" content="Produce hardened Dockerfiles, Compose stacks, and cache-aware build patterns with supply-chain guardrails and runtime safety." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Docker format assistant',
       subtitle: 'Hardened Dockerfiles, Compose stacks, and cache-aware build patterns.',
       promptPlaceholder: 'Ask for Dockerfiles, multi-stage builds, and troubleshooting help...',
-      tool: 'docker'
+      tool: 'docker',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Multi-stage Dockerfiles, docker-compose stacks, .dockerignore, and healthcheck-ready entrypoints.' },
+        { label: 'Validation', detail: 'hadolint and docker buildx tips, SBOM/signed image hints, and runtime user/permission checks.' },
+        { label: 'Gotchas', detail: 'Secret mounts instead of ARGs, minimal base images, non-root users, and predictable caching strategies.' }
+      ]
     });
   </script>
 

@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Kubernetes Format Assistant - Devopsia</title>
+  <title>Advanced Kubernetes Formats | Devopsia</title>
+  <meta name="description" content="Author secure Kubernetes manifests, RBAC, and policy bundles with validation steps, drift checks, and safe rollout guidance." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Kubernetes format assistant',
       subtitle: 'Production-ready manifests for deployments, ingress, RBAC, and network policies.',
       promptPlaceholder: 'Ask for Kubernetes YAML templates and secure defaults...',
-      tool: 'kubernetes'
+      tool: 'kubernetes',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Deployments, Services, Ingress, RBAC roles/bindings, NetworkPolicies, and PodSecurity settings aligned to namespaces.' },
+        { label: 'Validation', detail: 'kubectl apply --server-dry-run, kubeconform/kubetest hints, and admission policy reminders for gates.' },
+        { label: 'Gotchas', detail: 'Requests/limits, immutable fields on rollout, and secrets/configs sourced from external stores rather than inline.' }
+      ]
     });
   </script>
 

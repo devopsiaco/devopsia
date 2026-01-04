@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Policy Format Assistant - Devopsia</title>
+  <title>Advanced Policy-as-Code Formats | Devopsia</title>
+  <meta name="description" content="Write policy-as-code snippets for OPA, Rego, and Sentinel with constraint templates, tests, and compliance mapping guardrails." />
   <link rel="stylesheet" href="/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Sans:wght@200&display=swap" rel="stylesheet">
@@ -27,7 +28,14 @@
       title: 'Policy-as-code format assistant',
       subtitle: 'Conftest, Terraform deny rules, and Kubernetes restriction bundles.',
       promptPlaceholder: 'Ask for OPA/Sentinel policies, region controls, and tests...',
-      tool: 'policy'
+      tool: 'policy',
+      backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
+      guardrailNote: 'Never paste secrets. Use placeholders.',
+      whatYouGet: [
+        { label: 'Files', detail: 'Rego modules, Gatekeeper constraint templates, and sample inputs/fixtures mapped to frameworks.' },
+        { label: 'Validation', detail: 'opa test and conftest cues, coverage hints, and fail-closed defaults for denies and warnings.' },
+        { label: 'Gotchas', detail: 'Policy versioning, explicit deny messages, and least-privilege data sources with no embedded secrets.' }
+      ]
     });
   </script>
 
