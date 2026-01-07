@@ -113,6 +113,16 @@
           </div>
           <p id="template-description" class="hidden text-sm text-gray-700"></p>
           <div id="template-fields" class="space-y-3"></div>
+          <div class="flex justify-end">
+            <button
+              type="button"
+              id="template-generate"
+              class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-blue-300"
+              disabled
+            >
+              Generate prompt
+            </button>
+          </div>
         </div>
         <div>
           <div class="flex items-center mb-1">
