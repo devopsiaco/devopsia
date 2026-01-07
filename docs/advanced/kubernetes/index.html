@@ -30,11 +30,11 @@
       promptPlaceholder: 'Ask for Kubernetes YAML templates and secure defaults...',
       tool: 'kubernetes',
       backLink: { href: '/advanced/', text: 'Back to Advanced overview' },
-      guardrailNote: 'Never paste secrets. Use placeholders.',
+      guardrailNote: 'Don’t paste secrets; use placeholders.',
       whatYouGet: [
-        { label: 'Files you can paste', detail: 'Deployments, Services, Ingress, RBAC roles/bindings, NetworkPolicies, and PodSecurity settings aligned to namespaces.' },
-        { label: 'Validation steps', detail: 'kubectl apply --server-dry-run, kubeconform/kubetest hints, and admission policy reminders for gates.' },
-        { label: 'Gotchas (common hurdles)', detail: 'Requests/limits, immutable fields on rollout, and secrets/configs sourced from external stores rather than inline.' }
+        { label: 'Files', detail: 'Deployments, Services, Ingress, RBAC roles/bindings, NetworkPolicies, and PodSecurity settings aligned to namespaces.' },
+        { label: 'Validation', detail: 'kubectl apply --server-dry-run, kubeconform/kubetest hints, and admission policy reminders for gates.' },
+        { label: 'Gotchas', detail: 'Requests/limits, immutable fields on rollout, and secrets/configs sourced from external stores rather than inline.' }
       ]
     });
   </script>
