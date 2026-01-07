@@ -10,9 +10,6 @@ function getPostLoginRoute() {
       const allowed = [
         '/', '/pricing/', '/prompt-history/',
         '/ai-assistant-aws/', '/ai-assistant-azure/', '/ai-assistant-gcp/',
-        '/ai-assistant-terraform/', '/ai-assistant-helm/',
-        '/ai-assistant-k8s/', '/ai-assistant-ansible/',
-        '/ai-assistant-yaml/', '/ai-assistant-docker/',
         '/profile/'
       ];
       if (allowed.includes(cont)) return cont;
@@ -123,4 +120,3 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export { redirectAfterLogin };
-

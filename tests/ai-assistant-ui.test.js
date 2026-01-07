@@ -37,7 +37,7 @@ function loadAi(window, { plan = 'free', fetchImpl, addDocImpl } = {}) {
 
 test('promptMode change event updates current mode', () => {
   const dom = new JSDOM('<button id="runPrompt"></button><textarea id="promptInput"></textarea><div id="result"></div>', {
-    url: 'https://example.com/ai-assistant-terraform/'
+    url: 'https://example.com/ai-assistant-aws/'
   });
   const { window } = dom;
   loadAi(window);
@@ -49,7 +49,7 @@ test('promptMode change event updates current mode', () => {
 
 test('runPrompt blocks secure mode for free plan', async () => {
   const dom = new JSDOM('<button id="runPrompt"></button><textarea id="promptInput"></textarea><div id="result"></div>', {
-    url: 'https://example.com/ai-assistant-terraform/'
+    url: 'https://example.com/ai-assistant-aws/'
   });
   const { window } = dom;
   const { context } = loadAi(window, { plan: 'free' });

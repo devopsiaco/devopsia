@@ -92,18 +92,18 @@
     });
   }
 
-  // Fix incorrect Terraform link in the sidebar and normalize other assistant links
+  // Normalize assistant/template links in the sidebar and shared navs
   function fixSidebarAssistantLinks() {
     const map = {
       'aws': '/ai-assistant-aws/',
       'azure': '/ai-assistant-azure/',
       'gcp': '/ai-assistant-gcp/',
-      'terraform': '/ai-assistant-terraform/',
-      'helm': '/ai-assistant-helm/',
-      'k8s': '/ai-assistant-k8s/',
-      'yaml': '/ai-assistant-yaml/',
-      'ansible': '/ai-assistant-ansible/',
-      'docker': '/ai-assistant-docker/'
+      'terraform': '/advanced/terraform/',
+      'helm': '/advanced/helm/',
+      'k8s': '/advanced/kubernetes/',
+      'yaml': '/advanced/kubernetes/',
+      'ansible': '/advanced/ansible/',
+      'docker': '/advanced/docker/'
     };
 
     const sidebar = safeQuery('#sidebar-container') || document;
@@ -117,7 +117,7 @@
 
     // Explicitly fix the typo if still present
     const bad = safeQuery('a[href="/ai-assistnat"]', sidebar);
-    if (bad) bad.setAttribute('href', '/ai-assistant-terraform/');
+    if (bad) bad.setAttribute('href', '/advanced/terraform/');
   }
 
   // Public init
