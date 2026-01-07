@@ -5,11 +5,6 @@
       <span>Home</span>
     </a>
 
-    <!-- Advanced Landing -->
-    <a href="/advanced/" class="sidebar-link flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-100 mt-1" data-link="advanced">
-      <span>Advanced / Formats</span>
-    </a>
-
     <!-- AI Assistants accordion -->
     <details id="ai-assistants-accordion" class="mt-2 group" open>
       <summary class="sidebar-link flex items-center justify-between px-3 py-2 rounded cursor-pointer hover:bg-gray-100">
@@ -25,21 +20,25 @@
       </div>
     </details>
 
-    <!-- Advanced/Format assistants -->
-    <details id="advanced-assistants" class="mt-2 group">
+    <!-- Advanced / Templates -->
+    <details id="advanced-templates" class="mt-2 group">
       <summary class="sidebar-link flex items-center justify-between px-3 py-2 rounded cursor-pointer hover:bg-gray-100">
-        <span>Advanced / Formats</span>
+        <span>Advanced / Templates</span>
         <svg class="w-4 h-4 transition-transform group-open:rotate-180" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.17l3.71-2.94a.75.75 0 111.04 1.08l-4.24 3.36a.75.75 0 01-.94 0L5.21 8.31a.75.75 0 01.02-1.1z" clip-rule="evenodd"/>
         </svg>
       </summary>
       <div class="ml-2 mt-1 space-y-1">
-        <a href="/ai-assistant-terraform/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="terraform">Terraform</a>
-        <a href="/ai-assistant-helm/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="helm">Helm</a>
-        <a href="/ai-assistant-k8s/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="k8s">K8s</a>
-        <a href="/ai-assistant-ansible/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="ansible">Ansible</a>
-        <a href="/ai-assistant-yaml/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="yaml">YAML</a>
-        <a href="/ai-assistant-docker/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="docker">Docker</a>
+        <a href="/advanced/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100 font-medium" data-link="advanced">Advanced / Templates overview</a>
+        <a href="/advanced/terraform/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="terraform">Terraform</a>
+        <a href="/advanced/kubernetes/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="kubernetes">Kubernetes</a>
+        <a href="/advanced/helm/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="helm">Helm</a>
+        <a href="/advanced/ansible/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="ansible">Ansible</a>
+        <a href="/advanced/docker/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="docker">Docker</a>
+        <a href="/advanced/github-actions/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="github-actions">GitHub Actions</a>
+        <a href="/advanced/gitlab-ci/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="gitlab-ci">GitLab CI</a>
+        <a href="/advanced/observability/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="observability">Observability</a>
+        <a href="/advanced/policy/" class="sidebar-sublink block px-4 py-2 rounded hover:bg-gray-100" data-link="policy">Policy</a>
       </div>
     </details>
 
