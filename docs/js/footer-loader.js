@@ -9,7 +9,7 @@
         document.body.appendChild(host);
       }
 
-      // Use an absolute path so subpages like /ai-assistant-terraform/ work
+      // Use an absolute path so nested pages like /advanced/terraform/ work
       const url = '/components/footer.html';
 
       // Cache-buster so updates show up immediately on GH Pages
