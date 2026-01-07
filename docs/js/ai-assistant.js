@@ -171,6 +171,11 @@ function updatePromptFromTemplate() {
   promptInput.value = rendered.trim();
 }
 
+function setGenerateButtonState(button, enabled) {
+  if (!button) return;
+  button.disabled = !enabled;
+}
+
 function normalizeList(value) {
   if (!value) return [];
   if (Array.isArray(value)) {
@@ -583,6 +588,7 @@ async function initTemplatePicker() {
   const select = document.getElementById('template-select');
   const fields = document.getElementById('template-fields');
   const description = document.getElementById('template-description');
+  const generateBtn = document.getElementById('template-generate');
 
   if (!section || !select || !fields || !description) return;
   if ((window.DEVOPSIA_ASSISTANT_TYPE || '').toLowerCase() !== 'format') return;
@@ -615,7 +621,18 @@ async function initTemplatePicker() {
     select.appendChild(opt);
   });
 
-  select.addEventListener('change', (e) => handleTemplateChange(e.target.value));
+  setGenerateButtonState(generateBtn, false);
+
+  select.addEventListener('change', (e) => {
+    handleTemplateChange(e.target.value);
+    setGenerateButtonState(generateBtn, Boolean(templateState.selected));
+  });
+
+  if (generateBtn) {
+    generateBtn.addEventListener('click', () => {
+      updatePromptFromTemplate();
+    });
+  }
 }
 
 document.addEventListener('promptMode:change', (e) => {
