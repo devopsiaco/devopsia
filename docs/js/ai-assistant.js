@@ -1,6 +1,19 @@
 import { auth, db } from './firebase.js';
 import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js';
-import { doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import {
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+  query,
+  orderBy,
+  limit
+} from 'https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js';
+import { extractArtifactsV1 } from './artifacts/parse.js';
+import { buildWorkspacePanel } from './workspace/WorkspacePanel.js';
 
 let userPlan = 'free';
 let currentMode = 'secure';
@@ -19,6 +32,7 @@ const VALID_VALUES = {
 };
 
 const MAX_ARTIFACT_CHARS = 12000;
+let previousArtifactsV1 = null;
 
 const templateState = {
   templates: [],
@@ -263,6 +277,39 @@ function trimStructured(structured) {
     });
   }
   return clone;
+}
+
+async function fetchPreviousArtifactsV1(userId, currentRequestId) {
+  if (!userId) return null;
+  try {
+    const historyQuery = query(
+      collection(db, 'users', userId, 'prompts'),
+      orderBy('createdAt', 'desc'),
+      limit(10)
+    );
+    const snapshot = await getDocs(historyQuery);
+    for (const docSnap of snapshot.docs) {
+      const data = docSnap.data();
+      if (data?.requestId === currentRequestId) continue;
+      if (data?.artifacts_v1?.files?.length) return data.artifacts_v1;
+    }
+  } catch (err) {
+    console.error('Failed to fetch previous artifacts', err);
+  }
+  return null;
+}
+
+function renderWorkspaceSection(container, { artifactsV1, promptText, previousArtifacts } = {}) {
+  if (!container) return;
+  const existing = container.querySelector('#workspace-panel');
+  if (existing) existing.remove();
+  if (!artifactsV1?.files?.length) return;
+  const panel = buildWorkspacePanel({
+    artifacts: artifactsV1,
+    previousArtifacts,
+    promptText
+  });
+  container.appendChild(panel);
 }
 
 function renderCopyButton(text) {
@@ -743,8 +790,14 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
     if (!res.ok) throw new Error('Request failed');
     const data = await res.json();
     const normalized = normalizeResponsePayload(data);
+    const artifactsV1 = extractArtifactsV1(data);
 
     renderStructuredResponse(resultEl, data);
+    renderWorkspaceSection(resultEl, {
+      artifactsV1,
+      promptText: prompt,
+      previousArtifacts: previousArtifactsV1
+    });
 
     const user = auth.currentUser;
     if (user) {
@@ -767,6 +820,7 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
           response: normalized.responseText,
           responseText: normalized.responseText,
           responseStructured: trimStructured(structured),
+          artifacts_v1: artifactsV1,
           cloud: context.cloud,
           goal: context.goal,
           outputFormat: context.outputFormat,
@@ -781,6 +835,14 @@ document.getElementById('runPrompt').addEventListener('click', async () => {
           pagePath: window.location?.pathname,
           createdAt: serverTimestamp()
         });
+        if (artifactsV1?.files?.length) {
+          previousArtifactsV1 = await fetchPreviousArtifactsV1(user.uid, requestId);
+          renderWorkspaceSection(resultEl, {
+            artifactsV1,
+            promptText: prompt,
+            previousArtifacts: previousArtifactsV1
+          });
+        }
       } catch (err) {
         console.error('Failed to save prompt history', err);
       }
